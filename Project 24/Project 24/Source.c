@@ -36,6 +36,7 @@ int main() {
 		{
 		case '1':
 			LogIn_Citizen();
+			//nofar
 			break;
 		case '2':
 			/////
