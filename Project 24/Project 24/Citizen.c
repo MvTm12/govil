@@ -1,6 +1,6 @@
 #include "Citizen.h"
 #include "database.h"
-
+//nofarrrrrrr
 // login function
 void LogIn_Citizen()
 {
