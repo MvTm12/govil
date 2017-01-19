@@ -1,4 +1,7 @@
 #include "database.h"
 #include "Employee.h"
-//Hamud
-int Semion;
+/*function to employer login*/
+void LogIn_Employee()
+{
+
+}
