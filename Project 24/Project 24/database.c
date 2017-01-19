@@ -2,9 +2,7 @@
 #include "database.h"
 #include <string.h>
 
-int findFieldIndex(FILE *myFile, char *field);
-char* getNextWord(FILE* myFile);
-char* getfieldValue(char* buffer, int column);
+
 
 //Add new entry to data base
 //returns 1 for success 0 for failure
