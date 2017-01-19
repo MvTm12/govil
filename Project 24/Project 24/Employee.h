@@ -6,3 +6,4 @@ typedef struct Employee {
 	char lastName[12];
 	char status[10];
 } Employee;
+/////
