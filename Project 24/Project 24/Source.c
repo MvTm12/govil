@@ -31,7 +31,7 @@ int main() {
 		printf("To exit ,      press '0'.\n");
 		printf("--------------------------------------------------\n");
 		printf("Your choose: ");
-		scanf("%choose", &choose);
+		scanf("%c", &choose);
 		switch (choose)
 		{
 		case '1':
@@ -39,15 +39,17 @@ int main() {
 			//nofar
 			break;
 		case '2':
-			/////
+			LogIn_Employee();
 			break;
 		case '0':
 			/////
 			break;
 		default:
-			printf("Wrong choose, please try again...\n");
+			printf("Wrong enter, please try again...\n");
 			break;
 		}
+		while (getchar() != '\n');
+		
 	}
 
 	if (resultArr != NULL)
