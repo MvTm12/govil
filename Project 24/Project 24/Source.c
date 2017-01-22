@@ -1,8 +1,10 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include "database.h"
+#include "Employee.h"
 #include "vld.h"
 #define PEOPLE_DB "Citizen.txt"
+#define EMPLOYEES_DB "Employee.txt"
 
 int main() {
 	int numberOfFiltered = 0;
@@ -17,7 +19,8 @@ int main() {
 	DBaddPerson(PEOPLE_DB, Nofar);
 	DBaddPerson(PEOPLE_DB, Matan);*/
 	
-	/*resultArr = DBreadPeople(PEOPLE_DB, "ID", "205774094", &numberOfFiltered);
+	resultArr = DBreadPeople(PEOPLE_DB, "ID", "205774094", &numberOfFiltered);
+	/*
 	printf("ID          Name          LastName      Telephone    Age   Gender   City\n");
 	for (int i = 0; i < numberOfFiltered; i++)
 		printf("%-11s %-13s %-13s %-12s %-5d %-8s %-25s \n", resultArr[i].ID, resultArr[i].name, resultArr[i].lastName, resultArr[i].telephone,  resultArr[i].age, resultArr[i].gender, resultArr[i].city );*/
@@ -28,6 +31,7 @@ int main() {
 		printf("-------======This is a login page!======--------.\n");
 		printf("To citizens ,  press '1'.\n");
 		printf("To employees , press '2'.\n");
+		printf("To check function , press '3'.\n");
 		printf("To exit ,      press '0'.\n");
 		printf("--------------------------------------------------\n");
 		printf("Your choose: ");
@@ -40,6 +44,9 @@ int main() {
 			break;
 		case '2':
 			LogIn_Employee();
+			break;
+		case '3':
+			EntryTime("326952298");
 			break;
 		case '0':
 			/////
