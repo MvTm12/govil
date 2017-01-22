@@ -24,13 +24,14 @@
     <ClCompile Include="Employee.c" />
     <ClCompile Include="Source.c" />
     <ClCompile Include="test.c" />
-    <ClCompile Include="UnitTesting.c" />
+    <ClCompile Include="Unitest_Worker.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Citizen.h" />
     <ClInclude Include="database.h" />
     <ClInclude Include="Employee.h" />
     <ClInclude Include="MinUnit.h" />
+    <ClInclude Include="Unitest_Worker.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F49929FD-301A-4B17-B496-342AB63E5D0A}</ProjectGuid>

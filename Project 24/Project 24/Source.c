@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include "database.h"
 #include "Employee.h"
+#include "Unitest_Worker.h"
+//#include "vld.h"
 #define PEOPLE_DB "Citizen.txt"
 #define EMPLOYEES_DB "Employee.txt"
 
@@ -18,7 +20,7 @@ int main() {
 	DBaddPerson(PEOPLE_DB, Nofar);
 	DBaddPerson(PEOPLE_DB, Matan);*/
 	
-	resultArr = DBreadPeople(PEOPLE_DB, "ID", "205774094", &numberOfFiltered);
+	//resultArr = DBreadPeople(PEOPLE_DB, "ID", "205774094", &numberOfFiltered);
 	/*
 	printf("ID          Name          LastName      Telephone    Age   Gender   City\n");
 	for (int i = 0; i < numberOfFiltered; i++)
@@ -45,7 +47,7 @@ int main() {
 			LogIn_Employee();
 			break;
 		case '3':
-			EntryTime("326952298");
+			runtests();
 			break;
 		case '0':
 			/////

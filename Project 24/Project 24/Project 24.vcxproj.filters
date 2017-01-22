@@ -30,7 +30,7 @@
     <ClCompile Include="test.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UnitTesting.c">
+    <ClCompile Include="Unitest_Worker.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -45,6 +45,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MinUnit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Unitest_Worker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -134,10 +134,10 @@ Employee DBreadEmployee(char* fileName, char* field, char* value)
 char* getfieldValue(char* buffer, int fieldIndex) {
 	int currentColumn = 0, bufferIndex = 0, valueIndex = 0;
 	char c = ' ';
-	char fieldValue[64] ;
+	char fieldValue[64];
 
 	//Go to correct field
-	if (currentColumn != fieldIndex){
+	if (currentColumn != fieldIndex) {
 		c = buffer[bufferIndex];
 		for (bufferIndex; currentColumn != fieldIndex && c != '\n'; bufferIndex++) {
 			if (c == ';') currentColumn++;
@@ -159,7 +159,7 @@ char* getfieldValue(char* buffer, int fieldIndex) {
 	//Finalize String
 	fieldValue[valueIndex] = '\0';
 
-	return(fieldValue);
+	return fieldValue;
 }
 
 //Return -1 if field not found
