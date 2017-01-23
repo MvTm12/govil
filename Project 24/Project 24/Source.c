@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include "database.h"
-#include "vld.h"
+//#include "vld.h"
 #define PEOPLE_DB "Citizen.txt"
 
 int main() {
