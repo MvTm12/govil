@@ -1,4 +1,4 @@
-#include "Unitest_Worker.h"
+#include "UnitTest_Worker.h"
 #include "database.h"
 #include "MinUnit.h"
 #include "Employee.h"
@@ -12,7 +12,6 @@ MU_TEST(test_getfieldValue)
 
 	//Act
 	char *result = getfieldValue(buffer, field);
-
 	//Assert
 	mu_check(strcmp(result, "second") == 0);
 }

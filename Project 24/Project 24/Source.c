@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "database.h"
 #include "Employee.h"
-#include "Unitest_Worker.h"
+#include "UnitTest_Worker.h"
 //#include "vld.h"
 #define PEOPLE_DB "Citizen.txt"
 #define EMPLOYEES_DB "Employee.txt"
@@ -32,7 +32,8 @@ int main() {
 		printf("-------======This is a login page!======--------.\n");
 		printf("To citizens ,  press '1'.\n");
 		printf("To employees , press '2'.\n");
-		printf("To check function , press '3'.\n");
+		printf("To unitest , press '3'.\n");
+		printf("To check function , press '4'.\n");
 		printf("To exit ,      press '0'.\n");
 		printf("--------------------------------------------------\n");
 		printf("Your choose: ");
@@ -48,6 +49,10 @@ int main() {
 			break;
 		case '3':
 			runtests();
+			break;
+		case '4':
+			EntryTime("326952298");
+			//ExitTime("326952298");
 			break;
 		case '0':
 			/////
