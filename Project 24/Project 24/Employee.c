@@ -9,15 +9,27 @@ void LogIn_Employee()
 	char TEMP_id[10];
 	char TEMP_pass[10];
 	Employee Employer;
-
+	while (getchar() != '\n');
 	// get user idintification
-	printf("**** hello worker! ****\n ");
-	printf("please enter your ID: ");
+	system("cls");
+	printf("******************************************************************************************\n");
+	printf("*-----------------------------------hello worker!----------------------------------------*\n");
+	printf("******************************************************************************************\n");
+	printf("please enter your ID(enter '0' to back to main login menu): ");
 	scanf("%s", TEMP_id);
+	if (TEMP_id[0] == '0')
+	{
+		system("cls");
+		return;
+	}
 	fflush(stdin);
-	printf(" enter password: ");
-	fflush(stdin);
+	printf(" enter password(enter '0' to back to main login menu): ");
 	scanf("%s", TEMP_pass);
+	if (TEMP_pass[0] == '0')
+	{
+		system("cls");
+		return;
+	}
 
 	Employer = DBreadEmployee(EMPLOYEES_DB, "ID", TEMP_id);
 	if (!strcmp(Employer.name,"None"))
@@ -37,8 +49,9 @@ void LogIn_Employee()
 		printf("--------------------------\n");
 		return;
 	}
-	EntryTime(TEMP_id);
-	scanf("%s", TEMP_pass);
+	else if (!strcmp(Employer.status, "active"))
+		WorkerMenu(Employer);
+	
 }
 /*function to write entry date and time to WorkingHours.txt, function search ID in database and write 
 date and time*/
@@ -149,7 +162,151 @@ void ExitTime(char *ID)
 	fclose(myFile);
 }
 /*options for regular worker*/
-void WorkerMenu(char *ID)
+void WorkerMenu(Employee Employer)
 {
+	EntryTime(Employer.ID);
+	char choose=-1;
+	while (getchar() != '\n');
+	system("cls");
+	while (choose != '0')
+	{
+		printf("Hello %s %s.\n", Employer.name, Employer.lastName);
+		printf("-------======This is a menu for your permissions!======--------.\n");
+		printf("To Tasks Manager ,  press '1'.\n");
+		printf("To exit ,           press '0'.\n");
+		printf("--------------------------------------------------\n");
+		printf("Your choose: ");
+		scanf("%c", &choose);
+		switch (choose)
+		{
+		case '1':
+			TasksManager(Employer);
+			break;
+		case '2':
+			LogIn_Employee();
+			break;
+		case '3':
+			runtests();
+			break;
+		case '4':
 
+			break;
+		case '0':
+			ExitTime(Employer.ID);
+			LogIn_Employee();
+			break;
+		default:
+			printf("Wrong enter, please try again...\n");
+			break;
+		}
+		while (getchar() != '\n');
+
+	}
+
+}
+/*function to take all tasks from database to array and print to worker*/
+void TasksManager(Employee Employer)
+{
+	int fieldIndex;		//Index of value column
+	int numberOfFiltered = 0;
+	FILE *myFile;
+	char buffer[255];	//Current row content
+	char temp[10], c[4];		//Column data to compare with sent value 
+	Tasks *filteredResults = NULL;
+	int resultArrSize=0,i,j;
+	myFile = fopen(Tasks_Manager_DB, "r");
+	//Check file
+	if (myFile == NULL) {
+		printf("File could not be opened\n");
+		return 0;
+	}
+
+	//Search for proper column
+	fieldIndex = findFieldIndex(myFile, "id");
+	if (fieldIndex == -1) {
+		printf("Can't find field you specified");
+		return 0;
+	}
+
+	//Go to records
+	fgets(buffer, sizeof buffer, myFile);
+
+	//Get records till EOF
+	while (fgets(buffer, sizeof buffer, myFile) != NULL) {
+
+		//Copy data from proper column to temp
+		strcpy(temp, getfieldValue(buffer, fieldIndex));
+
+		//Append filtered record if value == temp
+		if (!strcmp(Employer.ID, temp)) {
+
+			if (numberOfFiltered == 0) 	filteredResults = (Tasks*)malloc(sizeof(Tasks));
+			else filteredResults = (Tasks*)realloc(filteredResults, (numberOfFiltered + 1) * sizeof(Tasks));
+			sscanf(buffer, "%[^;]", filteredResults[numberOfFiltered].number);
+			sscanf(buffer + 17, "%[^;]", filteredResults[numberOfFiltered].task);
+			sscanf(buffer+89, "%s", filteredResults[numberOfFiltered].status);
+			numberOfFiltered++;
+		}
+	}
+	fclose(myFile);
+	system("cls");
+	if (filteredResults)
+	{
+		printf("Your task manager is:\n");
+		printf("N   task                                                                      status\n");
+		for (i = 0; i < numberOfFiltered; i++)
+			printf("%s ; %s ; %s\n", filteredResults[i].number, filteredResults[i].task, filteredResults[i].status);
+		while (getchar() != '\n');
+		
+		printf("For update status of task enter a number of task?(press '0' to back):");
+		scanf("%s", &c);
+		if (c[0] == '0')
+			system("cls");
+		else
+		{
+			system("cls");
+			if (ChangeStatusInTasks(Tasks_Manager_DB, c) == 1)
+				printf("The task is updated.\n");
+			else
+				printf("The task is not updated.\n");
+		}
+	}
+
+	else
+	{
+		printf("You not have tasks from manager...");
+		printf("\n\n");
+	}
+	if (filteredResults)
+		free(filteredResults);
+
+}
+/*function to change status of task manager in database*/
+int ChangeStatusInTasks(char *filename, char *number)
+{
+	FILE *myFile;
+	char buffer[255];	//Current row content
+	char temp[4], status[14];
+	myFile = fopen(filename, "r+");
+	//Check file
+	if (myFile == NULL) {
+		printf("File could not be opened\n");
+		return 0;
+	}
+	while (fgets(buffer, sizeof buffer, myFile) != NULL)
+	{
+		sscanf(buffer, "%[^ ]",temp);
+		sscanf(buffer + 89, "%s", status);
+		if (!strcmp(temp, number))
+		{
+			if (!strcmp(status, "open"))
+			{
+				fseek(myFile, -8, SEEK_CUR);
+				fprintf(myFile, "closed\n");
+				fclose(myFile);
+				return 1;
+			}
+			return 0;
+		}
+	}
 }

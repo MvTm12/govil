@@ -3,7 +3,7 @@
 #include "database.h"
 #include "Employee.h"
 #include "UnitTest_Worker.h"
-//#include "vld.h"
+#include "vld.h"
 #define PEOPLE_DB "Citizen.txt"
 #define EMPLOYEES_DB "Employee.txt"
 
@@ -11,6 +11,8 @@ int main() {
 	int numberOfFiltered = 0;
 	Person* resultArr=NULL;
 	char choose=-1;
+	Employee Employer = DBreadEmployee(EMPLOYEES_DB, "ID", "326952298");
+	
 	/*Person Semion = { "317743425", "Semion" , "Faifman", "0546900184", 27, "M", "Beer-Sheva"};
 	Person Andrey = { "326952298", "Andrey" , "Fiodorov", "0546579194", 29, "M", "Beer-Sheva" };
 	Person Nofar = { "205774094", "Nofar" , "Hazan", "0525377581", 22, "W", "Mizpe-Ramon" };
@@ -51,14 +53,16 @@ int main() {
 			runtests();
 			break;
 		case '4':
-			EntryTime("326952298");
-			//ExitTime("326952298");
+			TasksManager(Employer);
 			break;
 		case '0':
 			/////
 			break;
 		default:
-			printf("Wrong enter, please try again...\n");
+			system("cls");
+			printf("*********************************************************************************\n");
+			printf("*-------==============Wrong enter, please try again...================----------*\n");
+			printf("*********************************************************************************\n");
 			break;
 		}
 		while (getchar() != '\n');

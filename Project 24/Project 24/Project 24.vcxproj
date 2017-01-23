@@ -35,6 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="326952298.txt" />
+    <Text Include="Tasks_Manager.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F49929FD-301A-4B17-B496-342AB63E5D0A}</ProjectGuid>

@@ -55,5 +55,8 @@
     <Text Include="326952298.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Tasks_Manager.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
