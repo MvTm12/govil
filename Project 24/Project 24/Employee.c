@@ -10,6 +10,7 @@ void LogIn_Employee()
 	char TEMP_pass[10];
 	Employee Employer;
 	while (getchar() != '\n');
+	int i = 0;
 	// get user idintification
 	system("cls");
 	printf("******************************************************************************************\n");
@@ -24,7 +25,15 @@ void LogIn_Employee()
 	}
 	fflush(stdin);
 	printf(" enter password(enter '0' to back to main login menu): ");
-	scanf("%s", TEMP_pass);
+	while (i <= 50) {
+		if (i == 9)
+			break;
+		TEMP_pass[i] = getch();
+		printf("*");
+		i++;
+	}
+	TEMP_pass[i] = '\0';
+	//scanf("%s", TEMP_pass);
 	if (TEMP_pass[0] == '0')
 	{
 		system("cls");
@@ -51,6 +60,7 @@ void LogIn_Employee()
 	}
 	else if (!strcmp(Employer.status, "active"))
 		WorkerMenu(Employer);
+
 	
 }
 /*function to write entry date and time to WorkingHours.txt, function search ID in database and write 
