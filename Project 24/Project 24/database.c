@@ -84,68 +84,60 @@ Person* DBreadPeople(char* fileName, char* field, char* value , int* resultArrSi
 	*resultArrSize = numberOfFiltered;
 	return filteredResults;
 }
-//Employee *DBreadEmployee(char* fileName, char* field, char* value, int* resultArrSize)
-//{
-//	int fieldIndex;		//Index of value column
-//	int numberOfFiltered = 0;
-//	FILE *myFile;
-//	char buffer[255];	//Current row content
-//	char temp[25];		//Column data to compare with sent value 
-//	Employee *filteredResults = NULL;
-//
-//	myFile = fopen(fileName, "r");
-//	//Check file
-//	if (myFile == NULL) 
-//	{
-//		printf("File could not be opened\n");
-//		return 0;
-//	}
-//
-//	//Search for proper column
-//	fieldIndex = findFieldIndex(myFile, field);
-//	if (fieldIndex == -1) 
-//	{
-//		printf("Can't find field you specified");
-//		return 0;
-//	}
-//
-//	//Go to records
-//	fgets(buffer, sizeof buffer, myFile);
-//
-//	//Get records till EOF
-//	while (fgets(buffer, sizeof buffer, myFile) != NULL)
-//	{
-//
-//		//Copy data from proper column to temp
-//		strcpy(temp, getfieldValue(buffer, fieldIndex));
-//
-//		//Append filtered record if value == temp
-//		if (!strcmp(value, temp))
-//		{
-//
-//			if (numberOfFiltered == 0) 	filteredResults = (Person*)malloc(sizeof(Person));
-//			else filteredResults = (Person*)realloc(filteredResults, (numberOfFiltered + 1) * sizeof(Person));
-//
-//			//Just to simplify and shorten sscanf
-//			char* ID = filteredResults[numberOfFiltered].ID;
-//			char* name = filteredResults[numberOfFiltered].name;
-//			char* lastName = filteredResults[numberOfFiltered].lastName;
-//			char* status = filteredResults[numberOfFiltered].status;
-//
-//			sscanf(buffer, "%s ; %s ; %s ; %s ; %d ; %s ; %s", ID, name, lastName, status);
-//
-//			numberOfFiltered++;
-//		}
-//	}
-//
-//}
+Employee DBreadEmployee(char* fileName, char* field, char* value)
+{
+	int fieldIndex;		//Index of value column
+	FILE *myFile;
+	char buffer[255];	//Current row content
+	char temp[25];		//Column data to compare with sent value 
+	Employee Employer;
+	int flag = 0;
+
+	myFile = fopen(fileName, "r");
+	//Check file
+	if (myFile == NULL) 
+	{
+		printf("File could not be opened\n");
+		return ;
+	}
+
+	//Search for proper column
+	fieldIndex = findFieldIndex(myFile, field);
+	if (fieldIndex == -1) 
+	{
+		printf("Can't find field you specified");
+		return ;
+	}
+
+	//Go to records
+	fgets(buffer, sizeof buffer, myFile);
+
+	//Get records till EOF
+	while (fgets(buffer, sizeof buffer, myFile) != NULL)
+	{
+
+		//Copy data from proper column to temp
+		strcpy(temp, getfieldValue(buffer, fieldIndex));
+
+		//Append filtered record if value == temp
+		if (!strcmp(value, temp))
+		{
+			sscanf(buffer, "%s ; %s ; %s ; %s", Employer.ID, Employer.name, Employer.lastName, Employer.status);
+			flag = 1;
+		}
+	}
+	if (!flag)
+		strcpy(Employer.name, "None");
+	fclose(myFile);
+	return Employer;
+}
 char* getfieldValue(char* buffer, int fieldIndex) {
 	int currentColumn = 0, bufferIndex = 0, valueIndex = 0;
 	char c = ' ';
-	char fieldValue[64] ;
+	char fieldValue[64];
 
 	//Go to correct field
-	if (currentColumn != fieldIndex){
+	if (currentColumn != fieldIndex) {
 		c = buffer[bufferIndex];
 		for (bufferIndex; currentColumn != fieldIndex && c != '\n'; bufferIndex++) {
 			if (c == ';') currentColumn++;
@@ -167,7 +159,7 @@ char* getfieldValue(char* buffer, int fieldIndex) {
 	//Finalize String
 	fieldValue[valueIndex] = '\0';
 
-	return(fieldValue);
+	return fieldValue;
 }
 
 //Return -1 if field not found
