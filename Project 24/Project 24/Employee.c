@@ -325,8 +325,8 @@ int ChangeStatusInTasks(char *filename, char *number)
 void ListRequests(Employee Employer)
 {
 	Requests *ReqList=NULL,temp;
-	int sizeOfList = 0,i,flag=0;
-	char number[4];
+	int sizeOfList = 0,i,flag=0,size,j;
+	char number[4], Comment[61],str3[4],c;
 	ReqList = CreateRequestList(&sizeOfList);
 	printf("  N    citizen_ID Empl_ID    N_Car      Request         Sub_date    Status    Comment\n");
 	for (i = 0; i < sizeOfList; i++)
@@ -338,7 +338,50 @@ void ListRequests(Employee Employer)
 	if (flag)
 	{
 		printf("For update status of request enter a number of request(press '0' to back):");
-		scanf("%s",number);
+		scanf("%s", number);
+		for (i = 0; i < 3 - strlen(number); i++)
+			str3[i] = ' ';
+		for (i, j = 0; i <= 3; i++,j++)
+			str3[i] = number[j];
+		flag = 0;
+		for (i = 0; i < sizeOfList; i++)
+		{
+			if (!strcmp(ReqList[i].num, str3))
+			{
+				flag = 1;
+				break;
+			}
+		}
+		if (!flag)
+			printf("The number does not exits.\n");
+		else
+		{
+			flag = 0;
+			strcpy(ReqList[i].Empl_ID, Employer.ID);
+			while (flag == 0)
+			{
+				printf("  N    citizen_ID Empl_ID    N_Car      Request         Sub_date    Status    Comment\n");
+				printf("[%s]; %9s; %9s; %s; %14s; %02d.%02d.%d; %7s; %s\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].Status, ReqList[i].Comment);
+				printf("Choose status you want?\n[1] - Approved\n[2] - Declined\n");
+				printf("your choose:");
+				while (getchar() != '\n');
+				scanf("%c", &c);
+				if (c == '1' || c == '2')
+					flag = 1;
+				else
+				{
+					system("cls");
+					printf("wrong enter...\n");
+				}
+			}
+			if (c == 1)	strcpy(ReqList[i].Status, "approved");
+			else        strcpy(ReqList[i].Status, "declined");
+			while (getchar() != '\n');
+			printf("Enter a comment for this request(if dont want enter 'None'):\n");
+			gets(Comment);
+			strcpy(ReqList[i].Comment, Comment);
+			ChangeStatusOfRequest(REQUESTS_DB, ReqList, sizeOfList);
+		}
 	}
 	else
 		printf("You not have any requests to update.");
@@ -362,7 +405,7 @@ Requests *CreateRequestList(int *sizeOfList)
 	while (fgets(buffer, sizeof buffer, myFile) != NULL)
 	{
 		sscanf(buffer, "%[^;]; %[^;]; %[^;]; %[^;]; %[^;]", temp.num, temp.Citizen_ID, temp.Empl_ID, temp.N_car, temp.Request);
-		sscanf(buffer + 55, "%d.%d.%d", &temp.d, &temp.m, &temp.y);
+		sscanf(buffer + 54, "%d.%d.%d", &temp.d, &temp.m, &temp.y);
 		sscanf(buffer + 67, "%[^;]; %s", temp.Status, temp.Comment);
 		
 		if (*sizeOfList == 0) 	ReqList = (Requests*)malloc(sizeof(Requests));
@@ -374,7 +417,19 @@ Requests *CreateRequestList(int *sizeOfList)
 	return ReqList;
 }
 /*function to change status of request in database*/
-int ChangeStatusOfRequest(char *filename, char *number)
+int ChangeStatusOfRequest(char *filename, Requests *ReqList, int sizeOfList)
 {
-
+	FILE *myFile;
+	int i;
+	myFile = fopen(filename, "w");
+	//Check file
+	if (myFile == NULL) {
+		printf("File could not be opened\n");
+		return 0;
+	}
+	fprintf(myFile,"  N  citizen_ID Empl_ID    N_Car      Request         Sub_date     Status    Comment\n");
+	for (i = 0; i < sizeOfList; i++)
+		fprintf(myFile, "%-3s; %-9s; %-9s; %-9s; %-14s; %02d.%02d.%d ; %-7s; %-60s;\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].Status, ReqList[i].Comment);
+	fclose(myFile);
+	return 1;
 }
