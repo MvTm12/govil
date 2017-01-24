@@ -12,4 +12,4 @@ Employee DBreadEmployee(char* fileName, char* field, char* value);
 int findFieldIndex(FILE *myFile, char *field);
 char* getNextWord(FILE* myFile);
 char* getfieldValue(char* buffer, int column);
-
+Cars *GetCarsByField(char* field, char* value, int* resultArrSize);

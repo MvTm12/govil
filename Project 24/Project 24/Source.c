@@ -20,7 +20,8 @@ int main() {
 	DBaddPerson(PEOPLE_DB, Andrey);
 	DBaddPerson(PEOPLE_DB, Nofar);
 	DBaddPerson(PEOPLE_DB, Matan);*/
-	
+	Cars *temp = NULL;
+	int size = 0;
 	//resultArr = DBreadPeople(PEOPLE_DB, "ID", "205774094", &numberOfFiltered);
 	/*
 	printf("ID          Name          LastName      Telephone    Age   Gender   City\n");
@@ -53,7 +54,7 @@ int main() {
 			runtests();
 			break;
 		case '4':
-			FillFOrm(Nofar);
+			temp = GetCarsByField("ID", "205774094", &size);
 			break;
 		case '0':
 			/////
