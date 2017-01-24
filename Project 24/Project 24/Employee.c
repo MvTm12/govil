@@ -25,7 +25,7 @@ void LogIn_Employee()
 	}
 	fflush(stdin);
 	printf(" enter password(enter '0' to back to main login menu): ");
-	while (i <= 50) {
+	while (i <= 10) {
 		if (i == 9)
 			break;
 		TEMP_pass[i] = getch();
@@ -182,8 +182,9 @@ void WorkerMenu(Employee Employer)
 	{
 		printf("Hello %s %s.\n", Employer.name, Employer.lastName);
 		printf("-------======This is a menu for your permissions!======--------.\n");
-		printf("To Tasks Manager ,  press '1'.\n");
-		printf("To exit ,           press '0'.\n");
+		printf("[1] - To Tasks Manager.\n");
+		printf("[2] - To list of citizen requests in status open.\n");
+		printf("[9] - To exit ,           press '0'.\n");
 		printf("--------------------------------------------------\n");
 		printf("Your choose: ");
 		scanf("%c", &choose);
@@ -193,7 +194,7 @@ void WorkerMenu(Employee Employer)
 			TasksManager(Employer);
 			break;
 		case '2':
-			LogIn_Employee();
+			ListRequests(Employer);
 			break;
 		case '3':
 			runtests();
@@ -224,7 +225,7 @@ void TasksManager(Employee Employer)
 	char temp[10], c[4];		//Column data to compare with sent value 
 	Tasks *filteredResults = NULL;
 	int resultArrSize=0,i,j;
-	myFile = fopen(Tasks_Manager_DB, "r");
+	myFile = fopen(TASKS_MANAGER_DB, "r");
 	//Check file
 	if (myFile == NULL) {
 		printf("File could not be opened\n");
@@ -275,7 +276,7 @@ void TasksManager(Employee Employer)
 		else
 		{
 			system("cls");
-			if (ChangeStatusInTasks(Tasks_Manager_DB, c) == 1)
+			if (ChangeStatusInTasks(TASKS_MANAGER_DB, c) == 1)
 				printf("The task is updated.\n");
 			else
 				printf("The task is not updated.\n");
@@ -319,4 +320,61 @@ int ChangeStatusInTasks(char *filename, char *number)
 			return 0;
 		}
 	}
+}
+/*function to list all citizen requests*/
+void ListRequests(Employee Employer)
+{
+	Requests *ReqList=NULL,temp;
+	int sizeOfList = 0,i,flag=0;
+	char number[4];
+	ReqList = CreateRequestList(&sizeOfList);
+	printf("  N    citizen_ID Empl_ID    N_Car      Request         Sub_date    Status    Comment\n");
+	for (i = 0; i < sizeOfList; i++)
+		if (!strcmp(ReqList[i].Status, "open    "))
+		{
+			flag = 1;
+			printf("[%s]; %9s; %9s; %s; %14s; %02d.%02d.%d; %7s; %s\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].Status, ReqList[i].Comment);
+		}
+	if (flag)
+	{
+		printf("For update status of request enter a number of request(press '0' to back):");
+		scanf("%s",number);
+	}
+	else
+		printf("You not have any requests to update.");
+	if (ReqList)
+		free(ReqList);
+	
+}
+/*create requests list by filed and text in field*/
+Requests *CreateRequestList(int *sizeOfList)
+{
+	Requests *ReqList = NULL, temp;
+	FILE *myFile;
+	char buffer[255];	//Current row content
+	myFile = fopen(REQUESTS_DB, "r");
+	//Check file
+	if (myFile == NULL) {
+		printf("File not found.\n");
+		return;
+	}
+	fgets(buffer, sizeof buffer, myFile);
+	while (fgets(buffer, sizeof buffer, myFile) != NULL)
+	{
+		sscanf(buffer, "%[^;]; %[^;]; %[^;]; %[^;]; %[^;]", temp.num, temp.Citizen_ID, temp.Empl_ID, temp.N_car, temp.Request);
+		sscanf(buffer + 55, "%d.%d.%d", &temp.d, &temp.m, &temp.y);
+		sscanf(buffer + 67, "%[^;]; %s", temp.Status, temp.Comment);
+		
+		if (*sizeOfList == 0) 	ReqList = (Requests*)malloc(sizeof(Requests));
+		else ReqList = (Requests*)realloc(ReqList, (*sizeOfList + 1) * sizeof(Requests));
+		ReqList[*sizeOfList] = temp;
+		(*sizeOfList)++;
+	}
+	fclose(myFile);
+	return ReqList;
+}
+/*function to change status of request in database*/
+int ChangeStatusOfRequest(char *filename, char *number)
+{
+
 }

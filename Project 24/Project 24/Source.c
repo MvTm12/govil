@@ -3,7 +3,7 @@
 #include "database.h"
 #include "Employee.h"
 #include "UnitTest_Worker.h"
-
+#include "vld.h"
 #define PEOPLE_DB "Citizen.txt"
 #define EMPLOYEES_DB "Employee.txt"
 
@@ -28,8 +28,6 @@ int main() {
 	for (int i = 0; i < numberOfFiltered; i++)
 		printf("%-11s %-13s %-13s %-12s %-5d %-8s %-25s \n", resultArr[i].ID, resultArr[i].name, resultArr[i].lastName, resultArr[i].telephone,  resultArr[i].age, resultArr[i].gender, resultArr[i].city );*/
 	////test
-	Person person;
-	strcpy(person.ID , "205774094");
 	while (choose != '0')
 	{
 		printf("Welcome to gov.il application.\n");
@@ -55,7 +53,7 @@ int main() {
 			runtests();
 			break;
 		case '4':
-			SaveFile(person, SUSPEND_CAR_FORM, "suspend_car_form");
+			ListRequests(Employer);
 			break;
 		case '0':
 			/////
