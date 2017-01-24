@@ -174,7 +174,7 @@ void ExitTime(char *ID)
 void WorkerMenu(Employee Employer)
 {
 	EntryTime(Employer.ID);
-	char choose=-1;
+	char choose=-1, tempID[10];
 	while (getchar() != '\n');
 	system("cls");
 	while (choose != '0')
@@ -183,7 +183,9 @@ void WorkerMenu(Employee Employer)
 		printf("-------======This is a menu for your permissions!======--------.\n");
 		printf("[1] - To Tasks Manager.\n");
 		printf("[2] - To list of citizen requests in status open.\n");
-		printf("[9] - To exit ,           press '0'.\n");
+		printf("[3] - Check for disabled parking badge eligibility.\n");
+		printf("[4] - Get city by citizen ID.\n");
+		printf("[10] - To exit.\n");
 		printf("--------------------------------------------------\n");
 		printf("Your choose: ");
 		scanf("%c", &choose);
@@ -196,10 +198,17 @@ void WorkerMenu(Employee Employer)
 			ListRequests(Employer);
 			break;
 		case '3':
-			runtests();
+			while (getchar() != '\n');
+			printf("Enter id you want to check in SocialSecurity database\n");
+			scanf("%s", tempID);
+			if (CheckIdInDB(tempID)) printf("\nA ID found in 'SocialSecurity' database!!\n\n");
+			else             printf("\nA ID is not found in 'SocialSecurity' database!!\n\n");
 			break;
 		case '4':
-
+			while (getchar() != '\n');
+			printf("Enter id \n");
+			scanf("%s", tempID);
+			GetCity(tempID);
 			break;
 		case '0':
 			ExitTime(Employer.ID);
@@ -431,4 +440,74 @@ int ChangeStatusOfRequest(char *filename, Requests *ReqList, int sizeOfList)
 		fprintf(myFile, "%-3s; %-9s; %-9s; %-9s; %-14s; %02d.%02d.%d ; %-8s; %-60s;\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].Status, ReqList[i].Comment);
 	fclose(myFile);
 	return 1;
+}
+/*function to  check if ID exist in database*/
+int CheckIdInDB(char *ID)
+{
+	FILE *myFile;
+	char buffer[10];	//Current row content
+	myFile = fopen(SocialSecurity_DB, "r");
+	//Check file
+	if (myFile == NULL) {
+		printf("File not found.\n");
+		return 0;
+	}
+	while (fgets(buffer, sizeof buffer, myFile) != NULL)
+	{
+		if (!strcmp(ID, buffer))
+		{
+			system("cls");
+			fclose(myFile);
+			return 1;
+		}
+	}
+	fclose(myFile);
+	system("cls");
+	return 0;
+}
+/*function to  get city by ID from  PEOPLE_DB database*/
+char GetCity(char *ID)
+{
+	FILE *myFile = fopen(PEOPLE_DB, "r");
+	int index = findFieldIndex(myFile, "City");
+	char city[20], buffer[255], temp[10];
+	//getfieldValue(char* buffer, int fieldIndex)
+	while (fgets(buffer, sizeof buffer, myFile) != NULL)
+	{
+		sscanf(buffer, "%[^ ]", temp);
+		if(!strcmp(temp,ID))
+		{
+			strcpy(city , getfieldValue(buffer, index));
+			system("cls");
+			printf("\'%s' is living in %s \n", ID, city);
+			break;
+		}
+	}
+	fclose(myFile);
+	return city;
+}
+/*function to  check if ID exist in database*/
+int CheckCityInDB(char *City)
+{
+	FILE *myFile;
+	char buffer[20],temp[20];	//Current row content
+	myFile = fopen(Ministry_of_Defence_DB, "r");
+	//Check file
+	if (myFile == NULL) {
+		printf("File not found.\n");
+		return 0;
+	}
+	while (fgets(buffer, sizeof buffer, myFile) != NULL)
+	{
+		sscanf(buffer, "%[^\n]",temp);
+		if (!strcmp(City, temp))
+		{
+			system("cls");
+			fclose(myFile);
+			return 1;
+		}
+	}
+	fclose(myFile);
+	system("cls");
+	return 0;
 }
