@@ -175,17 +175,20 @@ void ExitTime(char *ID)
 void WorkerMenu(Employee Employer)
 {
 	EntryTime(Employer.ID);
-	char choose=-1, tempID[10];
+	char choose=-1, tempID[10], tempcity[20];
 	while (getchar() != '\n');
 	system("cls");
 	while (choose != '0')
 	{
+		
 		printf("Hello %s %s.\n", Employer.name, Employer.lastName);
 		printf("-------======This is a menu for your permissions!======--------.\n");
 		printf("[1] - To Tasks Manager.\n");
 		printf("[2] - To list of citizen requests in status open.\n");
 		printf("[3] - Check for disabled parking badge eligibility.\n");
 		printf("[4] - Get city by citizen ID.\n");
+		printf("[5] - Check if City exist in Ministry of Defence database.\n");
+		printf("[6] - Get requests that opened more then 5 days.\n");
 		printf("[10] - To exit.\n");
 		printf("--------------------------------------------------\n");
 		printf("Your choose: ");
@@ -211,11 +214,24 @@ void WorkerMenu(Employee Employer)
 			scanf("%s", tempID);
 			GetCity(tempID);
 			break;
+		case '5':
+			while (getchar() != '\n');
+			printf("Enter city \n");
+			scanf("%s", tempcity);
+			if (CheckCityInDB(tempcity))
+				printf("%s exist in Ministry of Defence database\n",tempcity);
+			else 
+				printf("%s not exist in Ministry of Defence database\n", tempcity);
+			break;
+		case '6':
+			CheckOpenedRequest();
+			break;
 		case '0':
 			ExitTime(Employer.ID);
 			LogIn_Employee();
 			break;
 		default:
+			system("cls");
 			printf("Wrong enter, please try again...\n");
 			break;
 		}
@@ -457,7 +473,7 @@ int CheckIdInDB(char *ID)
 	{
 		if (!strcmp(ID, buffer))
 		{
-			system("cls");
+			//system("cls");
 			fclose(myFile);
 			return 1;
 		}
@@ -487,7 +503,7 @@ char GetCity(char *ID)
 	fclose(myFile);
 	return city;
 }
-/*function to  check if ID exist in database*/
+/*function to  check if City exist in Ministry of Defence database*/
 int CheckCityInDB(char *City)
 {
 	FILE *myFile;
@@ -503,7 +519,6 @@ int CheckCityInDB(char *City)
 		sscanf(buffer, "%[^\n]",temp);
 		if (!strcmp(City, temp))
 		{
-			system("cls");
 			fclose(myFile);
 			return 1;
 		}
@@ -511,4 +526,39 @@ int CheckCityInDB(char *City)
 	fclose(myFile);
 	system("cls");
 	return 0;
+}
+/*function to check if there is a request that opened more then 5 days*/
+void CheckOpenedRequest()
+{
+	Requests *ReqList = NULL;
+	int sizeOfList = 0, i, flag = 0;;
+	FILE *myFile;
+	myFile = fopen("OpenRequests.txt", "w");
+	ReqList = CreateRequestList(&sizeOfList);
+
+	time_t now;
+	time(&now);
+	struct tm *mytime = localtime(&now);
+	struct empl_hours today_date;
+	today_date.d = mytime->tm_mday;
+	today_date.m = mytime->tm_mon + 1;
+	today_date.y = mytime->tm_year + 1900;
+	system("cls");
+	printf("  N    citizen_ID Empl_ID    N_Car      Request         Sub_date    Status    Comment\n");
+	for (i = 0; i < sizeOfList; i++)
+		if (!strcmp(ReqList[i].Status, "open    ") && ((today_date.d + ((today_date.m - 1) * 31) + ((today_date.y - 1) * 365)) - (ReqList[i].d + ((ReqList[i].m - 1) * 31) + ((ReqList[i].y - 1) * 365)) > 5))
+		{
+			flag = 1;
+			printf("[%s]; %9s; %9s; %s; %14s; %02d.%02d.%d; %7s; %s\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].Status, ReqList[i].Comment);
+		}
+	if(!flag)
+		printf("Not exist requests that open more then 5 days.");
+	fprintf(myFile, "  N  citizen_ID Empl_ID    N_Car      Request         Sub_date     Status    Comment\n");
+	for (i = 0; i < sizeOfList; i++)
+		if (!strcmp(ReqList[i].Status, "open    ") && ((today_date.d + ((today_date.m - 1) * 30) + ((today_date.y - 1) * 365)) - (ReqList[i].d + ((ReqList[i].m - 1) * 30) + ((ReqList[i].y - 1) * 365)) > 5))
+			fprintf(myFile, "%-3s; %-9s; %-9s; %-9s; %-14s; %02d.%02d.%d ; %-8s; %-60s;\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].Status, ReqList[i].Comment);
+	fclose(myFile);
+
+	if (ReqList)
+		free(ReqList);
 }

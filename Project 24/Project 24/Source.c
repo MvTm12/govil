@@ -53,7 +53,7 @@ int main() {
 			runtests();
 			break;
 		case '4':
-			CheckCityInDB("Mizpe-Ramon");
+			CheckOpenedRequest();
 			break;
 		case '0':
 			/////

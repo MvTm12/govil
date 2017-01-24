@@ -54,3 +54,5 @@ int ChangeStatusOfRequest(char *filename, Requests *ReqList, int sizeOfList);
 int CheckIdInDB(char *ID);
 /*function to  get city by ID from  PEOPLE_DB database*/
 char GetCity(char *ID);
+/*function to check if there is a request that opened more then 5 days*/
+void CheckOpenedRequest();
