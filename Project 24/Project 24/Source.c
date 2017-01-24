@@ -53,7 +53,7 @@ int main() {
 			runtests();
 			break;
 		case '4':
-			TasksManager(Employer);
+			ListRequests(Employer);
 			break;
 		case '0':
 			/////

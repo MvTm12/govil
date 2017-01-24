@@ -2,7 +2,8 @@
 #include <stdio.h>
 #define EMPLOYEES_DB "Employee.txt"
 #define HOURS_DB "WorkingHours.txt"
-#define Tasks_Manager_DB "Tasks_Manager.txt"
+#define TASKS_MANAGER_DB "Tasks_Manager.txt"
+#define REQUESTS_DB "Requests.txt"
 #include <time.h>
 typedef struct empl_hours {
 	int d,m,y,h_s,m_s,h_e,m_e;
@@ -19,7 +20,16 @@ typedef struct Tasks {
 	char task[71];
 	char status[14];
 } Tasks;
-
+typedef struct Requests {
+	char num[4];
+	char Citizen_ID[10];
+	char Empl_ID[10];
+	char N_car[10];
+	char Request[15];
+	char Status[9];
+	char Comment[30];
+	int d, m, y;
+}Requests;
 /*login for employee*/
 void LogIn_Employee();
 /*function to write entry date and time to ID.txt*/
@@ -32,3 +42,9 @@ void WorkerMenu(Employee Employer);
 void TasksManager(Employee Employer);
 /*function to change status of task manager in database*/
 int ChangeStatusInTasks(char *filename, char *number);
+/*function to list all citizen requests*/
+void ListRequests(Employee Employer);
+/*create requests list by filed and text in field*/
+Requests *CreateRequestList(int *sizeOfList);
+/*function to change status of request in database*/
+int ChangeStatusOfRequest(char *filename, char *number);
