@@ -6,6 +6,7 @@ void LogIn_Citizen()
 	char TEMP_pass[10];
 	int numberOfFiltered = 0;
 	Person* resultArr = NULL;
+	while (getchar() != '\n');
 
 	// get user idintification
 	system("cls");
@@ -16,6 +17,7 @@ void LogIn_Citizen()
 	printf(" enter password: ");
 	fflush(stdin);
 	scanf("%s", TEMP_pass);
+
 	resultArr = DBreadPeople(PEOPLE_DB, "ID", TEMP_id, &numberOfFiltered);
 
 	if (resultArr == NULL)
@@ -44,20 +46,22 @@ void LogIn_Citizen()
 		free(resultArr);
 }
 
+// citizen menu
 void citizen_manu(Person person)
 {
-	int choose;
+	char choose;
 	do
 	{
-		printf("Welcome %s %s,\n", person.name, person.lastName);
-		printf("-------======This is the citizen manue !======--------.\n");
-		printf("save form				  press '1'.\n");
-		printf("fill form				  press '2'.\n");
-		printf("request status report	  press '3'.\n");
-		printf("fee Payment				  press '4'.\n");
-		printf("fee payments report		  press '5'.\n");
-		printf("fee payments by car		  press '6'.\n");
-		printf("To exit					  press '0'.\n");
+		while (getchar() != '\n');
+		printf("Welcome %s %s,\n\n", person.name, person.lastName);
+		printf("-------======This is the citizen menu !======--------.\n");
+		printf("[1] save form.\n");
+		printf("[2] fill form.\n");
+		printf("[3] request status report.\n");
+		printf("[4] fee Payment.\n");
+		printf("[5] fee payments report.\n");
+		printf("[6] fee payments by car.\n");
+		printf("[0] To exit.\n");
 		printf("--------------------------------------------------\n");
 		printf("Your choose: ");
 		scanf("%c", &choose);
@@ -89,19 +93,111 @@ void citizen_manu(Person person)
 			printf("Wrong choose, please try again...\n");
 			break;
 		}
-		while (getchar() != "\n");
+		while (getchar() != '\n');
 	} while (choose != '0');
 }
+
+// menu for save form
 void SaveForm(Person person)
 {
-	int choose;
+	system("cls");
+	char choose;
+	do
+	{
+		while (getchar() != '\n');
+		printf("Welcome %s %s,\n", person.name, person.lastName);
+		printf("-------======This is the save form menu !======--------.\n");
+		printf("[1] save form - suspen car request.\n");
+		printf("[2] save form - disabled badge form.\n");
+		printf("[3] save form - armored vehical roem.\n");
+		printf("[4] To go back.\n");
+		printf("--------------------------------------------------\n");
+		printf("Your choose: ");
+		scanf("%c", &choose);
+		int i;
+		switch (choose)
+		{
+		case '1':
+			i= SaveFile(person, SUSPEND_CAR_FORM, "suspend_car_form");
+			if (i == 1)
+			{
+				printf("success");
+			}
+			else
+			{
+				printf("fail");
+			}
+
+			break;
+		case '2':
+			i=SaveFile(person, DISABLED_BADGE_FORM,"disabeled_badge_form");
+			if (i == 1)
+			{
+				printf("success");
+			}
+			else
+			{
+				printf("fail");
+			}
+			break;
+		case '3':
+			i=SaveFile(person, ARMORED_VEHICAL_FORM,"armored_vehical_form");
+			if (i == 1)
+			{
+				printf("success");
+			}
+			else
+			{
+				printf("fail");
+			}
+			break;
+		case '0':
+			printf(" Bye-Bye!");
+			return;
+			break;
+		default:
+			printf("Wrong choose, please try again...\n");
+			break;
+		}
+		while (getchar() != '\n');
+	} while (choose != '0');
+
+}
+// function that get the requested fie template and save it for the user
+// function that saves rquested form by name and user id 
+int SaveFile(Person person, char* File,char* filename)
+{
+	FILE *myFile, *myFile_new;
+	char buffer[255];	//Current row content
+	myFile = fopen(File, "r");
+	//Check file
+	if (myFile == NULL) {
+		printf("File could not be opened\n");
+		return 0;
+	}
+	char name[50];
+	sprintf(name, "%s_%s.txt", filename,person.ID);
+	myFile_new = fopen(name, "w");
+	while (fgets(buffer, sizeof buffer, myFile) != NULL)
+	{
+		fputs(buffer, myFile_new);
+	}
+	fclose(myFile_new);
+	fclose(myFile);
+	return 1;
+}
+
+
+void FillFOrm(Person person)
+{
+	char choose;
 	do
 	{
 		printf("Welcome %s %s,\n", person.name, person.lastName);
-		printf("-------======This is the save form manue !======--------.\n");
-		printf("save form - suspen car request			  press '1'.\n");
-		printf("save form - disabled badge form 		  press '2'.\n");
-		printf("save form - armored vehical roem		  press '3'.\n");
+		printf("-------======This is the Fill form manue !======--------.\n");
+		printf("Fill form - suspen car request			  press '1'.\n");
+		printf("Fill form - disabled badge form 		  press '2'.\n");
+		printf("Fill form - armored vehical roem		  press '3'.\n");
 		printf("To go back								  press '0'.\n");
 		printf("--------------------------------------------------\n");
 		printf("Your choose: ");
@@ -109,7 +205,7 @@ void SaveForm(Person person)
 		switch (choose)
 		{
 		case '1':
-			/////
+			///
 			break;
 		case '2':
 			/////
@@ -129,40 +225,8 @@ void SaveForm(Person person)
 	} while (choose != '0');
 
 }
-void FillFOrm(Person person)
+
+int FillForm_suspen_car_request()
 {
-	int choose;
-	do
-	{
-		printf("Welcome %s %s,\n", person.name, person.lastName);
-		printf("-------======This is the Fill form manue !======--------.\n");
-		printf("Fill form - suspen car request			  press '1'.\n");
-		printf("Fill form - disabled badge form 		  press '2'.\n");
-		printf("Fill form - armored vehical roem		  press '3'.\n");
-		printf("To go back								  press '0'.\n");
-		printf("--------------------------------------------------\n");
-		printf("Your choose: ");
-		scanf("%c", &choose);
-		switch (choose)
-		{
-		case '1':
-			/////
-			break;
-		case '2':
-			/////
-			break;
-		case '3':
-			/////
-			break;
-		case '0':
-			printf(" Bye-Bye!");
-			return;
-			break;
-		default:
-			printf("Wrong choose, please try again...\n");
-			break;
-		}
-		while (getchar() != "\n");
-	} while (choose != '0');
 
 }
