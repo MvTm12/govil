@@ -283,6 +283,7 @@ int FillForm_(Person person, char* filename)
 			printf("File could not be opened\n");
 			return 0;
 		}
+		fgets(buffer, sizeof(buffer), myFile);
 		while (fgets(buffer, sizeof(buffer), myFile) != NULL)
 		{
 			i = 2;

@@ -6,3 +6,5 @@
   5; 205774094; None     ; 11-111-11; disabled_badge; 24.01.2017; 00.00.0000; open    ; None                                                        ;
   6; 205774094; None     ; 11-111-11; disabled_badge; 24.01.2017; 00.00.0000; open    ; None                                                        ;
   7; 205774094; None     ; 11-111-11; disabled_badge; 24.01.2017; 00.00.0000; open    ; None                                                        ;
+  8; 205774094; None     ; 11-111-11; disabled_badge; 24.01.2017; 00.00.0000; open    ; None                                                        ;
+  9; 205774094; None     ; 11-111-11; armord_vehicle; 24.01.2017; 00.00.0000; open    ; None                                                        ;

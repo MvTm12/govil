@@ -53,7 +53,7 @@ int main() {
 			runtests();
 			break;
 		case '4':
-			request_status_report(Nofar);
+			FillFOrm(Nofar);
 			break;
 		case '0':
 			/////
