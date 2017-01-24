@@ -4,6 +4,7 @@
 #define HOURS_DB "WorkingHours.txt"
 #define TASKS_MANAGER_DB "Tasks_Manager.txt"
 #define REQUESTS_DB "Requests.txt"
+#define SocialSecurity_DB "SocialSecurity.txt"
 #include <time.h>
 typedef struct empl_hours {
 	int d,m,y,h_s,m_s,h_e,m_e;
@@ -48,3 +49,5 @@ void ListRequests(Employee Employer);
 Requests *CreateRequestList(int *sizeOfList);
 /*function to change status of request in database*/
 int ChangeStatusOfRequest(char *filename, Requests *ReqList, int sizeOfList);
+/*function to  check if ID exist in database*/
+int CheckIdInDB(char *ID);

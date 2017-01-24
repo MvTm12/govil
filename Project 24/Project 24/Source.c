@@ -53,7 +53,7 @@ int main() {
 			runtests();
 			break;
 		case '4':
-			ListRequests(Employer);
+			CheckIdInDB("326952298");
 			break;
 		case '0':
 			/////

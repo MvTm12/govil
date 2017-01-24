@@ -4,6 +4,18 @@
 #include "Employee.h"
 
 //change task status in db
+MU_TEST(test_CheckIdInDB)
+{
+	//Arrange
+	char *ID = "326952298";
+
+
+	//Act
+	mu_check(CheckIdInDB(ID));
+	//Assert
+
+}
+//change task status in db
 MU_TEST(test_ChangeStatusInTasks)
 {
 	//Arrange
@@ -45,6 +57,7 @@ MU_TEST_SUITE(test_suite_worker)
 	MU_RUN_TEST(test_DBreadEmployee);
 	MU_RUN_TEST(test_getfieldValue);
 	MU_RUN_TEST(test_ChangeStatusInTasks);
+	MU_RUN_TEST(test_CheckIdInDB);
 	MU_REPORT_SUITE();
 }
 int runtests()
