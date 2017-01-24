@@ -27,7 +27,7 @@ typedef struct Requests {
 	char N_car[10];
 	char Request[15];
 	char Status[9];
-	char Comment[30];
+	char Comment[60];
 	int d, m, y;
 }Requests;
 /*login for employee*/
@@ -47,4 +47,4 @@ void ListRequests(Employee Employer);
 /*create requests list by filed and text in field*/
 Requests *CreateRequestList(int *sizeOfList);
 /*function to change status of request in database*/
-int ChangeStatusOfRequest(char *filename, char *number);
+int ChangeStatusOfRequest(char *filename, Requests *ReqList, int sizeOfList);
