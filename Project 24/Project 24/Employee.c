@@ -550,19 +550,19 @@ void CheckOpenedRequest()
 	today_date.m = mytime->tm_mon + 1;
 	today_date.y = mytime->tm_year + 1900;
 	system("cls");
-	printf("  N    citizen_ID Empl_ID    N_Car      Request         Sub_date    Status    Comment\n");
+	printf("  N    citizen_ID Empl_ID    N_Car      Request         Sub_date    End_date    Status    Comment\n");
 	for (i = 0; i < sizeOfList; i++)
 		if (!strcmp(ReqList[i].Status, "open    ") && ((today_date.d + ((today_date.m - 1) * 31) + ((today_date.y - 1) * 365)) - (ReqList[i].d + ((ReqList[i].m - 1) * 31) + ((ReqList[i].y - 1) * 365)) > 5))
 		{
 			flag = 1;
-			printf("[%s]; %9s; %9s; %s; %14s; %02d.%02d.%d; %7s; %s\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].Status, ReqList[i].Comment);
+			printf("[%s]; %9s; %9s; %s; %14s; %02d.%02d.%d; %02d.%02d.%04d; %7s; %s\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].d_p, ReqList[i].m_p, ReqList[i].y_p, ReqList[i].Status, ReqList[i].Comment);
 		}
 	if(!flag)
 		printf("Not exist requests that open more then 5 days.");
-	fprintf(myFile, "  N  citizen_ID Empl_ID    N_Car      Request         Sub_date     Status    Comment\n");
+	fprintf(myFile, "  N  citizen_ID Empl_ID    N_Car      Request         Sub_date    End_date    Status    Comment\n");
 	for (i = 0; i < sizeOfList; i++)
 		if (!strcmp(ReqList[i].Status, "open    ") && ((today_date.d + ((today_date.m - 1) * 30) + ((today_date.y - 1) * 365)) - (ReqList[i].d + ((ReqList[i].m - 1) * 30) + ((ReqList[i].y - 1) * 365)) > 5))
-			fprintf(myFile, "%-3s; %-9s; %-9s; %-9s; %-14s; %02d.%02d.%d ; %-8s; %-60s;\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].Status, ReqList[i].Comment);
+			fprintf(myFile, "%-3s; %-9s; %-9s; %-9s; %-14s; %02d.%02d.%d; %02d.%02d.%04d; %-8s; %-60s;\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].d_p, ReqList[i].m_p, ReqList[i].y_p, ReqList[i].Status, ReqList[i].Comment);
 	fclose(myFile);
 
 	if (ReqList)
