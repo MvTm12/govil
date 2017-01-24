@@ -27,8 +27,8 @@ typedef struct Cars {
 	int year;
 	int d_payment, m_payment, y_payment;
 	int d_ownership, m_ownership, y_ownership;
-	char disabled_badge[4];
-	char grounded[4];
+	char disabled_badge[6];
+	char grounded[8];
 	char aremored[4];
 
 } Cars;
