@@ -1,0 +1,2 @@
+N_car	   Eng 	ID		   Model		   Year   Last_t_pay  owner_d    disable suspend aremored
+12-123-12; 2.0; 205774094; mazda          ; 2016; 01.01.2017; 31.12.2016; No   ; Yes  ; No   ;				

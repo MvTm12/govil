@@ -67,7 +67,6 @@ void LogIn_Employee()
 date and time*/
 void EntryTime(char *ID) 
 {
-
 	time_t now;
 	time(&now);
 	struct tm *mytime = localtime(&now);

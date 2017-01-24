@@ -67,5 +67,11 @@
     <Text Include="suspen_car_request_form_template.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="CarsDB.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Requests.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
