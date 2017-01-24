@@ -283,15 +283,15 @@ int FillForm_(Person person, char* filename)
 			printf("File could not be opened\n");
 			return 0;
 		}
-		while (fgets(buffer, sizeof buffer, myFile) != NULL)
+		while (fgets(buffer, sizeof(buffer), myFile) != NULL)
 		{
 			i = 2;
 			sscanf(buffer, "%[^;]; ", car.N_car);
-			sscanf(buffer + 11, "%f", &car.Engine_Capacity);
+			sscanf(buffer + 11, "%f ", &car.Engine_Capacity);
 			sscanf(buffer + 16, "%[^;]; %[^;];", car.ID, car.Model);
-			sscanf(buffer + 44, "%d;%d.%d.%d;%d.%d.%d", &car.year, &car.d_payment, &car.m_payment, &car.y_payment, &car.d_ownership, &car.m_ownership, &car.y_ownership);
-
-			if (strcmp(car.ID, ID) == 0)
+			sscanf(buffer + 41, "%d; %d.%d.%d; %d.%d.%d; ", &car.year, &car.d_payment, &car.m_payment, &car.y_payment, &car.d_ownership, &car.m_ownership, &car.y_ownership);
+			sscanf(buffer + 71, "%[^;]; %[^;]; %[^;]", car.disabled_badge, car.grounded, car.aremored);
+			if (strcmp(car.ID, ID) == 0 && strcmp(car.N_car,N_car)==0)
 			{
 				ReqList = CreateRequestList(&size);
 				temp_size = size+1;
@@ -328,6 +328,9 @@ int FillForm_(Person person, char* filename)
 				ReqList[size].d = mytime->tm_mday;
 				ReqList[size].m = mytime->tm_mon + 1;
 				ReqList[size].y = mytime->tm_year + 1900;
+				ReqList[size].d_p = 0;
+				ReqList[size].m_p = 0;
+				ReqList[size].y_p = 0;
 
 				ChangeStatusOfRequest(REQUESTS_DB, ReqList, size + 1);
 			}
@@ -340,6 +343,8 @@ int FillForm_(Person person, char* filename)
 		printf("The form is not filled properly.\nSubmission Failed!\n");
 		return 0;
 	}
+	if (ReqList)
+		free(ReqList);
 	return 1;
 }
 
@@ -357,15 +362,15 @@ int request_status_report(Person person)
 		printf("File could not be opened\n");
 		return 0;
 	}
-	printf("No. ID 		Name       Car Number    Request	 Date	     Status      Commends\n");
+	printf("No. ID 		Name       Car Number    Request	 Req_Date   End_Date        Status     Commends\n");
 	while (fgets(buffer, sizeof buffer, myFile) != NULL)
 	{
 		sscanf(buffer, "%[^;]; %[^;]; %[^;]; %[^;]; %[^;]; ", req.num,req.Citizen_ID,req.Empl_ID,req.N_car,req.Request,req.Status,req.Comment);
-		sscanf(buffer + 54, "%d.%d.%d; ", &req.d, &req.m, &req.y);
-		sscanf(buffer + 67, "%[^;]; %s ", req.Status, req.Comment);
+		sscanf(buffer + 54, "%02d.%02d.%04d; %02d.%02d.%04d ", &req.d, &req.m, &req.y,&req.d_p, &req.m_p, &req.y_p);
+		sscanf(buffer + 78, "%[^;]; %s ", req.Status, req.Comment);
 		if (strcmp(req.Citizen_ID , person.ID)==0)
 		{
-			printf("[%d] %-9s	%-11s%-9s	 %-14s  %02d.%02d.%02d  %-9s   %s .\n", i, req.Citizen_ID,person.name, req.N_car, req.Request, req.d, req.m, req.y, req.Status, req.Comment);
+			printf("[%d] %-9s	%-11s%-9s	 %-14s  %02d.%02d.%04d %02d.%02d.%04d  %-9s   %s .\n", i, req.Citizen_ID,person.name, req.N_car, req.Request, req.d, req.m, req.y,  req.d_p, req.m_p, req.y_p, req.Status, req.Comment);
 			i++;
 		}
 	}

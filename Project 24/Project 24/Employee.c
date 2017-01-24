@@ -350,7 +350,6 @@ int ChangeStatusInTasks(char *filename, char *number)
 void ListRequests(Employee Employer)
 {
 	time_t now;
-
 	time(&now);
 	struct tm *mytime = localtime(&now);
 	Requests *ReqList=NULL,temp;

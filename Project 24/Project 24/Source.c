@@ -10,7 +10,7 @@ int main() {
 	int numberOfFiltered = 0;
 	Person* resultArr=NULL;
 	char choose=-1;
-	Employee Employer = DBreadEmployee(EMPLOYEES_DB, "ID", "326952298");
+	//Employee Employer = DBreadEmployee(EMPLOYEES_DB, "ID", "326952298");
 	
 	/*Person Semion = { "317743425", "Semion" , "Faifman", "0546900184", 27, "M", "Beer-Sheva"};
 	Person Andrey = { "326952298", "Andrey" , "Fiodorov", "0546579194", 29, "M", "Beer-Sheva" };
@@ -53,7 +53,7 @@ int main() {
 			runtests();
 			break;
 		case '4':
-			ListRequests(Employer);
+			request_status_report(Nofar);
 			break;
 		case '0':
 			/////

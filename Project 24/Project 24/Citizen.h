@@ -23,13 +23,13 @@ typedef struct Cars {
 	char N_car[10];
 	float Engine_Capacity;
 	char ID[10];
-	char Model[16];
+	char Model[13];
 	int year;
 	int d_payment, m_payment, y_payment;
 	int d_ownership, m_ownership, y_ownership;
-	char disabled_badge[5];
-	char grounded[5];
-	char aremored[5];
+	char disabled_badge[4];
+	char grounded[4];
+	char aremored[4];
 
 } Cars;
 
