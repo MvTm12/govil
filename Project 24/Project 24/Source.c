@@ -3,7 +3,6 @@
 #include "database.h"
 #include "Employee.h"
 #include "UnitTest_Worker.h"
-#include "vld.h"
 #define PEOPLE_DB "Citizen.txt"
 #define EMPLOYEES_DB "Employee.txt"
 
@@ -28,15 +27,16 @@ int main() {
 	for (int i = 0; i < numberOfFiltered; i++)
 		printf("%-11s %-13s %-13s %-12s %-5d %-8s %-25s \n", resultArr[i].ID, resultArr[i].name, resultArr[i].lastName, resultArr[i].telephone,  resultArr[i].age, resultArr[i].gender, resultArr[i].city );*/
 	////test
+	Person Nofar = { "205774094", "Nofar" , "Hazan", "0525377581", 22, "W", "Mizpe-Ramon" };
 	while (choose != '0')
 	{
 		printf("Welcome to gov.il application.\n");
 		printf("-------======This is a login page!======--------.\n");
-		printf("To citizens ,  press '1'.\n");
-		printf("To employees , press '2'.\n");
-		printf("To unitest , press '3'.\n");
-		printf("To check function , press '4'.\n");
-		printf("To exit ,      press '0'.\n");
+		printf("[1] To citizens.\n");
+		printf("[2] To employees.\n");
+		printf("[3] To unitest.\n");
+		printf("[4] To check function.\n");
+		printf("[0] To exit.\n");
 		printf("--------------------------------------------------\n");
 		printf("Your choose: ");
 		scanf("%c", &choose);
@@ -53,7 +53,7 @@ int main() {
 			runtests();
 			break;
 		case '4':
-			CheckOpenedRequest();
+			request_status_report(Nofar);
 			break;
 		case '0':
 			/////
