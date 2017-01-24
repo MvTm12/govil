@@ -187,7 +187,8 @@ void WorkerMenu(Employee Employer)
 		printf("[3] - Check for disabled parking badge eligibility.\n");
 		printf("[4] - Get city by citizen ID.\n");
 		printf("[5] - Check if City exist in Ministry of Defence database.\n");
-		printf("[6] - Get requests that opened more then 5 days.\n");
+		printf("[6] - Get and save requests that opened more then 5 days.\n");
+		printf("[7] - Get and save report of debts.\n");
 		printf("[10] - To exit.\n");
 		printf("--------------------------------------------------\n");
 		printf("Your choose: ");
@@ -348,16 +349,20 @@ int ChangeStatusInTasks(char *filename, char *number)
 /*function to list all citizen requests*/
 void ListRequests(Employee Employer)
 {
+	time_t now;
+
+	time(&now);
+	struct tm *mytime = localtime(&now);
 	Requests *ReqList=NULL,temp;
 	int sizeOfList = 0,i,flag=0,size,j;
 	char number[4], Comment[61],str3[4],c;
 	ReqList = CreateRequestList(&sizeOfList);
-	printf("  N    citizen_ID Empl_ID    N_Car      Request         Sub_date    Status    Comment\n");
+	printf("  N    citizen_ID Empl_ID    N_Car      Request         Sub_date    End_date    Status    Comment\n");
 	for (i = 0; i < sizeOfList; i++)
 		if (!strcmp(ReqList[i].Status, "open    "))
 		{
 			flag = 1;
-			printf("[%s]; %9s; %9s; %s; %14s; %02d.%02d.%d; %7s; %s\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].Status, ReqList[i].Comment);
+			printf("[%s]; %9s; %9s; %s; %14s; %02d.%02d.%d; %02d.%02d.%04d; %7s; %s\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].d_p, ReqList[i].m_p, ReqList[i].y_p, ReqList[i].Status, ReqList[i].Comment);
 		}
 	if (flag)
 	{
@@ -384,8 +389,8 @@ void ListRequests(Employee Employer)
 			strcpy(ReqList[i].Empl_ID, Employer.ID);
 			while (flag == 0)
 			{
-				printf("  N    citizen_ID Empl_ID    N_Car      Request         Sub_date    Status    Comment\n");
-				printf("[%s]; %9s; %9s; %s; %14s; %02d.%02d.%d; %7s; %s\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].Status, ReqList[i].Comment);
+				printf("  N    citizen_ID Empl_ID    N_Car      Request         Sub_date    End_date    Status    Comment\n");
+				printf("[%s]; %9s; %9s; %s; %14s; %02d.%02d.%d; %02d.%02d.%04d; %7s; %s\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].d_p, ReqList[i].m_p, ReqList[i].y_p, ReqList[i].Status, ReqList[i].Comment);
 				printf("Choose status you want?\n[1] - Approved\n[2] - Declined\n");
 				printf("your choose:");
 				while (getchar() != '\n');
@@ -398,6 +403,9 @@ void ListRequests(Employee Employer)
 					printf("wrong enter...\n");
 				}
 			}
+			ReqList[i].d_p = mytime->tm_mday;
+			ReqList[i].m_p = mytime->tm_mon + 1;
+			ReqList[i].y_p = mytime->tm_year + 1900;
 			if (c == 1)	strcpy(ReqList[i].Status, "approved");
 			else        strcpy(ReqList[i].Status, "declined");
 			while (getchar() != '\n');
@@ -429,8 +437,8 @@ Requests *CreateRequestList(int *sizeOfList)
 	while (fgets(buffer, sizeof buffer, myFile) != NULL)
 	{
 		sscanf(buffer, "%[^;]; %[^;]; %[^;]; %[^;]; %[^;]", temp.num, temp.Citizen_ID, temp.Empl_ID, temp.N_car, temp.Request);
-		sscanf(buffer + 54, "%d.%d.%d", &temp.d, &temp.m, &temp.y);
-		sscanf(buffer + 67, "%[^;]; %s", temp.Status, temp.Comment);
+		sscanf(buffer + 54, "%d.%d.%d ; %d.%d.%d ;", &temp.d, &temp.m, &temp.y, &temp.d_p, &temp.m_p, &temp.y_p);
+		sscanf(buffer + 78, "%[^;]; %s", temp.Status, temp.Comment);
 		
 		if (*sizeOfList == 0) 	ReqList = (Requests*)malloc(sizeof(Requests));
 		else ReqList = (Requests*)realloc(ReqList, (*sizeOfList + 1) * sizeof(Requests));
@@ -451,9 +459,9 @@ int ChangeStatusOfRequest(char *filename, Requests *ReqList, int sizeOfList)
 		printf("File could not be opened\n");
 		return 0;
 	}
-	fprintf(myFile,"  N  citizen_ID Empl_ID    N_Car      Request         Sub_date     Status    Comment\n");
+	fprintf(myFile,"  N  citizen_ID Empl_ID    N_Car      Request         Sub_date    End_date Status    Comment\n");
 	for (i = 0; i < sizeOfList; i++)
-		fprintf(myFile, "%-3s; %-9s; %-9s; %-9s; %-14s; %02d.%02d.%d ; %-8s; %-60s;\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].Status, ReqList[i].Comment);
+		fprintf(myFile, "%-3s; %-9s; %-9s; %-9s; %-14s; %02d.%02d.%d; %02d.%02d.%04d; %-8s; %-60s;\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].d_p, ReqList[i].m_p, ReqList[i].y_p ,ReqList[i].Status, ReqList[i].Comment);
 	fclose(myFile);
 	return 1;
 }

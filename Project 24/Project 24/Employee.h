@@ -30,7 +30,7 @@ typedef struct Requests {
 	char Request[15];
 	char Status[9];
 	char Comment[60];
-	int d, m, y;
+	int d, m, y, d_p, m_p, y_p;
 }Requests;
 /*login for employee*/
 void LogIn_Employee();
