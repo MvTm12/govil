@@ -2,7 +2,6 @@
 #pragma once
 #include <stdio.h>
 #include <stdlib.h>
-#include "vld.h"
 #define PEOPLE_DB "Citizen.txt"
 
 typedef struct Person {
@@ -15,5 +14,8 @@ typedef struct Person {
 	char city[20];
 } Person;
 
-
+// login function citizen
 void LogIn_Citizen();
+
+// citizen main
+void citizen_manu(Person person);
