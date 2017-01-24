@@ -35,7 +35,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="326952298.txt" />
-    <Text Include="Requests.txt" />
+    <Text Include="armored vehical request_form_template.txt" />
+    <Text Include="disabled_badge_request_form_template.txt" />
+    <Text Include="suspen_car_request_form_template.txt" />
     <Text Include="Tasks_Manager.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

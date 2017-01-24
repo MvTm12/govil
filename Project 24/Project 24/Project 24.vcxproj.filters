@@ -58,7 +58,13 @@
     <Text Include="Tasks_Manager.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="Requests.txt">
+    <Text Include="armored vehical request_form_template.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="disabled_badge_request_form_template.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="suspen_car_request_form_template.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
