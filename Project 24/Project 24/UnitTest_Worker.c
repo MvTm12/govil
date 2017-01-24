@@ -4,6 +4,17 @@
 #include "Employee.h"
 
 //change task status in db
+MU_TEST(test_CheckCityInDB)
+{
+	//Arrange
+	char *City = "Mizpe-Ramon";
+	//Act
+	int result = CheckCityInDB(City);
+	mu_check(result);
+	//Assert
+
+}
+//change task status in db
 MU_TEST(test_CheckIdInDB)
 {
 	//Arrange
@@ -58,6 +69,7 @@ MU_TEST_SUITE(test_suite_worker)
 	MU_RUN_TEST(test_getfieldValue);
 	MU_RUN_TEST(test_ChangeStatusInTasks);
 	MU_RUN_TEST(test_CheckIdInDB);
+	MU_RUN_TEST(test_CheckCityInDB);
 	MU_REPORT_SUITE();
 }
 int runtests()
