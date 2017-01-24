@@ -53,7 +53,7 @@ int main() {
 			runtests();
 			break;
 		case '4':
-			FillForm_suspen_car_request(Nofar, "suspend_car_form");
+			request_status_report(Nofar);
 			break;
 		case '0':
 			/////

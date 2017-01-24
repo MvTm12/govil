@@ -7,6 +7,7 @@
 #define DISABLED_BADGE_FORM "disabled_badge_request_form_template.txt"
 #define ARMORED_VEHICAL_FORM "armored vehical request_form_template.txt"
 #define Cars_DB "CarsDB.txt"
+#define REQUESTS_DB "Requests.txt"
 
 typedef struct Person {
 	char ID[10];
@@ -43,3 +44,7 @@ int SaveFile(Person person, char* File, char* filename);
 void FillFOrm(Person person);
 
 void SaveForm(Person person);
+
+int FillForm_(Person person, char* filename);
+
+int request_status_report(Person person);

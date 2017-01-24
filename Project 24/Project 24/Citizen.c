@@ -87,7 +87,7 @@ void citizen_manu(Person person)
 			FillFOrm(person);
 			break;
 		case '3':
-			/////
+			request_status_report(person);
 			break;
 		case '4':
 			/////
@@ -178,7 +178,7 @@ int SaveFile(Person person, char* File, char* filename)
 	return 1;
 }
 
-
+// menu of fill form
 void FillFOrm(Person person)
 {
 	int i = 0;
@@ -190,25 +190,25 @@ void FillFOrm(Person person)
 		system("cls");
 		printf("Welcome %s %s,\n", person.name, person.lastName);
 		printf("-------======This is the Fill form manue !======--------.\n");
-		printf("Fill form - suspen car request			  press '1'.\n");
-		printf("Fill form - disabled badge form 		  press '2'.\n");
-		printf("Fill form - armored vehical roem		  press '3'.\n");
-		printf("To go back								  press '0'.\n");
+		printf("[1] Fill form - suspen car request.\n");
+		printf("[2] Fill form - disabled badge form.\n");
+		printf("[3] Fill form - armored vehical roem.\n");
+		printf("[0] To go back.\n");
 		printf("--------------------------------------------------\n");
 		printf("Your choose: ");
 		scanf("%c", &choose);
 		switch (choose)
 		{
 		case '1':
-			i=FillForm_suspen_car_request(person, "suspend_car");
+			i= FillForm_(person, "suspend_car");
 			getchar();
 			break;
 		case '2':
-			i=FillForm_suspen_car_request(person, "disabled_badge");
+			i= FillForm_(person, "disabled_badge");
 			getchar();
 			break;
 		case '3':
-			i=FillForm_suspen_car_request(person, "armord_vehicle");
+			i= FillForm_(person, "armord_vehicle");
 			getchar();
 			break;
 		case '0':
@@ -223,8 +223,10 @@ void FillFOrm(Person person)
 	} while (choose != '0');
 
 }
-
-int FillForm_suspen_car_request(Person person, char* filename)
+// fill form - function that gets from user name ID and car number 
+// the function check if the given name is the same name of user
+// the system check if the oqner ID of car is the same ID of user
+int FillForm_(Person person, char* filename)
 {
 	char ID[10];
 	char name[12];
@@ -339,4 +341,34 @@ int FillForm_suspen_car_request(Person person, char* filename)
 		return 0;
 	}
 	return 1;
+}
+
+// function that present list of all request of user.
+int request_status_report(Person person)
+{
+	Requests req;
+	int i = 1;
+	char buffer[255];	//Current row content
+	char temp[4], status[14];
+	FILE *myFile = fopen(REQUESTS_DB, "r+");
+	//Check file
+	if (myFile == NULL)
+	{
+		printf("File could not be opened\n");
+		return 0;
+	}
+	printf("No. ID 		Name       Car Number    Request	 Date	     Status      Commends\n");
+	while (fgets(buffer, sizeof buffer, myFile) != NULL)
+	{
+		sscanf(buffer, "%[^;]; %[^;]; %[^;]; %[^;]; %[^;]; ", req.num,req.Citizen_ID,req.Empl_ID,req.N_car,req.Request,req.Status,req.Comment);
+		sscanf(buffer + 54, "%d.%d.%d; ", &req.d, &req.m, &req.y);
+		sscanf(buffer + 67, "%[^;]; %s ", req.Status, req.Comment);
+		if (strcmp(req.Citizen_ID , person.ID)==0)
+		{
+			printf("[%d] %-9s	%-11s%-9s	 %-14s  %02d.%02d.%02d  %-9s   %s .\n", i, req.Citizen_ID,person.name, req.N_car, req.Request, req.d, req.m, req.y, req.Status, req.Comment);
+			i++;
+		}
+	}
+	fclose(myFile);
+	getchar();
 }
