@@ -132,15 +132,15 @@ void SaveForm(Person person)
 		switch (choose)
 		{
 		case '1':
-			i= SaveFile(person, SUSPEND_CAR_FORM, "suspend_car_form");
+			i = SaveFile(person, SUSPEND_CAR_FORM, "suspend_car_form");
 			getchar();
 			break;
 		case '2':
-			i=SaveFile(person, DISABLED_BADGE_FORM,"disabeled_badge_form");
+			i = SaveFile(person, DISABLED_BADGE_FORM, "disabeled_badge_form");
 			getchar();
 			break;
 		case '3':
-			i=SaveFile(person, ARMORED_VEHICAL_FORM,"armored_vehical_form");
+			i = SaveFile(person, ARMORED_VEHICAL_FORM, "armored_vehical_form");
 			getchar();
 			break;
 		case '0':
@@ -155,7 +155,7 @@ void SaveForm(Person person)
 }
 // function that get the requested fie template and save it for the user
 // function that saves rquested form by name and user id 
-int SaveFile(Person person, char* File,char* filename)
+int SaveFile(Person person, char* File, char* filename)
 {
 	FILE *myFile, *myFile_new;
 	char buffer[255];	//Current row content
@@ -166,7 +166,7 @@ int SaveFile(Person person, char* File,char* filename)
 		return 0;
 	}
 	char name[50];
-	sprintf(name, "%s_%s.txt", filename,person.ID);
+	sprintf(name, "%s_%s.txt", filename, person.ID);
 	myFile_new = fopen(name, "w");
 	while (fgets(buffer, sizeof buffer, myFile) != NULL)
 	{
@@ -181,6 +181,7 @@ int SaveFile(Person person, char* File,char* filename)
 
 void FillFOrm(Person person)
 {
+	int i = 0;
 	system("cls");
 	char choose;
 	do
@@ -199,16 +200,20 @@ void FillFOrm(Person person)
 		switch (choose)
 		{
 		case '1':
-			FillForm_suspen_car_request(person, "suspend_car_form");
+			i=FillForm_suspen_car_request(person, "suspend_car");
+			getchar();
 			break;
 		case '2':
-			FillForm_suspen_car_request(person, "disabeled_badge_form");
+			i=FillForm_suspen_car_request(person, "disabled_badge");
+			getchar();
 			break;
 		case '3':
-			FillForm_suspen_car_request(person, "armored_vehical_form");
+			i=FillForm_suspen_car_request(person, "armord_vehicle");
+			getchar();
 			break;
 		case '0':
 			printf(" Bye-Bye!\n");
+			getchar();
 			return;
 			break;
 		default:
@@ -219,7 +224,7 @@ void FillFOrm(Person person)
 
 }
 
-int FillForm_suspen_car_request(Person person,char* filename)
+int FillForm_suspen_car_request(Person person, char* filename)
 {
 	char ID[10];
 	char name[12];
@@ -232,19 +237,19 @@ int FillForm_suspen_car_request(Person person,char* filename)
 	Requests *ReqList = NULL;
 	int size = 0;
 	int temp_size = 0;
-	int i = 3;
+	int i = 2;
 	time_t now;
 	time(&now);
 	struct tm *mytime = localtime(&now);
 
 	system("cls");
-	if (filename == "suspend_car_form")
+	if (filename == "suspend_car")
 	{
 		printf("hello,\n");
 		printf("In this form you are filling a request to suspend your car and if your request will be approved you mey not ba able to drive this car again.\n");
 		printf("Please complete this form accurately to avoid disqualification Submission.\n\n");
 	}
-	else if (filename == "disabeled_badge_form")
+	else if (filename == "disabled_badge")
 	{
 		printf("hello,\n");
 		printf("in this form you are filling a request for recognition as a disabled person and request  for a disabled people's benefits.\n");
@@ -268,35 +273,43 @@ int FillForm_suspen_car_request(Person person,char* filename)
 	// chaking the entered values
 	if (strcmp(ID, person.ID) == 0 && strcmp(name, person.name) == 0)
 	{
-// read from cars database
+		// read from cars database
 		myFile = fopen(Cars_DB, "r+");
 		//Check file
-		if (myFile == NULL) {
+		if (myFile == NULL)
+		{
 			printf("File could not be opened\n");
 			return 0;
 		}
 		while (fgets(buffer, sizeof buffer, myFile) != NULL)
 		{
-			i = 3;
+			i = 2;
 			sscanf(buffer, "%[^;]; ", car.N_car);
 			sscanf(buffer + 11, "%f", &car.Engine_Capacity);
-			sscanf(buffer+16, "%[^;]; %[^;];", car.ID,car.Model);
+			sscanf(buffer + 16, "%[^;]; %[^;];", car.ID, car.Model);
 			sscanf(buffer + 44, "%d;%d.%d.%d;%d.%d.%d", &car.year, &car.d_payment, &car.m_payment, &car.y_payment, &car.d_ownership, &car.m_ownership, &car.y_ownership);
-			
+
 			if (strcmp(car.ID, ID) == 0)
 			{
 				ReqList = CreateRequestList(&size);
-				temp_size = size;
+				temp_size = size+1;
 				ReqList = (Requests*)realloc(ReqList, (size + 1) * sizeof(Requests));
 
 				//N
-				ReqList[size].num[i] = temp_size % 10;
+				ReqList[size].num[i] = (char)(temp_size % 10 + 48);
 				temp_size /= 10;
-				while (temp_size != 0)
+				while (i>0)
 				{
 					i -= 1;
-					ReqList[size].num[i] = temp_size % 10;
+					if (temp_size < 0)
+					{
+						ReqList[size].num[i] = temp_size % 10;
+						temp_size /= 10;
+					}
+					else
+						ReqList[size].num[i] = ' ';
 				}
+				ReqList[size].num[3] = '\0';
 				//citizen_ID
 				strcpy(ReqList[size].Citizen_ID, ID);
 				//Empl_ID
@@ -306,30 +319,18 @@ int FillForm_suspen_car_request(Person person,char* filename)
 				//Request
 				strcpy(ReqList[size].Request, filename);
 				//Status
-				strcpy(ReqList[size].Status, "open");
+				strcpy(ReqList[size].Status, "open ");
 				//Comment
 				strcpy(ReqList[size].Comment, "None");
 				//date
 				ReqList[size].d = mytime->tm_mday;
 				ReqList[size].m = mytime->tm_mon + 1;
 				ReqList[size].y = mytime->tm_year + 1900;
-				
+
+				ChangeStatusOfRequest(REQUESTS_DB, ReqList, size + 1);
 			}
-			/*if (!strcmp(temp, number))
-			{
-				if (!strcmp(status, "open"))
-				{
-					fseek(myFile, -8, SEEK_CUR);
-					fprintf(myFile, "closed\n");
-					fclose(myFile);
-					return 1;
-				}
-				return 0;
-			}*/
 		}
-
-
-
+		fclose(myFile);
 		printf("\n\nYou will receive an answer within 10 business days.\nbest regarsd,\nDMV.");
 	}
 	else

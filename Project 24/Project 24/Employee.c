@@ -428,7 +428,7 @@ int ChangeStatusOfRequest(char *filename, Requests *ReqList, int sizeOfList)
 	}
 	fprintf(myFile,"  N  citizen_ID Empl_ID    N_Car      Request         Sub_date     Status    Comment\n");
 	for (i = 0; i < sizeOfList; i++)
-		fprintf(myFile, "%-3s; %-9s; %-9s; %-9s; %-14s; %02d.%02d.%d ; %-7s; %-60s;\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].Status, ReqList[i].Comment);
+		fprintf(myFile, "%-3s; %-9s; %-9s; %-9s; %-14s; %02d.%02d.%d ; %-8s; %-60s;\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].Status, ReqList[i].Comment);
 	fclose(myFile);
 	return 1;
 }
