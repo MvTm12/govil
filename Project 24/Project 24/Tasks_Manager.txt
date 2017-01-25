@@ -1,0 +1,5 @@
+N    id          task																	 status 
+1 ; 326952298 ; call to all citizens with debt and all citizens with blue car          ; open  
+2 ; 317743425 ; call to all citizens with debt                                         ; open  
+3 ; 326952298 ; call to all citizens with debt                                         ; open  
+4 ; 326952298 ; call to all citizens with debt                                         ; open  
