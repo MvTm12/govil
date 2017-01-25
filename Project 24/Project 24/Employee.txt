@@ -1,5 +1,5 @@
-ID          Name          LastName      Status
-317743425 ; Semion      ; Faifman     ; manager
-326952298 ; Andrey      ; Fiodorov    ; active
-205774094 ; Nofar       ; Hazan       ; not-active
-311268262 ; Matan       ; Vaknin      ; active
+ID         Name         LastName     Status
+317743425; Semion     ; Faifman    ; active    ;
+326952298; Andrey     ; Fiodorov   ; manager   ;
+205774094; Nofar      ; Hazan      ; active    ;
+311268262; Matan      ; Vaknin     ; active    ;

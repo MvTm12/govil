@@ -17,6 +17,8 @@ void LogIn_Citizen()
 	if (TEMP_id[0] == '0')
 	{
 		system("cls");
+		if (resultArr)
+			free(resultArr);
 		return;
 	}
 	fflush(stdin);
@@ -35,12 +37,16 @@ void LogIn_Citizen()
 	{
 		system("cls");
 		printf(" \n user not found. \n");
+		if (resultArr != NULL)
+			free(resultArr);
 		return;
 	}
 	if (strcmp(TEMP_id, TEMP_pass))
 	{
 		system("cls");
 		printf(" \n incorrect password. \n");
+		if (resultArr != NULL)
+			free(resultArr);
 		return;
 	}
 
@@ -53,7 +59,7 @@ void LogIn_Citizen()
 	// citizen main func
 	citizen_manu(resultArr[0]);
 
-	if (resultArr != NULL)
+	if (resultArr)
 		free(resultArr);
 }
 
@@ -268,7 +274,7 @@ int FillForm_(Person person, char* filename)
 	scanf("%s", &name);
 	printf(" please enter owner last name: ");
 	scanf("%s", &lastName);
-	printf(" please enter car number: ");
+	printf(" please enter car number (format - 'xx-xxx-xx'): ");
 	scanf("%s", &N_car);
 
 	// chaking the entered values
@@ -364,7 +370,7 @@ int request_status_report(Person person)
 		return 0;
 	}
 	printf("request status report:\n");
-	printf("No. ID 		Name       Car Number    Request	 Req_Date   End_Date    Status      Comments\n");
+	printf("No. ID 		Name       Car Number    Request	 Req_Date   End_Date    Status      Commends\n");
 	while (fgets(buffer, sizeof buffer, myFile) != NULL)
 	{
 		sscanf(buffer, "%[^;]; %[^;]; %[^;]; %[^;]; %[^;]; ", req.num, req.Citizen_ID, req.Empl_ID, req.N_car, req.Request, req.Status, req.Comment);
@@ -418,6 +424,10 @@ int fee_payment(Person person)
 		printf("owned cars with debt.\n");
 		printf("*********************.\n");
 		printf("you dont have any debt to DMV.\n");
+		if (cars)
+			free(cars);
+		if (allcars)
+			free(allcars);
 		return;
 	}
 	//printf("enter car number of wich you want to pay (0 to exit): ");
@@ -427,6 +437,10 @@ int fee_payment(Person person)
 		if (size == 0)
 		{
 			printf("you dont have any debt.\n");
+			if (cars)
+				free(cars);
+			if (allcars)
+				free(allcars);
 			return;
 		}
 		printf("enter car number of wich you want to pay (0 to exit): ");
@@ -441,10 +455,13 @@ int fee_payment(Person person)
 		if (N_car[0] == '0')
 		{
 			system("cls");
+			if (cars)
+				free(cars);
+			if (allcars)
+				free(allcars);
 			return;
 		}
 	}
-
 
 	flag = pay(N_car);
 	if (flag == 1) // payment successs
@@ -467,7 +484,6 @@ int fee_payment(Person person)
 			free(cars);
 		if (allcars)
 			free(allcars);
-
 		return 1;
 	}
 	else
@@ -593,7 +609,7 @@ void fee_report(Person person)
 	char filename[60];
 
 	float debt = 0; // 
-	char N_car[10];
+	char*N_car[10];
 	int years_of_debt = 0;
 	cars = GetCarsByField("ID", person.ID, &size);
 	printf("No. car Id      debt\n");
@@ -625,7 +641,6 @@ void fee_report(Person person)
 			printf("file saved\n press any key to continue..");
 		}
 	} while (tav != '1' && tav != '2');
-
 	if (cars)
 		free(cars);
 }
@@ -651,32 +666,38 @@ void fee_by_car(Person person)
 		printf("[%d] car Id : %s.\n", i + 1, cars[i].N_car);
 	}
 	do {
-		printf("choose of wich you see fee payment (0 to exit): ");
+		printf("Insert the number from the list of the car you want to pay for (0 to exit): ");
 		while (getchar() != '\n');
 		scanf("%c", &N_car);
 		if (N_car == '0')
 		{
+			if (cars)
+				free(cars);
 			return;
 		}
 	} while((int)(N_car-48) < 1 || (int)(N_car-48) > size);
 
 	agra = cars[N_car - 49].Engine_Capacity * cars[N_car - 49].year *0.4;
-	printf("enter yaers for which you want to cunculate the fee payments amount: (in format of start year to end year) ");
+	printf("insert yaers for which you want to cunculate the fee payments amount (format - 'xxxx xxxx'): ");
 	while (getchar() != '\n');
 	scanf("%d", &years);
 	if (years == 0)
 	{
+		if (cars)
+			free(cars);
 		return;
 	}
 	scanf("%d", &yeare);
 	if (yeare == 0)
 	{
+		if (cars)
+			free(cars);
 		return;
 	}
 
 	if (years < cars[N_car - 49].y_ownership || yeare> mytime->tm_year + 1900 || years > yeare || yeare > cars[N_car - 49].y_payment)
 	{
-		printf("The dates given is incorrect.");
+		printf("The dates given are incorrect.");
 	}
 	else
 	{

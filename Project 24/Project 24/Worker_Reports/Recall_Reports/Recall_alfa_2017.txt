@@ -1,5 +1,2 @@
 ID          LastName      Name          Telephone    N_car
-326952298 ; Fiodorov    ; Andrey      ; 0546579194 ; 11-111-14
-205774094 ; Hazan       ; Nofar       ; 0525377581 ; 12-123-12
 205774094 ; Hazan       ; Nofar       ; 0525377581 ; 11-111-15
-311268262 ; Vaknin      ; Matan       ; 0502419553 ; 12-345-67

@@ -3,14 +3,20 @@
 #include "database.h"
 #include "Employee.h"
 #include "UnitTest_Worker.h"
+//#include "vld.h"
 #define PEOPLE_DB "Citizen.txt"
 #define EMPLOYEES_DB "Employee.txt"
 
 int main() {
-	int numberOfFiltered = 0;
-	char choose=-1;
+	char choose='#';
 	while (choose != '0')
 	{
+		if (choose != '#')
+		{
+			printf("Press any key to continue...\n");
+			getchar();
+		}
+		system("cls");
 		printf("Welcome to gov.il application.\n");
 		printf("-------======This is a login page!======--------.\n");
 		printf("[1] To citizens.\n");
@@ -25,7 +31,6 @@ int main() {
 		{
 		case '1':
 			LogIn_Citizen();
-			//nofar
 			break;
 		case '2':
 			LogIn_Employee();
@@ -34,7 +39,7 @@ int main() {
 			runtests();
 			break;
 		case '4':
-			GetHoursRep("326952298");
+			CreateRecallMessage();
 			break;
 		case '0':
 			/////
@@ -49,5 +54,4 @@ int main() {
 		while (getchar() != '\n');
 		
 	}
-
 }
