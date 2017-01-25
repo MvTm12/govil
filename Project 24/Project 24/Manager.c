@@ -16,7 +16,7 @@ void ManagerMenu(Employee Employer)
 		printf("Hello %s %s.\n", Employer.name, Employer.lastName);
 		printf("-------======This is a menu for your permissions!======--------.\n");
 		printf("[1] - Create 'Recall' message and save in Task Manager.\n");
-		//printf("[2] - To list of citizen requests in status open.\n");
+		printf("[2] - To list of citizen requests in status open.\n");
 		//printf("[3] - Check for disabled parking badge eligibility.\n");
 		//printf("[4] - Get city by citizen ID.\n");
 		//printf("[5] - Check if City exist in Ministry of Defence database.\n");
@@ -31,10 +31,10 @@ void ManagerMenu(Employee Employer)
 		switch (choose)
 		{
 		case '1':
-			
+			CreateRecallMessage();
 			break;
 		case '2':
-			
+			GetOpReq();
 			break;
 		case '3':
 			
@@ -46,7 +46,7 @@ void ManagerMenu(Employee Employer)
 		
 			break;
 		case '6':
-			AddEmployee();
+			
 			break;
 		case '7':
 		
@@ -65,16 +65,17 @@ void ManagerMenu(Employee Employer)
 			printf("Wrong enter, please try again...\n");
 			break;
 		}
-		while (getchar() != '\n');
+
 	}
 
 }
 /*function to create recall message*/
 void CreateRecallMessage()
 {
-	char model[13], choose;
-	int year, sizeOfArray=0, i;
+	char model[13], choose,tempID[10], buffer[255];
+	int year, sizeOfArray=0, i, flag=0,j;
 	Employee *EmployeeArray=NULL;
+	FILE *myFile;
 	while (getchar() != '\n');
 	printf("Enter a model of car: ");
 	scanf("%s",model);
@@ -87,6 +88,29 @@ void CreateRecallMessage()
 		if (!strcmp(EmployeeArray[i].status, "active    "))
 			printf("%-9s; %-11s; %-11s;\n", EmployeeArray[i].ID, EmployeeArray[i].lastName, EmployeeArray[i].name);
 	printf("Please enter ID of employee that you want to give him a task\nID: ");
+	i = 0;
+	scanf("%s",buffer);
+	while (i < 9)
+		tempID[i]= buffer[i++];
+	tempID[9] = '\0';
+	for (i = 0; i < sizeOfArray; i++)
+		if (!strcmp(EmployeeArray[i].ID, tempID))
+		{
+			flag = 1;
+			break;
+		}
+	if (flag)
+	{
+		myFile = fopen(TASKS_MANAGER_DB, "r+");
+		j = 0;
+		while (fgets(buffer, sizeof buffer, myFile) != NULL)
+			j++;
+		sprintf(buffer, "export recall report by %s model that manufactured at %d", model, year);
+		fprintf(myFile, "%2d; %-9s; %-70s; open  \n", j, EmployeeArray[i].ID, buffer);
+		fclose(myFile);
+	}
+	else
+		printf("Wrong enter...\n");
 	if (EmployeeArray)
 		free(EmployeeArray);
 }
