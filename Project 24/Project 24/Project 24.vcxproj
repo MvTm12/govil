@@ -34,6 +34,7 @@
     <ClInclude Include="UnitTest_Worker.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="205774094_fee_Report.txt" />
     <Text Include="326952298.txt" />
     <Text Include="armored vehical request_form_template.txt" />
     <Text Include="CarsDB.txt" />
