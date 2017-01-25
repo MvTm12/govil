@@ -1,7 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "database.h"
 #include "Employee.h"
-
 #include <string.h>
 
 
@@ -122,7 +121,7 @@ Employee DBreadEmployee(char* fileName, char* field, char* value)
 		//Append filtered record if value == temp
 		if (!strcmp(value, temp))
 		{
-			sscanf(buffer, "%s ; %s ; %s ; %s", Employer.ID, Employer.name, Employer.lastName, Employer.status);
+			sscanf(buffer, "%[^;]; %[^;]; %[^;]; %[^;]", Employer.ID, Employer.name, Employer.lastName, Employer.status);
 			flag = 1;
 		}
 	}
@@ -202,4 +201,87 @@ char* getNextWord(FILE* myFile) {
 	return temp;
 }
 
+Cars *GetCarsByField(char* field, char* value, int* resultArrSize)
+{
+	int fieldIndex;		//Index of value column
+	int numberOfFiltered = 0;
+	FILE *myFile;
+	char buffer[255];	//Current row content
+	char temp[25];		//Column data to compare with sent value 
+	Cars *filteredResults = NULL;
 
+	myFile = fopen(Cars_DB, "r");
+	//Check file
+	if (myFile == NULL) {
+		printf("File could not be opened\n");
+		if (filteredResults)
+			free(filteredResults);
+		return 0;
+	}
+
+	//Search for proper column
+	fieldIndex = findFieldIndex(myFile, field);
+	if (fieldIndex == -1) {
+		printf("Can't find field you specified");
+		if (filteredResults)
+			free(filteredResults);
+		fclose(myFile);
+		return 0;
+	}
+
+	//Go to records
+	fgets(buffer, sizeof buffer, myFile);
+
+	//Get records till EOF
+	while (fgets(buffer, sizeof buffer, myFile) != NULL) {
+
+		//Copy data from proper column to temp
+		strcpy(temp, getfieldValue(buffer, fieldIndex));
+
+		//Append filtered record if value == temp
+		if (!strcmp(value, temp)) 
+		{
+			if (numberOfFiltered == 0) 	filteredResults = (Cars*)malloc(sizeof(Cars));
+			else filteredResults = (Cars*)realloc(filteredResults, (numberOfFiltered + 1) * sizeof(Cars));
+			sscanf(buffer, "%[^;]; ", filteredResults[numberOfFiltered].N_car);
+			sscanf(buffer + 11, "%f ", &filteredResults[numberOfFiltered].Engine_Capacity);
+			sscanf(buffer + 16, "%[^;]; %[^;];", filteredResults[numberOfFiltered].ID, filteredResults[numberOfFiltered].Model);
+			sscanf(buffer + 41, "%d; %d.%d.%d; %d.%d.%d; ", &filteredResults[numberOfFiltered].year, &filteredResults[numberOfFiltered].d_payment, &filteredResults[numberOfFiltered].m_payment, &filteredResults[numberOfFiltered].y_payment, &filteredResults[numberOfFiltered].d_ownership, &filteredResults[numberOfFiltered].m_ownership, &filteredResults[numberOfFiltered].y_ownership);
+			sscanf(buffer + 71, "%[^;]; %[^;]; %[^;]", filteredResults[numberOfFiltered].disabled_badge, filteredResults[numberOfFiltered].grounded, filteredResults[numberOfFiltered].aremored);
+
+			numberOfFiltered++;
+		}
+	}
+
+	fclose(myFile);
+	*resultArrSize = numberOfFiltered;
+	return filteredResults;
+}
+
+Person *GetPersonList(int *sizeOfList)
+{
+	Person *ReqList = NULL, temp;
+	FILE *myFile;
+	char buffer[255];	//Current row content
+	myFile = fopen(PEOPLE_DB, "r");
+	//Check file
+	if (myFile == NULL) {
+		printf("File not found.\n");
+		if (myFile)
+			free(myFile);
+		return;
+	}
+	fgets(buffer, sizeof buffer, myFile);
+	while (fgets(buffer, sizeof buffer, myFile) != NULL)
+	{
+		
+		sscanf(buffer, "%s ; %s ; %s ; %s ; %d ; %s ; %s", temp.ID, temp.name, temp.lastName, temp.telephone, &temp.age, temp.gender, temp.city);
+		if (*sizeOfList == 0) 	ReqList = (Person*)malloc(sizeof(Person));
+		else ReqList = (Person*)realloc(ReqList, (*sizeOfList + 1) * sizeof(Person));
+		ReqList[*sizeOfList] = temp;
+		ReqList[*sizeOfList].debt = 0;
+		(*sizeOfList)++;
+	}
+	fclose(myFile);
+	return ReqList;
+}

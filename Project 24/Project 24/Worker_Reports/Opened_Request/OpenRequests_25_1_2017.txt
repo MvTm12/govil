@@ -1,0 +1,2 @@
+  N  citizen_ID Empl_ID    N_Car      Request         Sub_date    End_date    Status    Comment
+  3; 205774094; None     ; 31-156-82; armord_vehicle; 07.01.2017; 00.00.0000; open    ; None                                                        ;
