@@ -70,9 +70,6 @@
     <Text Include="Requests.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="205774094_fee_Report.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
     <Text Include="Citizen.txt">
       <Filter>Resource Files</Filter>
     </Text>

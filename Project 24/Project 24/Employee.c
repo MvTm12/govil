@@ -41,7 +41,7 @@ void LogIn_Employee()
 	}
 
 	Employer = DBreadEmployee(EMPLOYEES_DB, "ID", TEMP_id);
-	if (!strcmp(Employer.name,"None"))
+	if (!strcmp(Employer.name, "None"))
 	{
 		printf(" worker not found in database \n");
 		return;
@@ -61,30 +61,30 @@ void LogIn_Employee()
 	else if (!strcmp(Employer.status, "active"))
 		WorkerMenu(Employer);
 
-	
+
 }
-/*function to write entry date and time to WorkingHours.txt, function search ID in database and write 
+/*function to write entry date and time to WorkingHours.txt, function search ID in database and write
 date and time*/
-void EntryTime(char *ID) 
+void EntryTime(char *ID)
 {
 	time_t now;
 	time(&now);
 	struct tm *mytime = localtime(&now);
-	empl_hours *this_timeArray=NULL, this_time;
-	int cnt = 0,cnt1=1,i;
+	empl_hours *this_timeArray = NULL, this_time;
+	int cnt = 0, cnt1 = 1, i;
 	char line[255];
 	char name[40];
 	FILE *myFile;
 	sprintf(name, "./Working_Hours/%s.txt", ID);
 	myFile = fopen(name, "r+");
-	if (myFile == NULL) 
+	if (myFile == NULL)
 	{
 		myFile = fopen(name, "w");
-		fprintf(myFile,"%02d.%02d.%d ", mytime->tm_mday, mytime->tm_mon + 1, mytime->tm_year + 1900);
-		fprintf(myFile,"%02d:%02d ", mytime->tm_hour, mytime->tm_min);
-		fprintf(myFile,"%02d:%02d\n", -1, -1);
+		fprintf(myFile, "%02d.%02d.%d ", mytime->tm_mday, mytime->tm_mon + 1, mytime->tm_year + 1900);
+		fprintf(myFile, "%02d:%02d ", mytime->tm_hour, mytime->tm_min);
+		fprintf(myFile, "%02d:%02d\n", -1, -1);
 		fclose(myFile);
-		return ;
+		return;
 	}
 	//conting lines
 	while (fgets(line, sizeof line, myFile) != NULL)
@@ -121,18 +121,18 @@ void EntryTime(char *ID)
 		free(this_timeArray);
 		*/
 	fclose(myFile);
-	
-
-		//HoursArray[size - 1].tm_h[size1 - 1].d = (buffer[0]-48)*10 + buffer[1] - 48;
-		//HoursArray[size - 1].tm_h[size1 - 1].m = (buffer[3]-48)*10 + buffer[4] - 48;
-		//HoursArray[size - 1].tm_h[size1 - 1].y = (buffer[6]-48)*1000 + (buffer[7]-48)*100 + (buffer[8]-48)*10 + buffer[9] - 48;
-		//HoursArray[size - 1].tm_h[size1 - 1].s_h = (buffer[13]-48)*10 + buffer[14] - 48;
-		//HoursArray[size - 1].tm_h[size1 - 1].s_m = (buffer[16] - 48) * 10 + buffer[17] - 48;
-		//HoursArray[size - 1].tm_h[size1 - 1].e_h = (buffer[21] - 48) * 10 + buffer[22] - 48;
-		//HoursArray[size - 1].tm_h[size1 - 1].e_m = (buffer[24] - 48) * 10 + buffer[25] - 48;
 
 
-	printf("Date is: %d.%d.%d\n", mytime->tm_mday, mytime->tm_mon+1, mytime->tm_year+1900);
+	//HoursArray[size - 1].tm_h[size1 - 1].d = (buffer[0]-48)*10 + buffer[1] - 48;
+	//HoursArray[size - 1].tm_h[size1 - 1].m = (buffer[3]-48)*10 + buffer[4] - 48;
+	//HoursArray[size - 1].tm_h[size1 - 1].y = (buffer[6]-48)*1000 + (buffer[7]-48)*100 + (buffer[8]-48)*10 + buffer[9] - 48;
+	//HoursArray[size - 1].tm_h[size1 - 1].s_h = (buffer[13]-48)*10 + buffer[14] - 48;
+	//HoursArray[size - 1].tm_h[size1 - 1].s_m = (buffer[16] - 48) * 10 + buffer[17] - 48;
+	//HoursArray[size - 1].tm_h[size1 - 1].e_h = (buffer[21] - 48) * 10 + buffer[22] - 48;
+	//HoursArray[size - 1].tm_h[size1 - 1].e_m = (buffer[24] - 48) * 10 + buffer[25] - 48;
+
+
+	printf("Date is: %d.%d.%d\n", mytime->tm_mday, mytime->tm_mon + 1, mytime->tm_year + 1900);
 	printf("The time of entry is: %d:%d\n\n", mytime->tm_hour, mytime->tm_min);
 }
 /*function to add exit time*/
@@ -174,13 +174,13 @@ void ExitTime(char *ID)
 void WorkerMenu(Employee Employer)
 {
 	EntryTime(Employer.ID);
-	char choose='-1', tempID[10], tempcity[20], tempModel[13];
+	char choose = '-1', tempID[10], tempcity[20], tempModel[13];
 	int tempYear;
 	while (getchar() != '\n');
 	system("cls");
-	while (choose !='-1')
+	while (choose != '-1')
 	{
-		
+
 		printf("Hello %s %s.\n", Employer.name, Employer.lastName);
 		printf("-------======This is a menu for your permissions!======--------.\n");
 		printf("[1] - To Tasks Manager.\n");
@@ -221,8 +221,8 @@ void WorkerMenu(Employee Employer)
 			printf("Enter city \n");
 			scanf("%s", tempcity);
 			if (CheckCityInDB(tempcity))
-				printf("%s exist in Ministry of Defence database\n",tempcity);
-			else 
+				printf("%s exist in Ministry of Defence database\n", tempcity);
+			else
 				printf("%s not exist in Ministry of Defence database\n", tempcity);
 			break;
 		case '6':
@@ -261,7 +261,7 @@ void TasksManager(Employee Employer)
 	char buffer[255];	//Current row content
 	char temp[10], c[4];		//Column data to compare with sent value 
 	Tasks *filteredResults = NULL;
-	int resultArrSize=0,i,j;
+	int resultArrSize = 0, i, j;
 	myFile = fopen(TASKS_MANAGER_DB, "r");
 	//Check file
 	if (myFile == NULL) {
@@ -292,7 +292,7 @@ void TasksManager(Employee Employer)
 			else filteredResults = (Tasks*)realloc(filteredResults, (numberOfFiltered + 1) * sizeof(Tasks));
 			sscanf(buffer, "%[^;]", filteredResults[numberOfFiltered].number);
 			sscanf(buffer + 17, "%[^;]", filteredResults[numberOfFiltered].task);
-			sscanf(buffer+89, "%s", filteredResults[numberOfFiltered].status);
+			sscanf(buffer + 89, "%s", filteredResults[numberOfFiltered].status);
 			numberOfFiltered++;
 		}
 	}
@@ -305,7 +305,7 @@ void TasksManager(Employee Employer)
 		for (i = 0; i < numberOfFiltered; i++)
 			printf("%s ; %s ; %s\n", filteredResults[i].number, filteredResults[i].task, filteredResults[i].status);
 		while (getchar() != '\n');
-		
+
 		printf("For update status of task enter a number of task?(press '0' to back):");
 		scanf("%s", &c);
 		if (c[0] == '0')
@@ -343,7 +343,7 @@ int ChangeStatusInTasks(char *filename, char *number)
 	}
 	while (fgets(buffer, sizeof buffer, myFile) != NULL)
 	{
-		sscanf(buffer, "%[^ ]",temp);
+		sscanf(buffer, "%[^ ]", temp);
 		sscanf(buffer + 89, "%s", status);
 		if (!strcmp(temp, number))
 		{
@@ -364,9 +364,9 @@ void ListRequests(Employee Employer)
 	time_t now;
 	time(&now);
 	struct tm *mytime = localtime(&now);
-	Requests *ReqList=NULL,temp;
-	int sizeOfList = 0,i,flag=0,size,j;
-	char number[4], Comment[61],str3[4],c;
+	Requests *ReqList = NULL, temp;
+	int sizeOfList = 0, i, flag = 0, size, j;
+	char number[4], Comment[61], str3[4], c;
 	ReqList = CreateRequestList(&sizeOfList);
 	printf("  N    citizen_ID Empl_ID    N_Car      Request         Sub_date    End_date    Status    Comment\n");
 	for (i = 0; i < sizeOfList; i++)
@@ -381,7 +381,7 @@ void ListRequests(Employee Employer)
 		scanf("%s", number);
 		for (i = 0; i < 3 - strlen(number); i++)
 			str3[i] = ' ';
-		for (i, j = 0; i <= 3; i++,j++)
+		for (i, j = 0; i <= 3; i++, j++)
 			str3[i] = number[j];
 		flag = 0;
 		for (i = 0; i < sizeOfList; i++)
@@ -430,7 +430,7 @@ void ListRequests(Employee Employer)
 		printf("You not have any requests to update.");
 	if (ReqList)
 		free(ReqList);
-	
+
 }
 /*create requests list by filed and text in field*/
 Requests *CreateRequestList(int *sizeOfList)
@@ -450,7 +450,7 @@ Requests *CreateRequestList(int *sizeOfList)
 		sscanf(buffer, "%[^;]; %[^;]; %[^;]; %[^;]; %[^;]", temp.num, temp.Citizen_ID, temp.Empl_ID, temp.N_car, temp.Request);
 		sscanf(buffer + 54, "%d.%d.%d ; %d.%d.%d ;", &temp.d, &temp.m, &temp.y, &temp.d_p, &temp.m_p, &temp.y_p);
 		sscanf(buffer + 78, "%[^;]; %s", temp.Status, temp.Comment);
-		
+
 		if (*sizeOfList == 0) 	ReqList = (Requests*)malloc(sizeof(Requests));
 		else ReqList = (Requests*)realloc(ReqList, (*sizeOfList + 1) * sizeof(Requests));
 		ReqList[*sizeOfList] = temp;
@@ -470,9 +470,9 @@ int ChangeStatusOfRequest(char *filename, Requests *ReqList, int sizeOfList)
 		printf("File could not be opened\n");
 		return 0;
 	}
-	fprintf(myFile,"  N  citizen_ID Empl_ID    N_Car      Request         Sub_date    End_date Status    Comment\n");
+	fprintf(myFile, "  N  citizen_ID Empl_ID    N_Car      Request         Sub_date    End_date Status    Comment\n");
 	for (i = 0; i < sizeOfList; i++)
-		fprintf(myFile, "%-3s; %-9s; %-9s; %-9s; %-14s; %02d.%02d.%d; %02d.%02d.%04d; %-8s; %-60s;\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].d_p, ReqList[i].m_p, ReqList[i].y_p ,ReqList[i].Status, ReqList[i].Comment);
+		fprintf(myFile, "%-3s; %-9s; %-9s; %-9s; %-14s; %02d.%02d.%d; %02d.%02d.%04d; %-8s; %-60s;\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].d_p, ReqList[i].m_p, ReqList[i].y_p, ReqList[i].Status, ReqList[i].Comment);
 	fclose(myFile);
 	return 1;
 }
@@ -510,9 +510,9 @@ char GetCity(char *ID)
 	while (fgets(buffer, sizeof buffer, myFile) != NULL)
 	{
 		sscanf(buffer, "%[^ ]", temp);
-		if(!strcmp(temp,ID))
+		if (!strcmp(temp, ID))
 		{
-			strcpy(city , getfieldValue(buffer, index));
+			strcpy(city, getfieldValue(buffer, index));
 			system("cls");
 			printf("\'%s' is living in %s \n", ID, city);
 			break;
@@ -525,7 +525,7 @@ char GetCity(char *ID)
 int CheckCityInDB(char *City)
 {
 	FILE *myFile;
-	char buffer[20],temp[20];	//Current row content
+	char buffer[20], temp[20];	//Current row content
 	myFile = fopen(Ministry_of_Defence_DB, "r");
 	//Check file
 	if (myFile == NULL) {
@@ -534,7 +534,7 @@ int CheckCityInDB(char *City)
 	}
 	while (fgets(buffer, sizeof buffer, myFile) != NULL)
 	{
-		sscanf(buffer, "%[^\n]",temp);
+		sscanf(buffer, "%[^\n]", temp);
 		if (!strcmp(City, temp))
 		{
 			fclose(myFile);
@@ -571,7 +571,7 @@ void CheckOpenedRequest()
 			flag = 1;
 			printf("[%s]; %9s; %9s; %s; %14s; %02d.%02d.%d; %02d.%02d.%04d; %7s; %s\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].d_p, ReqList[i].m_p, ReqList[i].y_p, ReqList[i].Status, ReqList[i].Comment);
 		}
-	if(!flag)
+	if (!flag)
 		printf("Not exist requests that open more then 5 days.");
 	fprintf(myFile, "  N  citizen_ID Empl_ID    N_Car      Request         Sub_date    End_date    Status    Comment\n");
 	for (i = 0; i < sizeOfList; i++)
@@ -588,7 +588,7 @@ void GetCitizensDebt()
 	Person *PersonsArray = NULL;
 	int sizeOfPersons = 0, i, flag = 0;
 	Cars *CarsArray = NULL;
-	int sizeOfCarList = 0,j;
+	int sizeOfCarList = 0, j;
 	FILE *myFile;
 	char name[50];
 	time_t now;
@@ -620,7 +620,7 @@ void GetCitizensDebt()
 		{
 			flag = 1;
 			printf("%-9s ; %-11s ; %-11s ; %-10s ; %.2f\n", PersonsArray[i].ID, PersonsArray[i].lastName, PersonsArray[i].name, PersonsArray[i].telephone, PersonsArray[i].debt);
-			fprintf(myFile,"%-9s ; %-11s ; %-11s ; %-10s ; %.2f\n", PersonsArray[i].ID, PersonsArray[i].lastName, PersonsArray[i].name, PersonsArray[i].telephone, PersonsArray[i].debt);
+			fprintf(myFile, "%-9s ; %-11s ; %-11s ; %-10s ; %.2f\n", PersonsArray[i].ID, PersonsArray[i].lastName, PersonsArray[i].name, PersonsArray[i].telephone, PersonsArray[i].debt);
 		}
 	if (!flag)
 		printf("Not have citizens with debt...\n\n");
@@ -634,7 +634,7 @@ void GetRecallList(char *model, int year)
 {
 	char modell[13];
 	Person *PersonsArray = NULL;
-	int sizeOfPersons = 0, i=0, flag = 0;
+	int sizeOfPersons = 0, i = 0, flag = 0;
 	Cars *CarsArray = NULL;
 	int sizeOfCarList = 0, j;
 	FILE *myFile;
@@ -655,7 +655,7 @@ void GetRecallList(char *model, int year)
 	PersonsArray = GetPersonList(&sizeOfPersons);
 	system("cls");
 	printf("ID          LastName      Name          Telephone    N_car\n");
-	fprintf(myFile,"ID          LastName      Name          Telephone    N_car\n");
+	fprintf(myFile, "ID          LastName      Name          Telephone    N_car\n");
 	for (i = 0; i < sizeOfPersons; i++)
 	{
 		sizeOfCarList = 0;
@@ -695,7 +695,7 @@ void GetHoursRep(char *ID)
 		printf("File could not be opened\n");
 		return;
 	}
-	sprintf(new_name, "./Worker_Reports/Working_Hours_report/%s_%02d-%d.txt", ID, mytime->tm_mon+1, mytime->tm_year+1900);
+	sprintf(new_name, "./Worker_Reports/Working_Hours_report/%s_%02d-%d.txt", ID, mytime->tm_mon + 1, mytime->tm_year + 1900);
 	myRepFile = fopen(new_name, "w");
 	if (myRepFile == NULL) {
 		printf("File could not be opened\n");
