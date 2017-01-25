@@ -568,3 +568,11 @@ void CheckOpenedRequest()
 	if (ReqList)
 		free(ReqList);
 }
+/*function to get array of citizens with debts*/
+void GetCitizensDebt()
+{
+	Person *PersonsArray = NULL;
+	int sizeOfPersons = 0;
+	int sizeOfCarList = 0;
+	PersonsArray = GetPersonList(&sizeOfPersons);
+}

@@ -76,5 +76,8 @@
     <Text Include="CarsDB.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Citizen.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

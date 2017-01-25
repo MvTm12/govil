@@ -54,7 +54,7 @@ int main() {
 			runtests();
 			break;
 		case '4':
-			temp = GetCarsByField("ID", "205774094", &size);
+			GetCitizensDebt();
 			break;
 		case '0':
 			/////
