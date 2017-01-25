@@ -85,5 +85,14 @@
     <Text Include="Opened_Request\OpenRequests_25_1_2017.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Employee.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Ministry_of_Defence.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="SocialSecurity.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

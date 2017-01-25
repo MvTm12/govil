@@ -8,27 +8,7 @@
 
 int main() {
 	int numberOfFiltered = 0;
-	Person* resultArr=NULL;
 	char choose=-1;
-	//Employee Employer = DBreadEmployee(EMPLOYEES_DB, "ID", "326952298");
-	
-	/*Person Semion = { "317743425", "Semion" , "Faifman", "0546900184", 27, "M", "Beer-Sheva"};
-	Person Andrey = { "326952298", "Andrey" , "Fiodorov", "0546579194", 29, "M", "Beer-Sheva" };
-	Person Nofar = { "205774094", "Nofar" , "Hazan", "0525377581", 22, "W", "Mizpe-Ramon" };
-	Person Matan = { "311268262", "Matan" , "Vaknin", "0502419553", 23, "M", "Ofakim" };
-	DBaddPerson(PEOPLE_DB, Semion);
-	DBaddPerson(PEOPLE_DB, Andrey);
-	DBaddPerson(PEOPLE_DB, Nofar);
-	DBaddPerson(PEOPLE_DB, Matan);*/
-	Cars *temp = NULL;
-	int size = 0;
-	//resultArr = DBreadPeople(PEOPLE_DB, "ID", "205774094", &numberOfFiltered);
-	/*
-	printf("ID          Name          LastName      Telephone    Age   Gender   City\n");
-	for (int i = 0; i < numberOfFiltered; i++)
-		printf("%-11s %-13s %-13s %-12s %-5d %-8s %-25s \n", resultArr[i].ID, resultArr[i].name, resultArr[i].lastName, resultArr[i].telephone,  resultArr[i].age, resultArr[i].gender, resultArr[i].city );*/
-	////test
-	Person Nofar = { "205774094", "Nofar" , "Hazan", "0525377581", 22, "W", "Mizpe-Ramon" };
 	while (choose != '0')
 	{
 		printf("Welcome to gov.il application.\n");
@@ -69,8 +49,5 @@ int main() {
 		while (getchar() != '\n');
 		
 	}
-
-	if (resultArr != NULL)
-		free(resultArr);
 
 }

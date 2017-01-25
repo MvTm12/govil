@@ -364,7 +364,7 @@ int request_status_report(Person person)
 		return 0;
 	}
 	printf("request status report:\n");
-	printf("No. ID 		Name       Car Number    Request	 Req_Date   End_Date    Status      Commends\n");
+	printf("No. ID 		Name       Car Number    Request	 Req_Date   End_Date    Status      Comments\n");
 	while (fgets(buffer, sizeof buffer, myFile) != NULL)
 	{
 		sscanf(buffer, "%[^;]; %[^;]; %[^;]; %[^;]; %[^;]; ", req.num, req.Citizen_ID, req.Empl_ID, req.N_car, req.Request, req.Status, req.Comment);
@@ -463,12 +463,21 @@ int fee_payment(Person person)
 		Change_payment_Date(Cars_DB, allcars, size2);
 		printf("success!");
 		getchar();
+		if (cars)
+			free(cars);
+		if (allcars)
+			free(allcars);
+
 		return 1;
 	}
 	else
 	{
 		printf("payment fail,  you didnt fill credit card correctly!");
 		getchar();
+		if (cars)
+			free(cars);
+		if (allcars)
+			free(allcars);
 		return 0;
 	}
 }
@@ -483,7 +492,6 @@ int pay(char* car_num)
 	char credit[17];
 	char pass_key[4];
 	int  exp_m, exp_y;
-	Cars* car = NULL;
 	int size = 0;
 	int year = mytime->tm_year + 1900;
 	int month = mytime->tm_mon + 1;
@@ -585,7 +593,7 @@ void fee_report(Person person)
 	char filename[60];
 
 	float debt = 0; // 
-	char*N_car[10];
+	char N_car[10];
 	int years_of_debt = 0;
 	cars = GetCarsByField("ID", person.ID, &size);
 	printf("No. car Id      debt\n");
@@ -618,6 +626,8 @@ void fee_report(Person person)
 		}
 	} while (tav != '1' && tav != '2');
 
+	if (cars)
+		free(cars);
 }
 
 // function that gets start year and end yaer- calculate the amount of fee feepayed until the end date
@@ -674,6 +684,8 @@ void fee_by_car(Person person)
 	}
 	printf("press any key to continue..");
 	getchar();
+	if (cars)
+		free(cars);
 }
 
 // func that cunculate the amount of agra for car
