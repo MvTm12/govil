@@ -1,2 +1,4 @@
   N  citizen_ID Empl_ID    N_Car      Request         Sub_date    End_date    Status    Comment
+  1; 326952298; None     ; 23-117-62; suspend_car   ; 11.01.2017; 00.00.0000; open    ; None                                                        ;
+  2; 317743425; None     ; 25-147-78; disabled_badge; 12.01.2017; 00.00.0000; open    ; None                                                        ;
   3; 205774094; None     ; 31-156-82; armord_vehicle; 07.01.2017; 00.00.0000; open    ; None                                                        ;

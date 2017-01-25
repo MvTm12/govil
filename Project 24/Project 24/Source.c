@@ -39,7 +39,7 @@ int main() {
 			runtests();
 			break;
 		case '4':
-			CreateRecallMessage();
+			GetOpReq();
 			break;
 		case '0':
 			/////

@@ -10,3 +10,5 @@ void ManagerMenu(Employee Employer);
 void CreateRecallMessage();
 /*function to get array of employes*/
 Employee *GetEmployesList(int *sizeOfArray);
+/*function to get requests that opened more than 5 days and set a task for employee*/
+void GetOpReq();

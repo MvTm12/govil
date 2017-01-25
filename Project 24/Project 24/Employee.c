@@ -316,8 +316,8 @@ void TasksManager(Employee Employer)
 			if (numberOfFiltered == 0) 	filteredResults = (Tasks*)malloc(sizeof(Tasks));
 			else filteredResults = (Tasks*)realloc(filteredResults, (numberOfFiltered + 1) * sizeof(Tasks));
 			sscanf(buffer, "%[^;]", filteredResults[numberOfFiltered].number);
-			sscanf(buffer + 17, "%[^;]", filteredResults[numberOfFiltered].task);
-			sscanf(buffer+89, "%s", filteredResults[numberOfFiltered].status);
+			sscanf(buffer + 15, "%[^;]", filteredResults[numberOfFiltered].task);
+			sscanf(buffer+86, "%s", filteredResults[numberOfFiltered].status);
 			numberOfFiltered++;
 		}
 	}
@@ -326,7 +326,7 @@ void TasksManager(Employee Employer)
 	if (filteredResults)
 	{
 		printf("Your task manager is:\n");
-		printf("N   task                                                                      status\n");
+		printf(" N   task                                                                     status\n");
 		for (i = 0; i < numberOfFiltered; i++)
 			printf("%s ; %s ; %s\n", filteredResults[i].number, filteredResults[i].task, filteredResults[i].status);
 		while (getchar() != '\n');
@@ -351,24 +351,31 @@ void TasksManager(Employee Employer)
 	}
 	if (filteredResults)
 		free(filteredResults);
-
+	while (getchar() != '\n');
 }
 /*function to change status of task manager in database*/
 int ChangeStatusInTasks(char *filename, char *number)
 {
 	FILE *myFile;
 	char buffer[255];	//Current row content
-	char temp[4], status[14];
+	char temp[3], status[14];
 	myFile = fopen(filename, "r+");
 	//Check file
+	if (number[1] == '\0')
+	{
+		number[1] = number[0];
+		number[0] = ' ';
+		number[2] = '\0';
+	}
 	if (myFile == NULL) {
 		printf("File could not be opened\n");
 		return 0;
 	}
+	fgets(buffer, sizeof buffer, myFile);
 	while (fgets(buffer, sizeof buffer, myFile) != NULL)
 	{
-		sscanf(buffer, "%[^ ]",temp);
-		sscanf(buffer + 89, "%s", status);
+		sscanf(buffer, "%[^;];", temp);
+		sscanf(buffer + 87, "%s", status);
 		if (!strcmp(temp, number))
 		{
 			if (!strcmp(status, "open"))
