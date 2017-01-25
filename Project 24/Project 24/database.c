@@ -255,3 +255,29 @@ Cars *GetCarsByField(char* field, char* value, int* resultArrSize)
 	*resultArrSize = numberOfFiltered;
 	return filteredResults;
 }
+
+Person *GetPersonList(int *sizeOfList)
+{
+	Person *ReqList = NULL, temp;
+	FILE *myFile;
+	char buffer[255];	//Current row content
+	myFile = fopen(PEOPLE_DB, "r");
+	//Check file
+	if (myFile == NULL) {
+		printf("File not found.\n");
+		return;
+	}
+	fgets(buffer, sizeof buffer, myFile);
+	while (fgets(buffer, sizeof buffer, myFile) != NULL)
+	{
+		
+		sscanf(buffer, "%s ; %s ; %s ; %s ; %d ; %s ; %s", temp.ID, temp.name, temp.lastName, temp.telephone, &temp.age, temp.gender, temp.city);
+		if (*sizeOfList == 0) 	ReqList = (Person*)malloc(sizeof(Person));
+		else ReqList = (Person*)realloc(ReqList, (*sizeOfList + 1) * sizeof(Person));
+		ReqList[*sizeOfList] = temp;
+		ReqList[*sizeOfList].debt = 0;
+		(*sizeOfList)++;
+	}
+	fclose(myFile);
+	return ReqList;
+}

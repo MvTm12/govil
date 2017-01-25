@@ -1,4 +1,4 @@
-ID          Name          LastName      Telephone    Age   Gender   City                        
+ID          Name          LastName      Telephone    Age   Gender   City
 317743425 ; Semion      ; Faifman     ; 0546900184 ; 27  ; M      ; Beer-Sheva           ;
 326952298 ; Andrey      ; Fiodorov    ; 0546579194 ; 29  ; M      ; Beer-Sheva           ;
 205774094 ; Nofar       ; Hazan       ; 0525377581 ; 22  ; W      ; Mizpe-Ramon          ;

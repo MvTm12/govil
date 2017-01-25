@@ -52,9 +52,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="326952298.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
     <Text Include="Tasks_Manager.txt">
       <Filter>Resource Files</Filter>
     </Text>
@@ -73,10 +70,22 @@
     <Text Include="Requests.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="OpenRequests.txt">
+    <Text Include="205774094_fee_Report.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="205774094_fee_Report.txt">
+    <Text Include="Citizen.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Fee_Debt.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Recallalfa2017.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Working_Hours\326952298.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Opened_Request\OpenRequests_25_1_2017.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

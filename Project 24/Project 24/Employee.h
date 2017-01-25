@@ -56,3 +56,7 @@ int CheckIdInDB(char *ID);
 char GetCity(char *ID);
 /*function to check if there is a request that opened more then 5 days*/
 void CheckOpenedRequest();
+/*function to get array of citizens with debts*/
+void GetCitizensDebt();
+/*function to print and savi in file a citizens with cars which in recall list*/
+void GetRecallList(char *model, int year);

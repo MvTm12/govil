@@ -35,14 +35,17 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="205774094_fee_Report.txt" />
-    <Text Include="326952298.txt" />
     <Text Include="armored vehical request_form_template.txt" />
     <Text Include="CarsDB.txt" />
+    <Text Include="Citizen.txt" />
     <Text Include="disabled_badge_request_form_template.txt" />
-    <Text Include="OpenRequests.txt" />
+    <Text Include="Fee_Debt.txt" />
+    <Text Include="Opened_Request\OpenRequests_25_1_2017.txt" />
+    <Text Include="Recallalfa2017.txt" />
     <Text Include="Requests.txt" />
     <Text Include="suspen_car_request_form_template.txt" />
     <Text Include="Tasks_Manager.txt" />
+    <Text Include="Working_Hours\326952298.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F49929FD-301A-4B17-B496-342AB63E5D0A}</ProjectGuid>

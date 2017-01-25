@@ -73,9 +73,9 @@ void EntryTime(char *ID)
 	empl_hours *this_timeArray=NULL, this_time;
 	int cnt = 0,cnt1=1,i;
 	char line[255];
-	char name[20];
+	char name[40];
 	FILE *myFile;
-	sprintf(name, "%s.txt", ID);
+	sprintf(name, "./Working_Hours/%s.txt", ID);
 	myFile = fopen(name, "r+");
 	if (myFile == NULL) 
 	{
@@ -144,9 +144,9 @@ void ExitTime(char *ID)
 	empl_hours this_time;
 	int cnt = 0, cnt1 = 1, i;
 	char line[255];
-	char name[20];
+	char name[40];
 	FILE *myFile;
-	sprintf(name, "%s.txt", ID);
+	sprintf(name, "./Working_Hours/%s.txt", ID);
 	myFile = fopen(name, "r+");
 	if (myFile == NULL) {
 		printf("File could not be opened\n");
@@ -174,10 +174,11 @@ void ExitTime(char *ID)
 void WorkerMenu(Employee Employer)
 {
 	EntryTime(Employer.ID);
-	char choose=-1, tempID[10], tempcity[20];
+	char choose='-1', tempID[10], tempcity[20], tempModel[13];
+	int tempYear;
 	while (getchar() != '\n');
 	system("cls");
-	while (choose != '0')
+	while (choose !='-1')
 	{
 		
 		printf("Hello %s %s.\n", Employer.name, Employer.lastName);
@@ -188,8 +189,9 @@ void WorkerMenu(Employee Employer)
 		printf("[4] - Get city by citizen ID.\n");
 		printf("[5] - Check if City exist in Ministry of Defence database.\n");
 		printf("[6] - Get and save requests that opened more then 5 days.\n");
-		printf("[7] - Get and save report of debts.\n");
-		printf("[10] - To exit.\n");
+		printf("[7] - Get and save Fee debt report.\n");
+		printf("[8] - Get and save recall list.\n");
+		printf("[0] - To exit.\n");
 		printf("--------------------------------------------------\n");
 		printf("Your choose: ");
 		scanf("%c", &choose);
@@ -226,10 +228,20 @@ void WorkerMenu(Employee Employer)
 		case '6':
 			CheckOpenedRequest();
 			break;
+		case '7':
+			GetCitizensDebt();
+			break;
+		case'8':
+			while (getchar() != '\n');
+			printf("Enter a model:");
+			scanf("%s", tempModel);
+			printf("Enter a year:");
+			scanf("%d", &tempYear);
+			GetRecallList(tempModel, tempYear);
+			break;
 		case '0':
 			ExitTime(Employer.ID);
-			LogIn_Employee();
-			break;
+			return;
 		default:
 			system("cls");
 			printf("Wrong enter, please try again...\n");
@@ -539,13 +551,15 @@ void CheckOpenedRequest()
 	Requests *ReqList = NULL;
 	int sizeOfList = 0, i, flag = 0;;
 	FILE *myFile;
-	myFile = fopen("OpenRequests.txt", "w");
-	ReqList = CreateRequestList(&sizeOfList);
-
 	time_t now;
+	char name[60];
 	time(&now);
 	struct tm *mytime = localtime(&now);
-	struct empl_hours today_date;
+	empl_hours this_time, today_date;
+	sprintf(name, "./Worker_Reports/Opened_Request/OpenRequests_%d_%d_%d.txt", mytime->tm_mday, mytime->tm_mon + 1, mytime->tm_year + 1900);
+	myFile = fopen(name, "w");
+	ReqList = CreateRequestList(&sizeOfList);
+
 	today_date.d = mytime->tm_mday;
 	today_date.m = mytime->tm_mon + 1;
 	today_date.y = mytime->tm_year + 1900;
@@ -567,4 +581,137 @@ void CheckOpenedRequest()
 
 	if (ReqList)
 		free(ReqList);
+}
+/*function to get array of citizens with debts*/
+void GetCitizensDebt()
+{
+	Person *PersonsArray = NULL;
+	int sizeOfPersons = 0, i, flag = 0;
+	Cars *CarsArray = NULL;
+	int sizeOfCarList = 0,j;
+	FILE *myFile;
+	char name[50];
+	time_t now;
+	time(&now);
+	struct tm *mytime = localtime(&now);
+	empl_hours this_time, today_date;
+	sprintf(name, "./Worker_Reports/Fee_Debt/Fee_Debt_%d_%d_%d.txt", mytime->tm_mday, mytime->tm_mon + 1, mytime->tm_year + 1900);
+	myFile = fopen(name, "w");
+	if (myFile == NULL) {
+		printf("File could not be opened\n");
+		return;
+	}
+	PersonsArray = GetPersonList(&sizeOfPersons);
+	for (i = 0; i < sizeOfPersons; i++)
+	{
+		sizeOfCarList = 0;
+		CarsArray = GetCarsByField("ID", PersonsArray[i].ID, &sizeOfCarList);
+		for (j = 0; j < sizeOfCarList; j++)
+			PersonsArray[i].debt += agra_amount(CarsArray[j]);
+		if (CarsArray)
+			free(CarsArray);
+		CarsArray = NULL;
+	}
+	system("cls");
+	printf("ID          LastName      Name          Telephone    Debt\n");
+	fprintf(myFile, "ID          LastName      Name          Telephone    Debt\n");
+	for (i = 0; i < sizeOfPersons; i++)
+		if (PersonsArray[i].debt > 0)
+		{
+			flag = 1;
+			printf("%-9s ; %-11s ; %-11s ; %-10s ; %.2f\n", PersonsArray[i].ID, PersonsArray[i].lastName, PersonsArray[i].name, PersonsArray[i].telephone, PersonsArray[i].debt);
+			fprintf(myFile,"%-9s ; %-11s ; %-11s ; %-10s ; %.2f\n", PersonsArray[i].ID, PersonsArray[i].lastName, PersonsArray[i].name, PersonsArray[i].telephone, PersonsArray[i].debt);
+		}
+	if (!flag)
+		printf("Not have citizens with debt...\n\n");
+	if (PersonsArray)
+		free(PersonsArray);
+	fclose(myFile);
+
+}
+/*function to print and savi in file a citizens with cars which in recall list*/
+void GetRecallList(char *model, int year)
+{
+	char modell[13];
+	Person *PersonsArray = NULL;
+	int sizeOfPersons = 0, i=0, flag = 0;
+	Cars *CarsArray = NULL;
+	int sizeOfCarList = 0, j;
+	FILE *myFile;
+	char name[60];
+	sprintf(name, "./Worker_Reports/Recall_reports/Recall_%s_%d.txt", model, year);
+	while (model[i] != '\0')
+	{
+		modell[i] = model[i];
+		i++;
+	}
+	while (i < 12) modell[i++] = ' ';
+	modell[i] = '\0';
+	myFile = fopen(name, "w");
+	if (myFile == NULL) {
+		printf("File could not be opened\n");
+		return;
+	}
+	PersonsArray = GetPersonList(&sizeOfPersons);
+	system("cls");
+	printf("ID          LastName      Name          Telephone    N_car\n");
+	fprintf(myFile,"ID          LastName      Name          Telephone    N_car\n");
+	for (i = 0; i < sizeOfPersons; i++)
+	{
+		sizeOfCarList = 0;
+		CarsArray = GetCarsByField("ID", PersonsArray[i].ID, &sizeOfCarList);
+		for (j = 0; j < sizeOfCarList; j++)
+			if (!strcmp(modell, CarsArray[j].Model) && CarsArray[j].year == year)
+			{
+				flag = 1;
+				printf("%-9s ; %-11s ; %-11s ; %-10s ; %-9s\n", PersonsArray[i].ID, PersonsArray[i].lastName, PersonsArray[i].name, PersonsArray[i].telephone, CarsArray[j].N_car);
+				fprintf(myFile, "%-9s ; %-11s ; %-11s ; %-10s ; %-9s\n", PersonsArray[i].ID, PersonsArray[i].lastName, PersonsArray[i].name, PersonsArray[i].telephone, CarsArray[j].N_car);
+			}
+		if (CarsArray)
+			free(CarsArray);
+		CarsArray = NULL;
+	}
+	if (!flag)
+		printf("Not have citizens with this car model and year...\n\n");
+	if (PersonsArray)
+		free(PersonsArray);
+	fclose(myFile);
+
+}
+/*Get hours report*/
+void GetHoursRep(char *ID)
+{
+	time_t now;
+	time(&now);
+	struct tm *mytime = localtime(&now);
+	empl_hours this_time, temp;
+	int cnt = 0, cnt1 = 1, i;
+	char line[255];
+	char name[40], new_name[60];
+	FILE *myFile, *myRepFile;
+	sprintf(name, "./Working_Hours/%s.txt", ID);
+	myFile = fopen(name, "r+");
+	if (myFile == NULL) {
+		printf("File could not be opened\n");
+		return;
+	}
+	sprintf(new_name, "./Worker_Reports/Working_Hours_report/%s_%02d-%d.txt", ID, mytime->tm_mon+1, mytime->tm_year+1900);
+	myRepFile = fopen(new_name, "w");
+	if (myRepFile == NULL) {
+		printf("File could not be opened\n");
+		return;
+	}
+	while (fgets(line, sizeof(line), myFile) != NULL)
+	{
+		fscanf(myFile, "%d.%d.%d %d:%d %d:%d", &temp.d, &temp.m, &temp.y, &temp.h_s, &temp.m_s, &temp.h_e, &temp.m_e);
+		if (temp.m == mytime->tm_mon + 1 && temp.y == mytime->tm_year + 1900)
+		{
+			fprintf(myRepFile, "%02d.%02d.%d ", temp.d, temp.m, temp.y);
+			fprintf(myRepFile, "%02d:%02d ", temp.h_s, temp.m_s);
+			fprintf(myRepFile, "%02d:%02d\n", temp.h_e, temp.m_e);
+		}
+	}
+	fclose(myRepFile);
+	fclose(myFile);
+
 }
