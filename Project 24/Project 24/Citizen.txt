@@ -3,3 +3,5 @@ ID          Name          LastName      Telephone    Age   Gender   City
 326952298 ; Andrey      ; Fiodorov    ; 0546579194 ; 29  ; M      ; Beer-Sheva           ;
 205774094 ; Nofar       ; Hazan       ; 0525377581 ; 22  ; W      ; Mizpe-Ramon          ;
 311268262 ; Matan       ; Vaknin      ; 0502419553 ; 23  ; M      ; Ofakim               ;
+212091013 ; Tehila      ; Haza        ; 0502012028 ; 27  ; W      ; Jrusalem             ;
+232444654 ; Tom         ; Welling     ; 0545856488 ; 17  ; M      ;

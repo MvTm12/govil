@@ -132,7 +132,7 @@ void SaveForm(Person person)
 		switch (choose)
 		{
 		case '1':
-			i = SaveFile(person, SUSPEND_CAR_FORM, "suspend_car_form");
+			i = SaveFile(person, SUSPEND_CAR_FORM, "suspen_car_request_form");
 			getchar();
 			break;
 		case '2':
@@ -165,8 +165,8 @@ int SaveFile(Person person, char* File, char* filename)
 		printf("File could not be opened\n");
 		return 0;
 	}
-	char name[50];
-	sprintf(name, "%s_%s.txt", filename, person.ID);
+	char name[90];
+	sprintf(name, "./Citizen/Forms/%s_%s.txt", filename, person.ID);
 	myFile_new = fopen(name, "w");
 	while (fgets(buffer, sizeof buffer, myFile) != NULL)
 	{
@@ -384,6 +384,7 @@ int request_status_report(Person person)
 // function of fee payment
 int fee_payment(Person person)
 {
+	int flag2 = 0;
 	system("cls");
 	time_t now;
 	time(&now);
@@ -397,6 +398,7 @@ int fee_payment(Person person)
 	char N_car[10];
 	int flag = 0;
 	cars = GetCarsByField("ID", person.ID, &size);
+
 	printf("owned cars with debt.\n");
 	printf("---------------------\n");
 	printf("No. car Id      debt\n");
@@ -409,13 +411,41 @@ int fee_payment(Person person)
 			j += 1;
 		}
 	}
-	printf("enter car number of wich you want to pay (0 to exit): ");
-	scanf("%s", &N_car);
-	if (N_car[0] == '0')
+	if (j == 0)
 	{
 		system("cls");
+		getchar();
+		printf("owned cars with debt.\n");
+		printf("*********************.\n");
+		printf("you dont have any debt to DMV.\n");
 		return;
 	}
+	//printf("enter car number of wich you want to pay (0 to exit): ");
+	//scanf("%s", &N_car);
+	while (flag2 == 0)
+	{
+		if (size == 0)
+		{
+			printf("you dont have any debt.\n");
+			return;
+		}
+		printf("enter car number of wich you want to pay (0 to exit): ");
+		scanf("%s", &N_car);
+		for (j = 0; j < size; j++)
+		{
+			if (strcmp(N_car, cars[j].N_car) == 0)
+			{
+				flag2 = 1;
+			}
+		}
+		if (N_car[0] == '0')
+		{
+			system("cls");
+			return;
+		}
+	}
+
+
 	flag = pay(N_car);
 	if (flag == 1) // payment successs
 	{
@@ -437,8 +467,10 @@ int fee_payment(Person person)
 	}
 	else
 	{
+		printf("payment fail,  you didnt fill credit card correctly!");
+		getchar();
 		return 0;
-	}	
+	}
 }
 
 // function that gets credit number and return 1 if the credit detail is correct
@@ -473,13 +505,13 @@ int pay(char* car_num)
 	}
 	printf("enter exp date : (**(month) ****(year) ,0 to exit)");
 	scanf("%d%d", &exp_m, &exp_y);
-	if (exp_m==0 || exp_y==0)
+	if (exp_m == 0 || exp_y == 0)
 	{
 		printf("payment failed\n");
 		getchar();
 		return 0;
 	}
-	if (strlen(credit) < 16 || exp_y < year || (exp_y >= year && exp_m < month)|| exp_m>12)
+	if (strlen(credit) < 16 || exp_y < year || (exp_y >= year && exp_m < month) || exp_m>12)
 	{
 		return 0;
 	}
@@ -542,6 +574,7 @@ Cars *CreatetListCars(int *sizeOfList)
 // givs an option to save report.
 void fee_report(Person person)
 {
+	system("cls");
 	char tav;
 	time_t now;
 	time(&now);
@@ -549,7 +582,7 @@ void fee_report(Person person)
 	int i = 0, j;
 	int size = 0;
 	Cars* cars = NULL;
-	char filename[25];
+	char filename[60];
 
 	float debt = 0; // 
 	char*N_car[10];
@@ -572,16 +605,18 @@ void fee_report(Person person)
 			j += 1;
 		}
 	}
-	printf(" Do you want to save this report?\n");
-	printf("[1] Yes.\n[2] No.\n");
-	while (getchar() != '\n');
-	scanf("%c", &tav);
-	if (tav == '1')
-	{
-		sprintf(filename, "%s_fee_Report.txt", person.ID);
-		Savefeereport(filename, cars, size);
-		printf("file saved\n press any key to continue..");
-	}
+	do {
+		printf(" Do you want to save this report?\n");
+		printf("[1] Yes.\n[2] No.\n");
+		while (getchar() != '\n');
+		scanf("%c", &tav);
+		if (tav == '1')
+		{
+			sprintf(filename, "./Citizen/Fee_reports/%s_fee_Report.txt", person.ID);
+			Savefeereport(filename, cars, size);
+			printf("file saved\n press any key to continue..");
+		}
+	} while (tav != '1' && tav != '2');
 
 }
 
@@ -605,28 +640,31 @@ void fee_by_car(Person person)
 	{
 		printf("[%d] car Id : %s.\n", i + 1, cars[i].N_car);
 	}
-	printf("choose of wich you see fee payment (0 to exit): ");
-	while (getchar() != '\n');
-	scanf("%c", &N_car);
-	if (N_car == '0')
-	{
-		return ;
-	}
+	do {
+		printf("choose of wich you see fee payment (0 to exit): ");
+		while (getchar() != '\n');
+		scanf("%c", &N_car);
+		if (N_car == '0')
+		{
+			return;
+		}
+	} while((int)(N_car-48) < 1 || (int)(N_car-48) > size);
 
-	agra = cars[N_car-49].Engine_Capacity * cars[N_car - 49].year *0.4;
+	agra = cars[N_car - 49].Engine_Capacity * cars[N_car - 49].year *0.4;
 	printf("enter yaers for which you want to cunculate the fee payments amount: (in format of start year to end year) ");
 	while (getchar() != '\n');
 	scanf("%d", &years);
-	if (years == 0 )
+	if (years == 0)
 	{
-		return ;
+		return;
 	}
 	scanf("%d", &yeare);
 	if (yeare == 0)
 	{
 		return;
 	}
-	if (years < cars[N_car - 49].y_ownership || yeare> mytime->tm_year + 1900 || years > yeare || yeare>cars[N_car - 49].y_payment)
+
+	if (years < cars[N_car - 49].y_ownership || yeare> mytime->tm_year + 1900 || years > yeare || yeare > cars[N_car - 49].y_payment)
 	{
 		printf("The dates given is incorrect.");
 	}
@@ -635,6 +673,7 @@ void fee_by_car(Person person)
 		printf("the fee amount payed for car %s in years %d - %d is :%.2f. \n", cars[N_car - 49].N_car, years, yeare, agra*(yeare - years));
 	}
 	printf("press any key to continue..");
+	getchar();
 }
 
 // func that cunculate the amount of agra for car
@@ -663,11 +702,11 @@ int Savefeereport(char *filename, Cars *ReqList, int sizeOfList)
 		printf("File could not be opened\n");
 		return 0;
 	}
-	fprintf(myFile,"No. car Id     debt\n");
+	fprintf(myFile, "No. car Id     debt\n");
 	for (i = 0; i < sizeOfList; i++)
 	{
 		agra = agra_amount(ReqList[i]);
-		fprintf(myFile, "[%d] %-9s; %.2f; \n", i + 1, ReqList[i].N_car,agra );
+		fprintf(myFile, "[%d] %-9s; %.2f; \n", i + 1, ReqList[i].N_car, agra);
 	}
 	fclose(myFile);
 	return 1;
