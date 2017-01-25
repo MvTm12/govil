@@ -54,7 +54,7 @@ int main() {
 			runtests();
 			break;
 		case '4':
-			GetCitizensDebt();
+			GetHoursRep("326952298");
 			break;
 		case '0':
 			/////

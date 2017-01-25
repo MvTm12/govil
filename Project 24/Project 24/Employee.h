@@ -58,3 +58,5 @@ char GetCity(char *ID);
 void CheckOpenedRequest();
 /*function to get array of citizens with debts*/
 void GetCitizensDebt();
+/*function to print and savi in file a citizens with cars which in recall list*/
+void GetRecallList(char *model, int year);
