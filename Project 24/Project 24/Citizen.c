@@ -562,7 +562,7 @@ void fee_by_car(Person person)
 	int i = 0, j;
 	int size = 0;
 	Cars* cars = NULL;
-	char*N_car[10];
+	char*N_car[10];//
 	float debt = 0; // 
 	int years_of_debt = 0;
 	cars = GetCarsByField("ID", person.ID, &size);
