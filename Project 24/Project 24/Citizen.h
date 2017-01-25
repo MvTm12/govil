@@ -57,3 +57,6 @@ int pay(char* car_num);
 Cars *CreatetListCars(int *sizeOfList);
 
 void fee_report(Person person);
+
+void fee_by_car(Person person);
+float agra_amount(Cars car);

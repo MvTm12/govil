@@ -401,9 +401,7 @@ int fee_payment(Person person)
 	{
 		if (cars[i].y_payment != mytime->tm_year + 1900 && strcmp(cars[i].grounded,"No     ")==0)
 		{
-			debt = cars[i].Engine_Capacity * cars[i].year*0.4; // debt for 1 year
-			years_of_debt = mytime->tm_year + 1900 - cars[i].y_payment;
-			debt *= years_of_debt;
+			debt = agra_amount(cars[i]);
 			printf("[%d] car Id : %s - debt of %d years : %.2f .\n", j + 1, cars[i].N_car, years_of_debt,debt);
 			j += 1;
 		}
@@ -512,14 +510,18 @@ Cars *CreatetListCars(int *sizeOfList)
 	return ReqList;
 }
 
+// present all cars of citizen with the amount of debt.
+// givs an option to save report.
 void fee_report(Person person)
 {
+	char tav;
 	time_t now;
 	time(&now);
 	struct tm *mytime = localtime(&now);
 	int i = 0, j;
 	int size = 0;
 	Cars* cars = NULL;
+	char filename[25];
 
 	float debt = 0; // 
 	char*N_car[10];
@@ -541,5 +543,61 @@ void fee_report(Person person)
 			j += 1;
 		}
 	}
+	printf(" Do you want to save this report?\n");
+	printf("[1] Yes.\n[2] No.\n");
+	while (getchar() != '\n');
+	scanf("%c", &tav);
+	if (tav == '1')
+	{
+		sprintf(filename, "%s_fee_Report.txt", person.ID);
+		Change_payment_Date(filename, cars, size);
+		printf("file saved\n press any key to continue..");
+	}
+
 }
 
+void fee_by_car(Person person)
+{
+	int agra;
+	int i = 0, j;
+	int size = 0;
+	Cars* cars = NULL;
+	char*N_car[10];
+	float debt = 0; // 
+	int years_of_debt = 0;
+	cars = GetCarsByField("ID", person.ID, &size);
+	for (i = 0, j = 0; i < size; i++)
+	{
+		printf("[%d] car Id : %s.\n", j + 1, cars[i].N_car);
+	}
+	printf("enter car number of wich you want to pay: ");
+	scanf("%s", N_car);
+
+	for (i = 0; i < size; i++)
+	{
+		if (strcmp(cars[i].N_car, N_car) == 0)
+		{
+			agra = cars[i].Engine_Capacity * cars[i].year *0.4;
+		}
+		else
+		{
+			printf(" no such car!\n");
+		}
+
+	}
+
+}
+
+float agra_amount(Cars car)
+{
+	time_t now;
+	time(&now);
+	struct tm *mytime = localtime(&now);
+	float debt = 0;
+	int years_of_debt = 0;
+
+	debt = car.Engine_Capacity * car.year*0.4; // debt for 1 year
+	years_of_debt = mytime->tm_year + 1900 - car.y_payment;
+	debt *= years_of_debt;
+	return debt;
+}
