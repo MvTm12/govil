@@ -132,7 +132,7 @@ void SaveForm(Person person)
 		switch (choose)
 		{
 		case '1':
-			i = SaveFile(person, SUSPEND_CAR_FORM, "suspend_car_form");
+			i = SaveFile(person, SUSPEND_CAR_FORM, "suspen_car_request_form");
 			getchar();
 			break;
 		case '2':
@@ -165,8 +165,8 @@ int SaveFile(Person person, char* File, char* filename)
 		printf("File could not be opened\n");
 		return 0;
 	}
-	char name[50];
-	sprintf(name, "%s_%s.txt", filename, person.ID);
+	char name[90];
+	sprintf(name, "./Citizen/Forms/%s_%s.txt", filename, person.ID);
 	myFile_new = fopen(name, "w");
 	while (fgets(buffer, sizeof buffer, myFile) != NULL)
 	{
@@ -582,7 +582,7 @@ void fee_report(Person person)
 	int i = 0, j;
 	int size = 0;
 	Cars* cars = NULL;
-	char filename[25];
+	char filename[60];
 
 	float debt = 0; // 
 	char*N_car[10];
@@ -612,7 +612,7 @@ void fee_report(Person person)
 		scanf("%c", &tav);
 		if (tav == '1')
 		{
-			sprintf(filename, "%s_fee_Report.txt", person.ID);
+			sprintf(filename, "./Citizen/Fee_reports/%s_fee_Report.txt", person.ID);
 			Savefeereport(filename, cars, size);
 			printf("file saved\n press any key to continue..");
 		}
