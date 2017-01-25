@@ -121,7 +121,7 @@ Employee DBreadEmployee(char* fileName, char* field, char* value)
 		//Append filtered record if value == temp
 		if (!strcmp(value, temp))
 		{
-			sscanf(buffer, "%s ; %s ; %s ; %s", Employer.ID, Employer.name, Employer.lastName, Employer.status);
+			sscanf(buffer, "%[^;]; %[^;]; %[^;]; %[^;]", Employer.ID, Employer.name, Employer.lastName, Employer.status);
 			flag = 1;
 		}
 	}

@@ -2,6 +2,7 @@
 #include "Employee.h"
 #include "UnitTest_Worker.h"
 #include "MinUnit.h"
+#include "Manager.h"
 
 /*function to employer login*/
 void LogIn_Employee()
@@ -41,7 +42,7 @@ void LogIn_Employee()
 	}
 
 	Employer = DBreadEmployee(EMPLOYEES_DB, "ID", TEMP_id);
-	if (!strcmp(Employer.name,"None"))
+	if (!strcmp(Employer.name, "None"))
 	{
 		printf(" worker not found in database \n");
 		return;
@@ -58,8 +59,10 @@ void LogIn_Employee()
 		printf("--------------------------\n");
 		return;
 	}
-	else if (!strcmp(Employer.status, "active"))
+	else if (!strcmp(Employer.status, "active    "))
 		WorkerMenu(Employer);
+	else if (!strcmp(Employer.status, "manager   "))
+		ManagerMenu(Employer);
 
 	
 }
@@ -270,7 +273,6 @@ void WorkerMenu(Employee Employer)
 			printf("Wrong enter, please try again...\n");
 			break;
 		}
-		while (getchar() != '\n');
 
 	}
 
@@ -416,13 +418,13 @@ void ListRequests(Employee Employer)
 			}
 		}
 		if (number[0] == ' ' && number[1] == ' ' && number[2] == '0')
-			return;
-		if (!flag)
 		{
-			printf("The number does not exits.\n");
-			printf("Press any key to continue...\n");
-			getchar();
+			if (ReqList)
+				free(ReqList);
+			return;
 		}
+		if (!flag)
+			printf("The number does not exits.\n");
 		else
 		{
 			system("cls");
@@ -436,11 +438,14 @@ void ListRequests(Employee Employer)
 				printf("your choose:");
 				while (getchar() != '\n');
 				scanf("%c", &c);
-				if (c == '1' || c == '2')
-					flag = 1;
-				while (getchar() != '\n');
 				if (c == '0')
+				{
+					if (ReqList)
+						free(ReqList);
 					return;
+				}
+				else if (c == '1' || c == '2')
+					flag = 1;
 				else
 				{
 					system("cls");
@@ -457,6 +462,7 @@ void ListRequests(Employee Employer)
 			gets(Comment);
 			strcpy(ReqList[i].Comment, Comment);
 			ChangeStatusOfRequest(REQUESTS_DB, ReqList, sizeOfList);
+			printf("Request is updated.\n");
 		}
 	}
 	else
@@ -503,7 +509,7 @@ int ChangeStatusOfRequest(char *filename, Requests *ReqList, int sizeOfList)
 		printf("File could not be opened\n");
 		return 0;
 	}
-	fprintf(myFile,"  N  citizen_ID Empl_ID    N_Car      Request         Sub_date    End_date Status    Comment\n");
+	fprintf(myFile,"  N  citizen_ID Empl_ID    N_Car      Request         Sub_date    End_date    Status    Comment\n");
 	for (i = 0; i < sizeOfList; i++)
 		fprintf(myFile, "%-3s; %-9s; %-9s; %-9s; %-14s; %02d.%02d.%d; %02d.%02d.%04d; %-8s; %-60s;\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].d_p, ReqList[i].m_p, ReqList[i].y_p ,ReqList[i].Status, ReqList[i].Comment);
 	fclose(myFile);

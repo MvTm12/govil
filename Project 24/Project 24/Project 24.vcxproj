@@ -22,6 +22,7 @@
     <ClCompile Include="Citizen.c" />
     <ClCompile Include="database.c" />
     <ClCompile Include="Employee.c" />
+    <ClCompile Include="Manager.c" />
     <ClCompile Include="Source.c" />
     <ClCompile Include="test.c" />
     <ClCompile Include="UnitTest_Worker.c" />
@@ -30,6 +31,7 @@
     <ClInclude Include="Citizen.h" />
     <ClInclude Include="database.h" />
     <ClInclude Include="Employee.h" />
+    <ClInclude Include="Manager.h" />
     <ClInclude Include="MinUnit.h" />
     <ClInclude Include="UnitTest_Worker.h" />
   </ItemGroup>
@@ -38,6 +40,7 @@
     <Text Include="CarsDB.txt" />
     <Text Include="Citizen.txt" />
     <Text Include="disabled_badge_request_form_template.txt" />
+    <Text Include="Employee.txt" />
     <Text Include="Fee_Debt.txt" />
     <Text Include="Opened_Request\OpenRequests_25_1_2017.txt" />
     <Text Include="Recallalfa2017.txt" />

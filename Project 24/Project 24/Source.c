@@ -39,7 +39,7 @@ int main() {
 			runtests();
 			break;
 		case '4':
-			GetHoursRep("326952298");
+			CreateRecallMessage();
 			break;
 		case '0':
 			/////
