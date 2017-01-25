@@ -12,3 +12,4 @@ void CreateRecallMessage();
 Employee *GetEmployesList(int *sizeOfArray);
 // function that add new worker to Employee file
 int AddEmployee();
+void GetOpReq();
