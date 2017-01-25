@@ -1,7 +1,7 @@
-  N  citizen_ID Empl_ID    N_Car      Request         Sub_date    End_date    Status    Comment
-  1; 326952298; None     ; 23-117-62; suspend_car   ; 11.01.2017; 00.00.0000; open    ; None                                                        ;
-  2; 317743425; None     ; 25-147-78; disabled_badge; 12.01.2017; 00.00.0000; open    ; None                                                        ;
-  3; 205774094; None     ; 31-156-82; armord_vehicle; 07.01.2017; 00.00.0000; open    ; None                                                        ;
+  N  citizen_ID Empl_ID    N_Car      Request         Sub_date    End_date Status    Comment
+  1; 326952298; 326952298; 23-117-62; suspend_car   ; 11.01.2017; 25.01.2017; declined; ;                                                           ;
+  2; 317743425; 326952298; 25-147-78; disabled_badge; 12.01.2017; 25.01.2017; declined; ;                                                           ;
+  3; 205774094; 326952298; 31-156-82; armord_vehicle; 07.01.2017; 25.01.2017; declined; ;                                                           ;
   4; 311268262; None     ; 24-133-79; disabled_badge; 21.01.2017; 00.00.0000; open    ; None                                                        ;
   5; 205774094; None     ; 11-111-11; armord_vehicle; 24.01.2017; 00.00.0000; open    ; None                                                        ;
   6; 205774094; None     ; 12-123-12; armord_vehicle; 24.01.2017; 00.00.0000; open    ; None                                                        ;
@@ -9,3 +9,4 @@
   8; 205774094; None     ; 11-111-11; disabled_badge; 25.01.2017; 00.00.0000; open    ; None                                                        ;
   9; 205774094; None     ; 11-111-11; armord_vehicle; 25.01.2017; 00.00.0000; open    ; None                                                        ;
  10; 326952298; None     ; 11-111-14; suspend_car   ; 25.01.2017; 00.00.0000; open    ; None                                                        ;
+ 11; 205774094; None     ; 12-123-12; suspend_car   ; 25.01.2017; 00.00.0000; open    ; None                                                        ;

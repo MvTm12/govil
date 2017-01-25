@@ -214,6 +214,8 @@ Cars *GetCarsByField(char* field, char* value, int* resultArrSize)
 	//Check file
 	if (myFile == NULL) {
 		printf("File could not be opened\n");
+		if (filteredResults)
+			free(filteredResults);
 		return 0;
 	}
 
@@ -221,6 +223,9 @@ Cars *GetCarsByField(char* field, char* value, int* resultArrSize)
 	fieldIndex = findFieldIndex(myFile, field);
 	if (fieldIndex == -1) {
 		printf("Can't find field you specified");
+		if (filteredResults)
+			free(filteredResults);
+		fclose(myFile);
 		return 0;
 	}
 
@@ -236,10 +241,8 @@ Cars *GetCarsByField(char* field, char* value, int* resultArrSize)
 		//Append filtered record if value == temp
 		if (!strcmp(value, temp)) 
 		{
-
 			if (numberOfFiltered == 0) 	filteredResults = (Cars*)malloc(sizeof(Cars));
 			else filteredResults = (Cars*)realloc(filteredResults, (numberOfFiltered + 1) * sizeof(Cars));
-	
 			sscanf(buffer, "%[^;]; ", filteredResults[numberOfFiltered].N_car);
 			sscanf(buffer + 11, "%f ", &filteredResults[numberOfFiltered].Engine_Capacity);
 			sscanf(buffer + 16, "%[^;]; %[^;];", filteredResults[numberOfFiltered].ID, filteredResults[numberOfFiltered].Model);
@@ -264,6 +267,8 @@ Person *GetPersonList(int *sizeOfList)
 	//Check file
 	if (myFile == NULL) {
 		printf("File not found.\n");
+		if (myFile)
+			free(myFile);
 		return;
 	}
 	fgets(buffer, sizeof buffer, myFile);

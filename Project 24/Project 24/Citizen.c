@@ -17,6 +17,8 @@ void LogIn_Citizen()
 	if (TEMP_id[0] == '0')
 	{
 		system("cls");
+		if (resultArr)
+			free(resultArr);
 		return;
 	}
 	fflush(stdin);
@@ -35,12 +37,16 @@ void LogIn_Citizen()
 	{
 		system("cls");
 		printf(" \n user not found. \n");
+		if (resultArr != NULL)
+			free(resultArr);
 		return;
 	}
 	if (strcmp(TEMP_id, TEMP_pass))
 	{
 		system("cls");
 		printf(" \n incorrect password. \n");
+		if (resultArr != NULL)
+			free(resultArr);
 		return;
 	}
 
@@ -53,7 +59,7 @@ void LogIn_Citizen()
 	// citizen main func
 	citizen_manu(resultArr[0]);
 
-	if (resultArr != NULL)
+	if (resultArr)
 		free(resultArr);
 }
 
@@ -418,6 +424,10 @@ int fee_payment(Person person)
 		printf("owned cars with debt.\n");
 		printf("*********************.\n");
 		printf("you dont have any debt to DMV.\n");
+		if (cars)
+			free(cars);
+		if (allcars)
+			free(allcars);
 		return;
 	}
 	//printf("enter car number of wich you want to pay (0 to exit): ");
@@ -427,6 +437,10 @@ int fee_payment(Person person)
 		if (size == 0)
 		{
 			printf("you dont have any debt.\n");
+			if (cars)
+				free(cars);
+			if (allcars)
+				free(allcars);
 			return;
 		}
 		printf("enter car number of wich you want to pay (0 to exit): ");
@@ -441,10 +455,13 @@ int fee_payment(Person person)
 		if (N_car[0] == '0')
 		{
 			system("cls");
+			if (cars)
+				free(cars);
+			if (allcars)
+				free(allcars);
 			return;
 		}
 	}
-
 
 	flag = pay(N_car);
 	if (flag == 1) // payment successs
@@ -463,12 +480,20 @@ int fee_payment(Person person)
 		Change_payment_Date(Cars_DB, allcars, size2);
 		printf("success!");
 		getchar();
+		if (cars)
+			free(cars);
+		if (allcars)
+			free(allcars);
 		return 1;
 	}
 	else
 	{
 		printf("payment fail,  you didnt fill credit card correctly!");
 		getchar();
+		if (cars)
+			free(cars);
+		if (allcars)
+			free(allcars);
 		return 0;
 	}
 }
@@ -483,7 +508,6 @@ int pay(char* car_num)
 	char credit[17];
 	char pass_key[4];
 	int  exp_m, exp_y;
-	Cars* car = NULL;
 	int size = 0;
 	int year = mytime->tm_year + 1900;
 	int month = mytime->tm_mon + 1;
@@ -617,7 +641,8 @@ void fee_report(Person person)
 			printf("file saved\n press any key to continue..");
 		}
 	} while (tav != '1' && tav != '2');
-
+	if (cars)
+		free(cars);
 }
 
 // function that gets start year and end yaer- calculate the amount of fee feepayed until the end date
@@ -646,6 +671,8 @@ void fee_by_car(Person person)
 		scanf("%c", &N_car);
 		if (N_car == '0')
 		{
+			if (cars)
+				free(cars);
 			return;
 		}
 	} while((int)(N_car-48) < 1 || (int)(N_car-48) > size);
@@ -656,11 +683,15 @@ void fee_by_car(Person person)
 	scanf("%d", &years);
 	if (years == 0)
 	{
+		if (cars)
+			free(cars);
 		return;
 	}
 	scanf("%d", &yeare);
 	if (yeare == 0)
 	{
+		if (cars)
+			free(cars);
 		return;
 	}
 
@@ -674,6 +705,8 @@ void fee_by_car(Person person)
 	}
 	printf("press any key to continue..");
 	getchar();
+	if (cars)
+		free(cars);
 }
 
 // func that cunculate the amount of agra for car
