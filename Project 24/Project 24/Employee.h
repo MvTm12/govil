@@ -16,6 +16,7 @@ typedef struct Employee {
 	char name[12];
 	char lastName[12];
 	char status[11];
+	int cnt;
 } Employee;
 typedef struct Tasks {
 	char number[4];
