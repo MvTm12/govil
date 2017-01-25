@@ -17,7 +17,7 @@ typedef struct Person {
 	int age;
 	char gender[2];
 	char city[20];
-	int debt;
+	float debt;
 } Person;
 typedef struct Cars {
 	
