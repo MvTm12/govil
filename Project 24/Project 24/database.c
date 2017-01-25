@@ -1,7 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "database.h"
 #include "Employee.h"
-
 #include <string.h>
 
 

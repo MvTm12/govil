@@ -24,7 +24,7 @@ void LogIn_Employee()
 		return;
 	}
 	fflush(stdin);
-	printf(" enter password(enter '0' to back to main login menu): ");
+	printf(" enter password: ");
 	while (i <= 10) {
 		if (i == 9)
 			break;
@@ -177,10 +177,10 @@ void WorkerMenu(Employee Employer)
 	char choose='-1', tempID[10], tempcity[20], tempModel[13];
 	int tempYear;
 	while (getchar() != '\n');
-	system("cls");
+	
 	while (choose !='-1')
 	{
-		
+		system("cls");
 		printf("Hello %s %s.\n", Employer.name, Employer.lastName);
 		printf("-------======This is a menu for your permissions!======--------.\n");
 		printf("[1] - To Tasks Manager.\n");
@@ -188,9 +188,10 @@ void WorkerMenu(Employee Employer)
 		printf("[3] - Check for disabled parking badge eligibility.\n");
 		printf("[4] - Get city by citizen ID.\n");
 		printf("[5] - Check if City exist in Ministry of Defence database.\n");
-		printf("[6] - Get and save requests that opened more then 5 days.\n");
-		printf("[7] - Get and save Fee debt report.\n");
-		printf("[8] - Get and save recall list.\n");
+		printf("[6] - Print and save requests that opened more then 5 days.\n");
+		printf("[7] - Print and save Fee debt report.\n");
+		printf("[8] - Print and save recall list.\n");
+		printf("[9] - Get and save working hours for this month.\n");
 		printf("[0] - To exit.\n");
 		printf("--------------------------------------------------\n");
 		printf("Your choose: ");
@@ -199,9 +200,13 @@ void WorkerMenu(Employee Employer)
 		{
 		case '1':
 			TasksManager(Employer);
+			printf("Press any key to continue...\n");
+			getchar();
 			break;
 		case '2':
 			ListRequests(Employer);
+			printf("Press any key to continue...\n");
+			getchar();
 			break;
 		case '3':
 			while (getchar() != '\n');
@@ -209,12 +214,17 @@ void WorkerMenu(Employee Employer)
 			scanf("%s", tempID);
 			if (CheckIdInDB(tempID)) printf("\nA ID found in 'SocialSecurity' database!!\n\n");
 			else             printf("\nA ID is not found in 'SocialSecurity' database!!\n\n");
+			printf("Press any key to continue...\n");
+			getchar();
 			break;
 		case '4':
 			while (getchar() != '\n');
 			printf("Enter id \n");
 			scanf("%s", tempID);
-			GetCity(tempID);
+			if (!strcmp(GetCity(tempID), "None"))
+				printf("The ID is not exist in database...\n");
+			printf("Press any key to continue...\n");
+			getchar();
 			break;
 		case '5':
 			while (getchar() != '\n');
@@ -224,12 +234,18 @@ void WorkerMenu(Employee Employer)
 				printf("%s exist in Ministry of Defence database\n",tempcity);
 			else 
 				printf("%s not exist in Ministry of Defence database\n", tempcity);
+			printf("Press any key to continue...\n");
+			getchar();
 			break;
 		case '6':
 			CheckOpenedRequest();
+			printf("Press any key to continue...\n");
+			getchar();
 			break;
 		case '7':
 			GetCitizensDebt();
+			printf("Press any key to continue...\n");
+			getchar();
 			break;
 		case'8':
 			while (getchar() != '\n');
@@ -238,6 +254,13 @@ void WorkerMenu(Employee Employer)
 			printf("Enter a year:");
 			scanf("%d", &tempYear);
 			GetRecallList(tempModel, tempYear);
+			printf("Press any key to continue...\n");
+			getchar();
+			break;
+		case '9':
+			GetHoursRep("326952298");
+			printf("Press any key to continue...\n");
+			getchar();
 			break;
 		case '0':
 			ExitTime(Employer.ID);
@@ -312,7 +335,6 @@ void TasksManager(Employee Employer)
 			system("cls");
 		else
 		{
-			system("cls");
 			if (ChangeStatusInTasks(TASKS_MANAGER_DB, c) == 1)
 				printf("The task is updated.\n");
 			else
@@ -368,12 +390,13 @@ void ListRequests(Employee Employer)
 	int sizeOfList = 0,i,flag=0,size,j;
 	char number[4], Comment[61],str3[4],c;
 	ReqList = CreateRequestList(&sizeOfList);
-	printf("  N    citizen_ID Empl_ID    N_Car      Request         Sub_date    End_date    Status    Comment\n");
+	system("cls");
+	printf("  N    citizen_ID N_Car      Request         Sub_date\n");
 	for (i = 0; i < sizeOfList; i++)
 		if (!strcmp(ReqList[i].Status, "open    "))
 		{
 			flag = 1;
-			printf("[%s]; %9s; %9s; %s; %14s; %02d.%02d.%d; %02d.%02d.%04d; %7s; %s\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].d_p, ReqList[i].m_p, ReqList[i].y_p, ReqList[i].Status, ReqList[i].Comment);
+			printf("[%s]; %9s; %s; %14s; %02d.%02d.%d;\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y);
 		}
 	if (flag)
 	{
@@ -392,22 +415,32 @@ void ListRequests(Employee Employer)
 				break;
 			}
 		}
+		if (number[0] == ' ' && number[1] == ' ' && number[2] == '0')
+			return;
 		if (!flag)
+		{
 			printf("The number does not exits.\n");
+			printf("Press any key to continue...\n");
+			getchar();
+		}
 		else
 		{
+			system("cls");
 			flag = 0;
 			strcpy(ReqList[i].Empl_ID, Employer.ID);
 			while (flag == 0)
 			{
-				printf("  N    citizen_ID Empl_ID    N_Car      Request         Sub_date    End_date    Status    Comment\n");
-				printf("[%s]; %9s; %9s; %s; %14s; %02d.%02d.%d; %02d.%02d.%04d; %7s; %s\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].d_p, ReqList[i].m_p, ReqList[i].y_p, ReqList[i].Status, ReqList[i].Comment);
-				printf("Choose status you want?\n[1] - Approved\n[2] - Declined\n");
+				printf("  N    citizen_ID N_Car      Request         Sub_date\n");
+				printf("[%s]; %9s; %s; %14s; %02d.%02d.%d;\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y);
+				printf("Choose status you want?\n[1] - Approved\n[2] - Declined\n[0] - To back\n");
 				printf("your choose:");
 				while (getchar() != '\n');
 				scanf("%c", &c);
 				if (c == '1' || c == '2')
 					flag = 1;
+				while (getchar() != '\n');
+				if (c == '0')
+					return;
 				else
 				{
 					system("cls");
@@ -497,14 +530,13 @@ int CheckIdInDB(char *ID)
 		}
 	}
 	fclose(myFile);
-	system("cls");
 	return 0;
 }
 /*function to  get city by ID from  PEOPLE_DB database*/
-char GetCity(char *ID)
+char *GetCity(char *ID)
 {
 	FILE *myFile = fopen(PEOPLE_DB, "r");
-	int index = findFieldIndex(myFile, "City");
+	int index = findFieldIndex(myFile, "City"),flag=0;
 	char city[20], buffer[255], temp[10];
 	//getfieldValue(char* buffer, int fieldIndex)
 	while (fgets(buffer, sizeof buffer, myFile) != NULL)
@@ -512,13 +544,16 @@ char GetCity(char *ID)
 		sscanf(buffer, "%[^ ]", temp);
 		if(!strcmp(temp,ID))
 		{
+			flag = 1;
 			strcpy(city , getfieldValue(buffer, index));
-			system("cls");
 			printf("\'%s' is living in %s \n", ID, city);
 			break;
 		}
 	}
 	fclose(myFile);
+	if (!flag)
+		return "None";
+	
 	return city;
 }
 /*function to  check if City exist in Ministry of Defence database*/
@@ -564,12 +599,12 @@ void CheckOpenedRequest()
 	today_date.m = mytime->tm_mon + 1;
 	today_date.y = mytime->tm_year + 1900;
 	system("cls");
-	printf("  N    citizen_ID Empl_ID    N_Car      Request         Sub_date    End_date    Status    Comment\n");
+	printf("  N    citizen_ID N_Car      Request         Sub_date\n");
 	for (i = 0; i < sizeOfList; i++)
 		if (!strcmp(ReqList[i].Status, "open    ") && ((today_date.d + ((today_date.m - 1) * 31) + ((today_date.y - 1) * 365)) - (ReqList[i].d + ((ReqList[i].m - 1) * 31) + ((ReqList[i].y - 1) * 365)) > 5))
 		{
 			flag = 1;
-			printf("[%s]; %9s; %9s; %s; %14s; %02d.%02d.%d; %02d.%02d.%04d; %7s; %s\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].Empl_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y, ReqList[i].d_p, ReqList[i].m_p, ReqList[i].y_p, ReqList[i].Status, ReqList[i].Comment);
+			printf("[%s]; %9s; %s; %14s; %02d.%02d.%d;\n", ReqList[i].num, ReqList[i].Citizen_ID, ReqList[i].N_car, ReqList[i].Request, ReqList[i].d, ReqList[i].m, ReqList[i].y);
 		}
 	if(!flag)
 		printf("Not exist requests that open more then 5 days.");
@@ -713,5 +748,6 @@ void GetHoursRep(char *ID)
 	}
 	fclose(myRepFile);
 	fclose(myFile);
+	printf("The report is saved.\n");
 
 }
