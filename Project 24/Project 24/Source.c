@@ -39,7 +39,7 @@ int main() {
 			runtests();
 			break;
 		case '4':
-			AddEmployee();
+			CreateRecallMessage();
 			break;
 		case '0':
 			/////

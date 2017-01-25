@@ -3,4 +3,3 @@ ID         Name         LastName     Status
 326952298; Andrey     ; Fiodorov   ; manager   ;
 205774094; Nofar      ; Hazan      ; active    ;
 311268262; Matan      ; Vaknin     ; active    ;
-212091013; Tehila     ; Hazana     ; active    ;
