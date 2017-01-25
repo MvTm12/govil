@@ -10,3 +10,5 @@ void ManagerMenu(Employee Employer);
 void CreateRecallMessage();
 /*function to get array of employes*/
 Employee *GetEmployesList(int *sizeOfArray);
+// function that add new worker to Employee file
+int AddEmployee();

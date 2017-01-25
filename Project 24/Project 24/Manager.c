@@ -46,7 +46,7 @@ void ManagerMenu(Employee Employer)
 		
 			break;
 		case '6':
-			
+			AddEmployee();
 			break;
 		case '7':
 		
@@ -65,7 +65,7 @@ void ManagerMenu(Employee Employer)
 			printf("Wrong enter, please try again...\n");
 			break;
 		}
-
+		while (getchar() != '\n');
 	}
 
 }
@@ -111,4 +111,60 @@ Employee *GetEmployesList(int *sizeOfArray)
 		}
 	}
 	return EmployeeArray;
+}
+
+// function that add new worker to Employee file
+// return 1 for success and 0 for failuar
+int AddEmployee()
+{
+	system("cls");
+	char ID[10];
+	char name[12];
+	char lastName[12];
+	char status[11];
+	FILE *myFile;
+	myFile = fopen(EMPLOYEES_DB, "a+");
+	if (myFile == NULL)
+	{
+		printf("File could not be opened\n");
+		return 0;
+	}
+	printf("add new employee.\n");
+	printf("------------------\n");
+	printf(" Enter ID of new employee: (press 0 to go back) ");
+	scanf("%s", ID);
+	if (ID[0] == '0')
+	{
+		fclose(myFile);
+		system("cls");
+		return 0;
+	}
+	printf(" Enter first name of new employee:(press 0 to go back) ");
+	scanf("%s", name);
+	if (name[0] == '0')
+	{
+		fclose(myFile);
+		system("cls");
+		return 0;
+	}
+	printf(" Enter  last name of new employee:(press 0 to go back) ");
+	scanf("%s", lastName);
+	if (lastName[0] == '0')
+	{
+		fclose(myFile);
+		system("cls");
+		return 0;
+	}
+	printf(" Enter  status of new employee -active/manager/not-active:(press 0 to go back) ");
+	scanf("%s", status);
+	if (status[0] == '0')
+	{
+		fclose(myFile);
+		system("cls");
+		return 0;
+	}
+	fprintf(myFile, "%-9s; %-11s; %-11s; %-10s;\n",ID,name,lastName,status);
+	printf("successfully added!\n");
+	fclose(myFile);
+	return 1;
 }
