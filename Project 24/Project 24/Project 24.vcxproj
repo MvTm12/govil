@@ -42,9 +42,11 @@
     <Text Include="disabled_badge_request_form_template.txt" />
     <Text Include="Employee.txt" />
     <Text Include="Fee_Debt.txt" />
+    <Text Include="Ministry_of_Defence.txt" />
     <Text Include="Opened_Request\OpenRequests_25_1_2017.txt" />
     <Text Include="Recallalfa2017.txt" />
     <Text Include="Requests.txt" />
+    <Text Include="SocialSecurity.txt" />
     <Text Include="suspen_car_request_form_template.txt" />
     <Text Include="Tasks_Manager.txt" />
     <Text Include="Working_Hours\326952298.txt" />

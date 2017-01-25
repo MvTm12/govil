@@ -274,7 +274,7 @@ int FillForm_(Person person, char* filename)
 	scanf("%s", &name);
 	printf(" please enter owner last name: ");
 	scanf("%s", &lastName);
-	printf(" please enter car number: ");
+	printf(" please enter car number (format - 'xx-xxx-xx'): ");
 	scanf("%s", &N_car);
 
 	// chaking the entered values
@@ -666,7 +666,7 @@ void fee_by_car(Person person)
 		printf("[%d] car Id : %s.\n", i + 1, cars[i].N_car);
 	}
 	do {
-		printf("choose of wich you see fee payment (0 to exit): ");
+		printf("Insert the number from the list of the car you want to pay for (0 to exit): ");
 		while (getchar() != '\n');
 		scanf("%c", &N_car);
 		if (N_car == '0')
@@ -678,7 +678,7 @@ void fee_by_car(Person person)
 	} while((int)(N_car-48) < 1 || (int)(N_car-48) > size);
 
 	agra = cars[N_car - 49].Engine_Capacity * cars[N_car - 49].year *0.4;
-	printf("enter yaers for which you want to cunculate the fee payments amount: (in format of start year to end year) ");
+	printf("insert yaers for which you want to cunculate the fee payments amount (format - 'xxxx xxxx'): ");
 	while (getchar() != '\n');
 	scanf("%d", &years);
 	if (years == 0)
@@ -697,7 +697,7 @@ void fee_by_car(Person person)
 
 	if (years < cars[N_car - 49].y_ownership || yeare> mytime->tm_year + 1900 || years > yeare || yeare > cars[N_car - 49].y_payment)
 	{
-		printf("The dates given is incorrect.");
+		printf("The dates given are incorrect.");
 	}
 	else
 	{
