@@ -94,10 +94,9 @@ void citizen_manu(Person person)
 			break;
 		case '5':
 			fee_report(person);
-			getchar();
 			break;
 		case '6':
-			/////
+			fee_by_car(person);
 			break;
 		case '0':
 			printf(" Bye-Bye!\n");
@@ -201,20 +200,19 @@ void FillFOrm(Person person)
 		switch (choose)
 		{
 		case '1':
-			i= FillForm_(person, "suspend_car");
+			i = FillForm_(person, "suspend_car");
 			getchar();
 			break;
 		case '2':
-			i= FillForm_(person, "disabled_badge");
+			i = FillForm_(person, "disabled_badge");
 			getchar();
 			break;
 		case '3':
-			i= FillForm_(person, "armord_vehicle");
+			i = FillForm_(person, "armord_vehicle");
 			getchar();
 			break;
 		case '0':
-			printf(" Bye-Bye!\n");
-			getchar();
+
 			return;
 			break;
 		default:
@@ -293,21 +291,21 @@ int FillForm_(Person person, char* filename)
 			sscanf(buffer + 16, "%[^;]; %[^;];", car.ID, car.Model);
 			sscanf(buffer + 41, "%d; %d.%d.%d; %d.%d.%d; ", &car.year, &car.d_payment, &car.m_payment, &car.y_payment, &car.d_ownership, &car.m_ownership, &car.y_ownership);
 			sscanf(buffer + 71, "%[^;]; %[^;]; %[^;]", car.disabled_badge, car.grounded, car.aremored);
-			if (strcmp(car.ID, ID) == 0 && strcmp(car.N_car,N_car)==0)
+			if (strcmp(car.ID, ID) == 0 && strcmp(car.N_car, N_car) == 0)
 			{
 				ReqList = CreateRequestList(&size);
-				temp_size = size+1;
+				temp_size = size + 1;
 				ReqList = (Requests*)realloc(ReqList, (size + 1) * sizeof(Requests));
 
 				//N
 				ReqList[size].num[i] = (char)(temp_size % 10 + 48);
 				temp_size /= 10;
-				while (i>0)
+				while (i > 0)
 				{
 					i -= 1;
-					if (temp_size < 0)
+					if (temp_size > 0)
 					{
-						ReqList[size].num[i] = temp_size % 10;
+						ReqList[size].num[i] = (char)(temp_size % 10 + 48);
 						temp_size /= 10;
 					}
 					else
@@ -353,6 +351,7 @@ int FillForm_(Person person, char* filename)
 // function that present list of all request of user.
 int request_status_report(Person person)
 {
+	system("cls");
 	Requests req;
 	int i = 1;
 	char buffer[255];	//Current row content
@@ -364,51 +363,60 @@ int request_status_report(Person person)
 		printf("File could not be opened\n");
 		return 0;
 	}
-	printf("No. ID 		Name       Car Number    Request	 Req_Date   End_Date        Status     Commends\n");
+	printf("request status report:\n");
+	printf("No. ID 		Name       Car Number    Request	 Req_Date   End_Date    Status      Commends\n");
 	while (fgets(buffer, sizeof buffer, myFile) != NULL)
 	{
-		sscanf(buffer, "%[^;]; %[^;]; %[^;]; %[^;]; %[^;]; ", req.num,req.Citizen_ID,req.Empl_ID,req.N_car,req.Request,req.Status,req.Comment);
-		sscanf(buffer + 54, "%02d.%02d.%04d; %02d.%02d.%04d ", &req.d, &req.m, &req.y,&req.d_p, &req.m_p, &req.y_p);
+		sscanf(buffer, "%[^;]; %[^;]; %[^;]; %[^;]; %[^;]; ", req.num, req.Citizen_ID, req.Empl_ID, req.N_car, req.Request, req.Status, req.Comment);
+		sscanf(buffer + 54, "%02d.%02d.%04d; %02d.%02d.%04d ", &req.d, &req.m, &req.y, &req.d_p, &req.m_p, &req.y_p);
 		sscanf(buffer + 78, "%[^;]; %s ", req.Status, req.Comment);
-		if (strcmp(req.Citizen_ID , person.ID)==0)
+		if (strcmp(req.Citizen_ID, person.ID) == 0)
 		{
-			printf("[%d] %-9s	%-11s%-9s	 %-14s  %02d.%02d.%04d %02d.%02d.%04d  %-9s   %s .\n", i, req.Citizen_ID,person.name, req.N_car, req.Request, req.d, req.m, req.y,  req.d_p, req.m_p, req.y_p, req.Status, req.Comment);
+			printf("[%d] %-9s	%-11s%-9s	 %-14s  %02d.%02d.%04d %02d.%02d.%04d  %-9s   %s .\n", i, req.Citizen_ID, person.name, req.N_car, req.Request, req.d, req.m, req.y, req.d_p, req.m_p, req.y_p, req.Status, req.Comment);
 			i++;
 		}
 	}
 	fclose(myFile);
+	printf("press any key to continue..\n");
 	getchar();
 }
 
 // function of fee payment
 int fee_payment(Person person)
 {
+	system("cls");
 	time_t now;
 	time(&now);
 	struct tm *mytime = localtime(&now);
-	int i = 0,j;
-	int size = 0,size2=0;
+	int i = 0, j;
+	int size = 0, size2 = 0;
 	int count = 0; // count the amount of cars with debt
 	Cars* cars = NULL;
 	Cars* allcars = NULL;
 	float debt = 0; // 
-	char*N_car[10];
+	char N_car[10];
 	int flag = 0;
-	int years_of_debt = 0;
-	cars=GetCarsByField("ID", person.ID, &size);
+	cars = GetCarsByField("ID", person.ID, &size);
 	printf("owned cars with debt.\n");
+	printf("---------------------\n");
+	printf("No. car Id      debt\n");
 	for (i = 0, j = 0; i < size; i++)
 	{
-		if (cars[i].y_payment != mytime->tm_year + 1900 && strcmp(cars[i].grounded,"No     ")==0)
+		if (cars[i].y_payment != mytime->tm_year + 1900 && strcmp(cars[i].grounded, "No     ") == 0)
 		{
 			debt = agra_amount(cars[i]);
-			printf("[%d] car Id : %s - debt of %d years : %.2f .\n", j + 1, cars[i].N_car, years_of_debt,debt);
+			printf("[%d] %s   %.2f .\n", j + 1, cars[i].N_car, debt);
 			j += 1;
 		}
 	}
-	printf("enter car number of wich you want to pay: ");
+	printf("enter car number of wich you want to pay (0 to exit): ");
 	scanf("%s", &N_car);
-	flag= pay(N_car);
+	if (N_car[0] == '0')
+	{
+		system("cls");
+		return;
+	}
+	flag = pay(N_car);
 	if (flag == 1) // payment successs
 	{
 		// מערך של כל המכוניות
@@ -418,15 +426,19 @@ int fee_payment(Person person)
 		{
 			if (strcmp(allcars[i].N_car, N_car) == 0)
 			{
-				allcars[i].y_payment= mytime->tm_year + 1900;
+				allcars[i].y_payment = mytime->tm_year + 1900;
 			}
 		}
 		// עריכת הקובץ של המכוניות עם התאריך החדש
 		Change_payment_Date(Cars_DB, allcars, size2);
+		printf("success!");
+		getchar();
 		return 1;
 	}
 	else
+	{
 		return 0;
+	}	
 }
 
 // function that gets credit number and return 1 if the credit detail is correct
@@ -443,16 +455,32 @@ int pay(char* car_num)
 	int size = 0;
 	int year = mytime->tm_year + 1900;
 	int month = mytime->tm_mon + 1;
-	printf("enter credit number (16 digits) : ");
-	scanf("%s", credit);
-	printf("enter key_nuber (3 digits in the back) : ");
-	scanf("%s", pass_key);
-	printf("enter exp date : ");
-	scanf("%d%d", &exp_m, &exp_y);
-
-	if (strlen(credit) < 16 || exp_y < year || (exp_y >= year && exp_m < month))
+	printf("enter credit number (16 digits ,0 to exit) : ");
+	scanf("%s", &credit);
+	if (credit[0] == '0')
 	{
-		printf(" payment faild!");
+		printf("payment failed\n");
+		getchar();
+		return 0;
+	}
+	printf("enter key_nuber (3 digits in the back ,0 to exit) : ");
+	scanf("%s", &pass_key);
+	if (pass_key[0] == '0')
+	{
+		printf("payment failed\n");
+		getchar();
+		return 0;
+	}
+	printf("enter exp date : (**(month) ****(year) ,0 to exit)");
+	scanf("%d%d", &exp_m, &exp_y);
+	if (exp_m==0 || exp_y==0)
+	{
+		printf("payment failed\n");
+		getchar();
+		return 0;
+	}
+	if (strlen(credit) < 16 || exp_y < year || (exp_y >= year && exp_m < month)|| exp_m>12)
+	{
 		return 0;
 	}
 	else
@@ -527,6 +555,7 @@ void fee_report(Person person)
 	char*N_car[10];
 	int years_of_debt = 0;
 	cars = GetCarsByField("ID", person.ID, &size);
+	printf("No. car Id      debt\n");
 	for (i = 0, j = 0; i < size; i++)
 	{
 		if (cars[i].y_payment != mytime->tm_year + 1900 && strcmp(cars[i].grounded, "No     ") == 0)
@@ -534,12 +563,12 @@ void fee_report(Person person)
 			debt = cars[i].Engine_Capacity * cars[i].year*0.4; // debt for 1 year
 			years_of_debt = mytime->tm_year + 1900 - cars[i].y_payment;
 			debt *= years_of_debt;
-			printf("[%d] car Id : %s - debt of %d years : %.2f .\n", j + 1, cars[i].N_car, years_of_debt, debt);
+			printf("[%d] %s   %.2f (%d years).\n", j + 1, cars[i].N_car, debt, years_of_debt);
 			j += 1;
 		}
 		else
 		{
-			printf("[%d] car Id : %s - debt : 0.\n", j + 1, cars[i].N_car);
+			printf("[%d] %s   0.\n", j + 1, cars[i].N_car);
 			j += 1;
 		}
 	}
@@ -550,44 +579,65 @@ void fee_report(Person person)
 	if (tav == '1')
 	{
 		sprintf(filename, "%s_fee_Report.txt", person.ID);
-		Change_payment_Date(filename, cars, size);
+		Savefeereport(filename, cars, size);
 		printf("file saved\n press any key to continue..");
 	}
 
 }
 
+// function that gets start year and end yaer- calculate the amount of fee feepayed until the end date
 void fee_by_car(Person person)
 {
-	int agra;
+	system("cls");
+	printf("*** your cars ***\n");
+	time_t now;
+	time(&now);
+	struct tm *mytime = localtime(&now);
+	float agra;
 	int i = 0, j;
 	int size = 0;
 	Cars* cars = NULL;
-	char*N_car[10];//
-	float debt = 0; // 
+	char N_car;//
+	int years, yeare;
 	int years_of_debt = 0;
 	cars = GetCarsByField("ID", person.ID, &size);
-	for (i = 0, j = 0; i < size; i++)
-	{
-		printf("[%d] car Id : %s.\n", j + 1, cars[i].N_car);
-	}
-	printf("enter car number of wich you want to pay: ");
-	scanf("%s", N_car);
-
 	for (i = 0; i < size; i++)
 	{
-		if (strcmp(cars[i].N_car, N_car) == 0)
-		{
-			agra = cars[i].Engine_Capacity * cars[i].year *0.4;
-		}
-		else
-		{
-			printf(" no such car!\n");
-		}
-
+		printf("[%d] car Id : %s.\n", i + 1, cars[i].N_car);
+	}
+	printf("choose of wich you see fee payment (0 to exit): ");
+	while (getchar() != '\n');
+	scanf("%c", &N_car);
+	if (N_car == '0')
+	{
+		return ;
 	}
 
+	agra = cars[N_car-49].Engine_Capacity * cars[N_car - 49].year *0.4;
+	printf("enter yaers for which you want to cunculate the fee payments amount: (in format of start year to end year) ");
+	while (getchar() != '\n');
+	scanf("%d", &years);
+	if (years == 0 )
+	{
+		return ;
+	}
+	scanf("%d", &yeare);
+	if (yeare == 0)
+	{
+		return;
+	}
+	if (years < cars[N_car - 49].y_ownership || yeare> mytime->tm_year + 1900 || years > yeare || yeare>cars[N_car - 49].y_payment)
+	{
+		printf("The dates given is incorrect.");
+	}
+	else
+	{
+		printf("the fee amount payed for car %s in years %d - %d is :%.2f. \n", cars[N_car - 49].N_car, years, yeare, agra*(yeare - years));
+	}
+	printf("press any key to continue..");
 }
 
+// func that cunculate the amount of agra for car
 float agra_amount(Cars car)
 {
 	time_t now;
@@ -600,4 +650,25 @@ float agra_amount(Cars car)
 	years_of_debt = mytime->tm_year + 1900 - car.y_payment;
 	debt *= years_of_debt;
 	return debt;
+}
+
+int Savefeereport(char *filename, Cars *ReqList, int sizeOfList)
+{
+	float agra;
+	FILE *myFile;
+	int i;
+	myFile = fopen(filename, "w");
+	//Check file
+	if (myFile == NULL) {
+		printf("File could not be opened\n");
+		return 0;
+	}
+	fprintf(myFile,"No. car Id     debt\n");
+	for (i = 0; i < sizeOfList; i++)
+	{
+		agra = agra_amount(ReqList[i]);
+		fprintf(myFile, "[%d] %-9s; %.2f; \n", i + 1, ReqList[i].N_car,agra );
+	}
+	fclose(myFile);
+	return 1;
 }
