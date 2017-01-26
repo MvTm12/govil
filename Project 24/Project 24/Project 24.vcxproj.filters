@@ -33,6 +33,9 @@
     <ClCompile Include="UnitTest_Worker.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Manager.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Citizen.h">
@@ -48,6 +51,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UnitTest_Worker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -92,6 +98,9 @@
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="SocialSecurity.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Working_Hours\205774094.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

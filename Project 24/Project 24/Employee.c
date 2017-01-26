@@ -49,7 +49,7 @@ void LogIn_Employee()
 	}
 	else if (!strcmp(Employer.status, "not-active"))
 	{
-		printf(" your status is 'not active', please go to Manager \n");
+		printf(" \n your status is 'not active', please go to Manager \n");
 		return;
 	}
 	else if (strcmp(Employer.ID, TEMP_pass))

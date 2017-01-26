@@ -13,3 +13,5 @@ Employee *GetEmployesList(int *sizeOfArray);
 // function that add new worker to Employee file
 int AddEmployee();
 void GetOpReq();
+int changeStatus(Employee manager);
+int Hperemployee(char* emp_id, int month, int year);

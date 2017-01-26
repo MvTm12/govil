@@ -39,7 +39,7 @@ int main() {
 			runtests();
 			break;
 		case '4':
-			AddEmployee();
+			printf("%d\n", Hperemployee("205774094", 01, 2017));
 			break;
 		case '0':
 			/////

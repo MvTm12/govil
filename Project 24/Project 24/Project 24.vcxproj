@@ -49,6 +49,7 @@
     <Text Include="SocialSecurity.txt" />
     <Text Include="suspen_car_request_form_template.txt" />
     <Text Include="Tasks_Manager.txt" />
+    <Text Include="Working_Hours\205774094.txt" />
     <Text Include="Working_Hours\326952298.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
