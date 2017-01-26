@@ -10,9 +10,6 @@ void ManagerMenu(Employee Employer);
 void CreateRecallMessage();
 /*function to get array of employes*/
 Employee *GetEmployesList(int *sizeOfArray);
-/*function to get requests that opened more than 5 days and set a task for employee*/
-void GetOpReq();
 // function that add new worker to Employee file
 int AddEmployee();
-/*function to print all employees that updated requests today with counter of updates*/
-void PrintEmplAndReq();
+void GetOpReq();

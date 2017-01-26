@@ -20,8 +20,8 @@ void ManagerMenu(Employee Employer)
 		printf("[3] - To list all employees that updated requests today with counter of updates.\n");
 		//printf("[4] - Get city by citizen ID.\n");
 		//printf("[5] - Check if City exist in Ministry of Defence database.\n");
-		//printf("[6] - Print and save requests that opened more then 5 days.\n");
-		//printf("[7] - Print and save Fee debt report.\n");
+		printf("[6] - Add New Worker.\n");
+		printf("[7] - Print and save Fee debt report.\n");
 		//printf("[8] - Print and save recall list.\n");
 		//printf("[9] - Get and save working hours for this month.\n");
 		printf("[0] - To exit.\n");
@@ -46,7 +46,7 @@ void ManagerMenu(Employee Employer)
 		
 			break;
 		case '6':
-			
+			AddEmployee();
 			break;
 		case '7':
 		
@@ -214,10 +214,12 @@ void GetOpReq()
 	if (ReqList)
 		free(ReqList);
 }
-// function that add new worker to Employee file
-// return 1 for success and 0 for failuar
+/* function that add new worker to Employee file
+return 1 for success and 0 for failuar*/
 int AddEmployee()
 {
+	int flag = 0;
+	int i = 0;
 	system("cls");
 	char ID[10];
 	char name[12];
@@ -230,6 +232,9 @@ int AddEmployee()
 		printf("File could not be opened\n");
 		return 0;
 	}
+	Employee *employeelist = NULL;
+	int size = 0;
+	employeelist = GetEmployesList(&size);
 	printf("add new employee.\n");
 	printf("------------------\n");
 	printf(" Enter ID of new employee: (press 0 to go back) ");
@@ -264,10 +269,26 @@ int AddEmployee()
 		system("cls");
 		return 0;
 	}
-	fprintf(myFile, "%-9s; %-11s; %-11s; %-10s;\n", ID, name, lastName, status);
-	printf("successfully added!\n");
-	fclose(myFile);
-	return 1;
+	for (i = 0; i < size; i++)
+	{
+		if (strcmp(employeelist[i].ID, ID) == 0)
+		{
+			flag = 1;
+		}
+	}
+	if (flag == 1)
+	{
+		printf("the employee already exsist.\n");
+		fclose(myFile);
+		return 0;
+	}
+	else
+	{
+		fprintf(myFile, "%-9s; %-11s; %-11s; %-10s;\n", ID, name, lastName, status);
+		printf("successfully added!\n");
+		fclose(myFile);
+		return 1;
+	}
 }
 /*function to print all employees that updated requests today with counter of updates*/
 void PrintEmplAndReq()
