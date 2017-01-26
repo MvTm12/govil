@@ -327,3 +327,96 @@ void PrintEmplAndReq()
 		free(EmployeeList);
 	while (getchar() != '\n');
 }
+int changeStatus(Employee manager)
+{
+	int flag = 0;
+	char ID[10];
+	char status[11];
+	FILE *myFile;
+	Employee *employeelist = NULL;
+	int size = 0;
+	employeelist = GetEmployesList(&size);
+	int i, j;
+
+	printf("Enter ID of new employee: (press 0 to go back) ");
+	scanf("%s", ID);
+	if (ID[0] == '0')
+	{
+		return 0;
+	}
+	printf("Enter  status of new employee -active/manager/not-active:(press 0 to go back) ");
+	scanf("%s", status);
+	if (status[0] == '0')
+	{
+		return 0;
+	}
+	for (i = 0; i < size; i++)
+	{
+		if (strcmp(employeelist[i].ID, ID) == 0)
+			flag = 1;
+	}
+	if (flag == 0)
+	{
+		printf("Employee not exsist.\n");
+		getchar();
+		return 0;
+	}
+	myFile = fopen(EMPLOYEES_DB, "w");
+	if (myFile == NULL)
+	{
+		printf("File could not be opened\n");
+		getchar();
+		return 0;
+	}
+	fprintf(myFile, "ID         Name         LastName     Status\n");
+	employeelist = (Employee*)realloc(employeelist, (size + 1) * sizeof(Employee));
+	fprintf(myFile, "%-9s; %-11s; %-11s; %-10s;\n", manager.ID, manager.name, manager.lastName, manager.status);
+	for (i = 0, j = 1; j < size + 1; i++, j++)
+	{
+		if (strcmp(employeelist[i].ID, ID) == 0)
+		{
+			strcpy(employeelist[i].status, status);
+		}
+		fprintf(myFile, "%-9s; %-11s; %-11s; %-10s;\n", employeelist[i].ID, employeelist[i].name, employeelist[i].lastName, employeelist[i].status);
+	}
+	printf("employee status changed successfully!\n");
+	getchar();
+	if (employeelist)
+		free(employeelist);
+	fclose(myFile);
+	return 1;
+}
+
+int Hperemployee(char* emp_id, int month, int year)
+{
+	time_t now;
+	time(&now);
+	struct tm *mytime = localtime(&now);
+	char line[255];
+	char name[40];
+	FILE *myFile;
+	Employee *employeelist = NULL;
+	empl_hours temp;
+	int size = 0;
+	//	employeelist = GetEmployesList(&size);
+	sprintf(name, "./Working_Hours/%s.txt", emp_id);
+	myFile = fopen(name, "r+");
+	if (myFile == NULL)
+	{
+		printf("File could not be opened\n");
+		getchar();
+		return 0;
+	}
+	int count = 0;
+
+	while (fgets(line, sizeof(line), myFile) != NULL)
+	{
+		sscanf(line, "%d.%d.%d %d:%d %d:%d", &temp.d, &temp.m, &temp.y, &temp.h_s, &temp.m_s, &temp.h_e, &temp.m_e);
+		if (temp.y == year && temp.m == month)
+		{
+			count += temp.h_e * 60 + temp.m_e - temp.h_s * 60 - temp.m_s;
+		}
+	}
+	fclose(myFile);
+	return count;
+}
