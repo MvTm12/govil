@@ -5,19 +5,19 @@ void ManagerMenu(Employee Employer)
 	int tempYear;
 	while (getchar() != '\n');
 
-	while (choose != '#')
+	while (choose != '0')
 	{
 		if (choose != '#')
 		{
-			printf("Press any key to continue...\n");
+			printf("Press enter to continue...\n");
 			getchar();
 		}
 		system("cls");
 		printf("Hello %s %s.\n", Employer.name, Employer.lastName);
 		printf("-------======This is a menu for your permissions!======--------.\n");
 		printf("[1] - Create 'Recall' message and save in Task Manager.\n");
-		printf("[2] - To list of citizen requests in status open.\n");
-		//printf("[3] - Check for disabled parking badge eligibility.\n");
+		printf("[2] - To list requests that opened more than 5 days and set a task for employee.\n");
+		printf("[3] - To list all employees that updated requests today with counter of updates.\n");
 		//printf("[4] - Get city by citizen ID.\n");
 		//printf("[5] - Check if City exist in Ministry of Defence database.\n");
 		//printf("[6] - Print and save requests that opened more then 5 days.\n");
@@ -37,7 +37,7 @@ void ManagerMenu(Employee Employer)
 			GetOpReq();
 			break;
 		case '3':
-			
+			PrintEmplAndReq();
 			break;
 		case '4':
 			
@@ -188,6 +188,7 @@ void GetOpReq()
 		while (i < 9)
 			tempID[i] = buffer[i++];
 		tempID[9] = '\0';
+		while (getchar() != '\n');
 		for (i = 0; i < sizeOfArray; i++)
 			if (!strcmp(EmployeeArray[i].ID, tempID))
 			{
@@ -267,4 +268,41 @@ int AddEmployee()
 	printf("successfully added!\n");
 	fclose(myFile);
 	return 1;
+}
+/*function to print all employees that updated requests today with counter of updates*/
+void PrintEmplAndReq()
+{
+	time_t now;
+	time(&now);
+	struct tm *mytime = localtime(&now);
+	int sizeOfEmployee=0,sizeOfReq=0;
+	Employee *EmployeeList = NULL;
+	EmployeeList = GetEmployesList(&sizeOfEmployee);
+	Requests *ReqList= NULL;
+	ReqList = CreateRequestList(&sizeOfReq);
+	int i=0, j,sum=0;
+	for (i = 0; i < sizeOfEmployee; i++)
+	{
+		EmployeeList[i].cnt = 0;
+		for (j = 0; j < sizeOfReq; j++)
+			if (!strcmp(ReqList[j].Empl_ID, EmployeeList[i].ID) && ReqList[j].d_p == mytime->tm_mday && ReqList[j].m_p == mytime->tm_mon + 1 && ReqList[j].y_p == mytime->tm_year + 1900)
+			{
+				EmployeeList[i].cnt++;
+				sum++;
+			}		
+	}
+	if(sum)
+		printf("Empl_ID    Last_Name    First_Name   Updated_Requests\n");
+	for (i = 0; i < sizeOfEmployee; i++)
+		if (EmployeeList[i].cnt != 0)
+			printf("%-9s; %-11s; %-11s; %d\n", EmployeeList[i].ID, EmployeeList[i].lastName, EmployeeList[i].name, EmployeeList[i].cnt);
+	if (sum)
+		printf("\nThe sum of all today updated requests is: %d \n", sum);
+	else
+		printf("There isn't updated requests today\n");
+	if (ReqList)
+		free(ReqList);
+	if (EmployeeList)
+		free(EmployeeList);
+	while (getchar() != '\n');
 }
