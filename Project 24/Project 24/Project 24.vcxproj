@@ -40,6 +40,7 @@
     <Text Include="CarsDB.txt" />
     <Text Include="Citizen.txt" />
     <Text Include="disabled_badge_request_form_template.txt" />
+    <Text Include="Efficiency_Report\report.txt" />
     <Text Include="Employee.txt" />
     <Text Include="Fee_Debt.txt" />
     <Text Include="Ministry_of_Defence.txt" />
@@ -50,6 +51,7 @@
     <Text Include="suspen_car_request_form_template.txt" />
     <Text Include="Tasks_Manager.txt" />
     <Text Include="Working_Hours\205774094.txt" />
+    <Text Include="Working_Hours\311268262.txt" />
     <Text Include="Working_Hours\326952298.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

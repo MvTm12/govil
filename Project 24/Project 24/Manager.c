@@ -19,11 +19,9 @@ void ManagerMenu(Employee Employer)
 		printf("[2] - To list requests that opened more than 5 days and set a task for employee.\n");
 		printf("[3] - To list all employees that updated requests today with counter of updates.\n");
 		//printf("[4] - Get city by citizen ID.\n");
-		//printf("[5] - Check if City exist in Ministry of Defence database.\n");
+		printf("[5] - Employee efficiency report.\n");
 		printf("[6] - Add New Worker.\n");
 		printf("[7] - Print and save Fee debt report.\n");
-		//printf("[8] - Print and save recall list.\n");
-		//printf("[9] - Get and save working hours for this month.\n");
 		printf("[0] - To exit.\n");
 		printf("--------------------------------------------------\n");
 		printf("Your choose: ");
@@ -43,31 +41,22 @@ void ManagerMenu(Employee Employer)
 			
 			break;
 		case '5':
-		
+			Employee_efficiency();
 			break;
 		case '6':
 			AddEmployee();
 			break;
 		case '7':
-		
-			break;
-		case'8':
-			
-			break;
-		case '9':
-			
+			changeStatus(Employer);
 			break;
 		case '0':
-			
 			return;
 		default:
 			system("cls");
 			printf("Wrong enter, please try again...\n");
 			break;
 		}
-
 	}
-
 }
 /*function to create recall message*/
 void CreateRecallMessage()
@@ -327,6 +316,8 @@ void PrintEmplAndReq()
 		free(EmployeeList);
 	while (getchar() != '\n');
 }
+
+//
 int changeStatus(Employee manager)
 {
 	int flag = 0;
@@ -386,7 +377,7 @@ int changeStatus(Employee manager)
 	fclose(myFile);
 	return 1;
 }
-
+//
 int Hperemployee(char* emp_id, int month, int year)
 {
 	time_t now;
@@ -395,10 +386,9 @@ int Hperemployee(char* emp_id, int month, int year)
 	char line[255];
 	char name[40];
 	FILE *myFile;
-	Employee *employeelist = NULL;
+
 	empl_hours temp;
 	int size = 0;
-	//	employeelist = GetEmployesList(&size);
 	sprintf(name, "./Working_Hours/%s.txt", emp_id);
 	myFile = fopen(name, "r+");
 	if (myFile == NULL)
@@ -420,8 +410,69 @@ int Hperemployee(char* emp_id, int month, int year)
 	fclose(myFile);
 	return count;
 }
-//test
-//test
-//nofar
-//nofar
-//nofar
+//
+int Employee_efficiency()
+{
+	char name[40];
+	FILE *myFile;
+	int month, year;
+	int sizeOfEmployee = 0, sizeOfReq = 0;
+	Employee *EmployeeList = NULL;
+	EmployeeList = GetEmployesList(&sizeOfEmployee);
+	Requests *ReqList = NULL;
+	ReqList = CreateRequestList(&sizeOfReq);
+	int i = 0, j, sum = 0;
+	printf("Enter month: (press 0 to go back) ");
+	scanf("%d", &month);
+	if (month == 0)
+	{
+		return 0;
+	}
+	printf("Enter year:(press 0 to go back) ");
+	scanf("%d", &year);
+	if (year == 0)
+	{
+		return 0;
+	}
+	for (i = 0; i < sizeOfEmployee; i++)
+	{
+		EmployeeList[i].MinOfWorking = Hperemployee(EmployeeList[i].ID, month, year);
+		EmployeeList[i].cnt = 0;
+		for (j = 0; j < sizeOfReq; j++)
+		{
+			if (!strcmp(ReqList[j].Empl_ID, EmployeeList[i].ID) && ReqList[j].m_p == month && ReqList[j].y_p == year)
+			{
+				EmployeeList[i].cnt++;
+			}
+		}
+	}
+	sprintf(name,"./Efficiency_Report/Efficiency_Report.txt");
+	myFile = fopen(name, "w");
+	if (myFile == NULL)
+	{
+		printf("File could not be opened\n");
+		if (EmployeeList)
+			free(EmployeeList);
+		if (ReqList)
+			free(ReqList);
+		getchar();
+		return 0;
+	}
+	printf("Employee efficiency report.\n");
+	printf("Empl_ID    Last_Name    First_Name   efficiency H/R \n");
+
+	fprintf(myFile, "Empl_ID    Last_Name    First_Name   efficiency H/R \n");
+	for (i = 0; i < sizeOfEmployee; i++)
+	{
+		if (EmployeeList[i].MinOfWorking!=0 && EmployeeList[i].cnt!=0)
+		{
+			printf("%-9s  %-11s  %-11s  %.2f\n", EmployeeList[i].ID, EmployeeList[i].lastName, EmployeeList[i].name, EmployeeList[i].MinOfWorking/60./ EmployeeList[i].cnt);
+			fprintf(myFile, "%-9s  %-11s  %-11s  %.2f\n", EmployeeList[i].ID, EmployeeList[i].lastName, EmployeeList[i].name, EmployeeList[i].MinOfWorking / 60. / EmployeeList[i].cnt);
+		}
+	}
+	fclose(myFile);
+	if (EmployeeList)
+		free(EmployeeList);
+	if (ReqList)
+		free(ReqList);
+}

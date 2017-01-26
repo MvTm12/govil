@@ -103,5 +103,11 @@
     <Text Include="Working_Hours\205774094.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Working_Hours\311268262.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Efficiency_Report\report.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

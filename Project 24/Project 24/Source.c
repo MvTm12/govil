@@ -39,7 +39,7 @@ int main() {
 			runtests();
 			break;
 		case '4':
-			printf("%d\n", Hperemployee("205774094", 01, 2017));
+			Employee_efficiency();
 			break;
 		case '0':
 			/////

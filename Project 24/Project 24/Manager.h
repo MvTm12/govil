@@ -15,3 +15,5 @@ int AddEmployee();
 void GetOpReq();
 int changeStatus(Employee manager);
 int Hperemployee(char* emp_id, int month, int year);
+void PrintEmplAndReq();
+int Employee_efficiency();
