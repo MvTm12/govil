@@ -1,0 +1,2 @@
+ID          LastName      Name          Telephone    Debt
+205774094 ; Hazan       ; Nofar       ; 0525377581 ; 15360.00
