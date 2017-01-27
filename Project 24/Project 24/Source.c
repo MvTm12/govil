@@ -36,7 +36,10 @@ int main() {
 			LogIn_Employee();
 			break;
 		case '3':
-			runtests();
+			runtests_Database();
+			runtests_Citizen();
+			runtests_Worker();
+			runtests_Manager();
 			break;
 		case '4':
 			Employee_efficiency();

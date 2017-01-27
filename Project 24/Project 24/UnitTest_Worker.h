@@ -1,2 +1,2 @@
 #pragma once
-int runtests();
+int runtests_Worker();

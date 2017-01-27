@@ -24,7 +24,9 @@
     <ClCompile Include="Employee.c" />
     <ClCompile Include="Manager.c" />
     <ClCompile Include="Source.c" />
-    <ClCompile Include="test.c" />
+    <ClCompile Include="UnitTest_Citizen.c" />
+    <ClCompile Include="UnitTest_Database.c" />
+    <ClCompile Include="UnitTest_Manager.c" />
     <ClCompile Include="UnitTest_Worker.c" />
   </ItemGroup>
   <ItemGroup>
@@ -33,6 +35,9 @@
     <ClInclude Include="Employee.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="MinUnit.h" />
+    <ClInclude Include="UnitTest_Citizen.h" />
+    <ClInclude Include="UnitTest_Database.h" />
+    <ClInclude Include="UnitTest_Manager.h" />
     <ClInclude Include="UnitTest_Worker.h" />
   </ItemGroup>
   <ItemGroup>

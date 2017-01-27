@@ -18,10 +18,10 @@ void ManagerMenu(Employee Employer)
 		printf("[1] - Create 'Recall' message and save in Task Manager.\n");
 		printf("[2] - To list requests that opened more than 5 days and set a task for employee.\n");
 		printf("[3] - To list all employees that updated requests today with counter of updates.\n");
-		//printf("[4] - Get city by citizen ID.\n");
+		printf("[4] - Get city by citizen ID.\n");
 		printf("[5] - Employee efficiency report.\n");
 		printf("[6] - Add New Worker.\n");
-		printf("[7] - Print and save Fee debt report.\n");
+		printf("[7] - Show and save Fee debt report.\n");
 		printf("[0] - To exit.\n");
 		printf("--------------------------------------------------\n");
 		printf("Your choose: ");
@@ -38,7 +38,7 @@ void ManagerMenu(Employee Employer)
 			PrintEmplAndReq();
 			break;
 		case '4':
-			
+			GetCityByID();
 			break;
 		case '5':
 			Employee_efficiency();
@@ -315,6 +315,36 @@ void PrintEmplAndReq()
 	if (EmployeeList)
 		free(EmployeeList);
 	while (getchar() != '\n');
+}
+
+//Returns citizen city by ID
+void GetCityByID() {
+	char choice = '1';
+	char ID[10];
+	int resultArrSize = 0;
+	Person *person;
+
+	do {
+		system("cls");
+		printf("Enter citizen ID: ");
+		scanf("%s", ID);
+
+		person = DBreadPeople(PEOPLE_DB, "ID", ID, &resultArrSize);
+		
+		system("cls");
+		if (person == NULL) {
+			printf("Wrong ID\n");
+		}
+		else {
+			printf("%s %s %s lives in: %s\n", ID, person->name, person->lastName, person->city);
+		}
+
+		printf("--------------------------------------------------\n");
+		printf("[0] - Back to menu\n[1] - Enter another ID\n");
+		printf("Your choose: ");
+		while (getchar() != '\n');
+		scanf("%c", &choice);
+	} while (choice == '1');
 }
 
 //

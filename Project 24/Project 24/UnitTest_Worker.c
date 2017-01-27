@@ -3,30 +3,32 @@
 #include "MinUnit.h"
 #include "Employee.h"
 
-//change task status in db
+
 MU_TEST(test_CheckCityInDB)
 {
 	//Arrange
 	char *City = "Mizpe-Ramon";
-	//Act
-	int result = CheckCityInDB(City);
-	mu_check(result);
-	//Assert
 
+	//Act
+	int result = CheckCityInDB("Jerusalem");
+	
+	//Assert
+	mu_check(result);
 }
-//change task status in db
+
 MU_TEST(test_CheckIdInDB)
 {
 	//Arrange
 	char *ID = "326952298";
-
+	int result;
 
 	//Act
-	mu_check(CheckIdInDB(ID));
-	//Assert
+	result = CheckIdInDB(ID);
 
+	//Assert
+	mu_check(result);
 }
-//change task status in db
+
 MU_TEST(test_ChangeStatusInTasks)
 {
 	//Arrange
@@ -39,42 +41,47 @@ MU_TEST(test_ChangeStatusInTasks)
 	//Assert
 	
 }
-//DBreadEmployee(EMPLOYEES_DB, "ID", TEMP_id)
-MU_TEST(test_getfieldValue)
+
+MU_TEST(test_CreateRequestList)
 {
 	//Arrange
-	char *buffer = "first; last; second";
-	int field = 2;
+	int sizeOfList = 0;
 
 	//Act
-	char *result = getfieldValue(buffer, field);
+	Requests *requests = CreateRequestList(&sizeOfList);
+	
 	//Assert
-	mu_check(strcmp(result, "second") == 0);
+	mu_check(strcmp(requests[0].Citizen_ID, "326952298") == 0);
 }
-MU_TEST(test_DBreadEmployee)
+
+MU_TEST(test_GetCity)
 {
 	//Arrange
-	char *ID = "326952298";
+	char *ID = "311268262";
+	char *result;
 
 	//Act
-	Employee result = DBreadEmployee(EMPLOYEES_DB, "ID", ID);
+	result = GetCity(ID);
 
 	//Assert
-	mu_check(strcmp(result.name, "Andrey") == 0);
+	mu_check(strcmp(result, "Ofakim") == 0);
 }
-MU_TEST_SUITE(test_suite_worker) 
-{
+
+
+MU_TEST_SUITE(test_suite_worker) {
 	MU_SUITE_CONFIGURE(NULL, NULL);
-	MU_RUN_TEST(test_DBreadEmployee);
-	MU_RUN_TEST(test_getfieldValue);
-	MU_RUN_TEST(test_ChangeStatusInTasks);
+
+	//MU_RUN_TEST(test_ChangeStatusInTasks);
 	MU_RUN_TEST(test_CheckIdInDB);
 	MU_RUN_TEST(test_CheckCityInDB);
+	MU_RUN_TEST(test_CreateRequestList);
+	MU_RUN_TEST(test_GetCity);
+
 	MU_REPORT_SUITE();
 }
-int runtests()
-{
 
+int runtests_Worker()
+{
 	MU_RUN_SUITE(test_suite_worker);
 
 	MU_REPORT();

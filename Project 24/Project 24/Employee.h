@@ -64,3 +64,5 @@ void GetCitizensDebt();
 void GetRecallList(char *model, int year);
 /*Get hours report*/
 void GetHoursRep(char *ID);
+/*create requests list by filed and text in field*/
+Requests *CreateRequestList(int *sizeOfList);
