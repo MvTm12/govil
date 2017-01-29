@@ -226,6 +226,7 @@ void WorkerMenu(Employee Employer)
 			scanf("%s", tempID);
 			if (!strcmp(GetCity(tempID), "None"))
 				printf("The ID is not exist in database...\n");
+			while (getchar() != '\n');
 			printf("Press any key to continue...\n");
 			getchar();
 			break;
