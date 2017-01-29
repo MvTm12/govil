@@ -17,4 +17,9 @@ int changeStatus(Employee manager);
 int Hperemployee(char* emp_id, int month, int year);
 void PrintEmplAndReq();
 int Employee_efficiency();
-void GetCityByID();
+
+//Calculate and save employee salaries
+void EmployeeSalary();
+
+//Get year and month from the user
+int getYearMonth();

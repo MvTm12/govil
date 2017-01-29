@@ -59,7 +59,6 @@ MU_TEST(test_DBreadEmployee) {
 	//Arrange
 	char* field = "ID";
 	char* value = "326952298";
-	int resultArrSize = 0;
 
 	//Act
 	Employee employee = DBreadEmployee(EMPLOYEES_DB, field, value);

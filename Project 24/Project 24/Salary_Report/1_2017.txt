@@ -1,0 +1,3 @@
+Empl_ID    Last_Name    First_Name   Hours_worked	Salary
+205774094  Hazan        Nofar        1.28               33.37NIS
+311268262  Vaknin       Matan        1.35               35.10NIS

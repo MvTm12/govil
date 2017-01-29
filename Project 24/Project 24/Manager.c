@@ -40,7 +40,7 @@ void ManagerMenu(Employee Employer)
 			PrintEmplAndReq();
 			break;
 		case '4':
-			GetCityByID();
+			EmployeeSalary();
 			break;
 		case '5':
 			Employee_efficiency();
@@ -116,6 +116,7 @@ Employee *GetEmployesList(int *sizeOfArray)
 	char buffer[255];
 	myFile = fopen(EMPLOYEES_DB, "r");
 	fgets(buffer, sizeof buffer, myFile);
+	*sizeOfArray = 0;
 	while (fgets(buffer, sizeof buffer, myFile)!=NULL)
 	{
 		sscanf(buffer, "%[^;]; %[^;]; %[^;]; %[^;]", temp.ID, temp.name, temp.lastName, temp.status);
@@ -128,6 +129,7 @@ Employee *GetEmployesList(int *sizeOfArray)
 			(*sizeOfArray)++;
 		}
 	}
+	fclose(myFile);
 	return EmployeeArray;
 }
 /*function to get requests that opened more than 5 days and set a task for employee*/
@@ -322,30 +324,50 @@ void PrintEmplAndReq()
 	while (getchar() != '\n');
 }
 
-//Returns citizen city by ID
-void GetCityByID() {
+//Calculate and save employee salaries
+void EmployeeSalary(){
 	char choice = '1';
-	char ID[10];
+	char fileName[60]; 
+	FILE *myFile;
 	int resultArrSize = 0;
-	Person *person;
+	Employee *EmployeeList;
+	int year, month;
 
 	do {
-		system("cls");
-		printf("Enter citizen ID: ");
-		scanf("%s", ID);
-
-		person = DBreadPeople(PEOPLE_DB, "ID", ID, &resultArrSize);
+		EmployeeList = GetEmployesList(&resultArrSize);
 		
+		year = 2017;
+		month = 01;
+		if (!getYearMonth(&year, &month)) return 0;	//Get year and month from user
+
+		sprintf(fileName, "./Salary_Report/%d_%d.txt", month, year);	//Create file path & name
+
+		myFile = fopen(fileName, "w");
+
+		//Create report for Each employee
 		system("cls");
-		if (person == NULL) {
-			printf("Wrong ID\n");
-		}
-		else {
-			printf("%s %s %s lives in: %s\n", ID, person->name, person->lastName, person->city);
+		printf("Employee salary report.\n");
+		printf("----------------------------------------------------------------\n");
+		printf("Empl_ID    Last_Name    First_Name   Hours_worked	Salary\n");
+		fprintf(myFile, "Empl_ID    Last_Name    First_Name   Hours_worked	Salary\n");
+		for (int i = 0; i < resultArrSize; i++) {
+			EmployeeList[i].MinOfWorking = Hperemployee(EmployeeList[i].ID, month, year);
+
+			//Create report only for employees that worked
+			if (EmployeeList[i].MinOfWorking != 0 && EmployeeList[i].cnt != 0)
+			{
+				printf("%-9s  %-11s  %-11s %5.2f %19.2fNIS\n", EmployeeList[i].ID, EmployeeList[i].lastName, EmployeeList[i].name, EmployeeList[i].MinOfWorking / 60. , EmployeeList[i].MinOfWorking / 60. * 26);
+				fprintf(myFile, "%-9s  %-11s  %-11s %5.2f %19.2fNIS\n", EmployeeList[i].ID, EmployeeList[i].lastName, EmployeeList[i].name, EmployeeList[i].MinOfWorking / 60. , EmployeeList[i].MinOfWorking / 60. * 26);
+			}
 		}
 
-		printf("--------------------------------------------------\n");
-		printf("[0] - Back to menu\n[1] - Enter another ID\n");
+		//Clear & Close
+		fclose(myFile);
+		if (EmployeeList) free(EmployeeList);
+
+		//Wait for user command
+		printf("----------------------------------------------------------------\n");
+		printf("[0] - Back to menu\n[1] - Enter another Date\n");
 		printf("Your choose: ");
 		while (getchar() != '\n');
 		scanf("%c", &choice);
@@ -510,4 +532,26 @@ int Employee_efficiency()
 		free(EmployeeList);
 	if (ReqList)
 		free(ReqList);
+}
+
+//Get year and month from user return 0 for Menu
+int getYearMonth(int *year, int *month) {
+	system("cls");
+	printf("Enter year (yyyy) and month (mm) you want to create report for :\n");
+	
+	printf("Enter month: (press 0 to go back) ");
+	while (getchar() != '\n');
+	scanf("%d", month);
+	if (month == 0)
+	{	
+		return 0;
+	}
+	
+	printf("Enter year:(press 0 to go back) ");
+	while (getchar() != '\n');
+	scanf("%d", year);
+	if (year == 0)
+	{	
+		return 0;
+	}
 }
