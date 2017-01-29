@@ -238,16 +238,19 @@ void WorkerMenu(Employee Employer)
 				printf("%s exist in Ministry of Defence database\n",tempcity);
 			else 
 				printf("%s not exist in Ministry of Defence database\n", tempcity);
-			printf("Press any key to continue...\n");
+			while (getchar() != '\n');
+			printf("Press enter to continue...\n");
 			getchar();
 			break;
 		case '6':
 			CheckOpenedRequest();
+			while (getchar() != '\n');
 			printf("Press any key to continue...\n");
 			getchar();
 			break;
 		case '7':
 			GetCitizensDebt();
+			while (getchar() != '\n');
 			printf("Press any key to continue...\n");
 			getchar();
 			break;
@@ -262,7 +265,8 @@ void WorkerMenu(Employee Employer)
 			getchar();
 			break;
 		case '9':
-			GetHoursRep("326952298");
+			while (getchar() != '\n');
+			GetHoursRep(Employer.ID);
 			printf("Press any key to continue...\n");
 			getchar();
 			break;

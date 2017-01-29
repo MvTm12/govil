@@ -340,12 +340,22 @@ int FillForm_(Person person, char* filename)
 
 				ChangeStatusOfRequest(REQUESTS_DB, ReqList, size + 1);
 			}
+			else
+			{
+				if (ReqList)
+					free(ReqList);
+				fclose(myFile);
+				printf("The form is not filled properly.\nSubmission Failed!\n");
+				return 0;
+			}
 		}
 		fclose(myFile);
 		printf("\n\nYou will receive an answer within 10 business days.\nbest regarsd,\nDMV.");
 	}
 	else
 	{
+		if (ReqList)
+			free(ReqList);
 		printf("The form is not filled properly.\nSubmission Failed!\n");
 		return 0;
 	}

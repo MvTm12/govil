@@ -22,7 +22,6 @@ int main() {
 		printf("[1] To citizens.\n");
 		printf("[2] To employees.\n");
 		printf("[3] To unitest.\n");
-		printf("[4] To check function.\n");
 		printf("[0] To exit.\n");
 		printf("--------------------------------------------------\n");
 		printf("Your choose: ");
@@ -40,9 +39,6 @@ int main() {
 			runtests_Citizen();
 			runtests_Worker();
 			runtests_Manager();
-			break;
-		case '4':
-			Employee_efficiency();
 			break;
 		case '0':
 			/////
