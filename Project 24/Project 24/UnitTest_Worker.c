@@ -51,7 +51,7 @@ MU_TEST(test_CreateRequestList)
 	Requests *requests = CreateRequestList(&sizeOfList);
 	
 	//Assert
-	mu_check(strcmp(requests[0].Citizen_ID, "326952298") == 0);
+	mu_check(strcmp(requests[0].Citizen_ID, "205774094") == 0);
 }
 
 MU_TEST(test_GetCity)

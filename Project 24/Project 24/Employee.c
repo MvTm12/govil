@@ -191,9 +191,9 @@ void WorkerMenu(Employee Employer)
 		printf("[3] - Check for disabled parking badge eligibility.\n");
 		printf("[4] - Get city by citizen ID.\n");
 		printf("[5] - Check if City exist in Ministry of Defence database.\n");
-		printf("[6] - Print and save requests that opened more then 5 days.\n");
-		printf("[7] - Print and save Fee debt report.\n");
-		printf("[8] - Print and save recall list.\n");
+		printf("[6] - Show and save requests that opened more then 5 days.\n");
+		printf("[7] - Show and save Fee debt report.\n");
+		printf("[8] - Show and save recall list.\n");
 		printf("[9] - Get and save working hours for this month.\n");
 		printf("[0] - To exit.\n");
 		printf("--------------------------------------------------\n");
@@ -226,6 +226,7 @@ void WorkerMenu(Employee Employer)
 			scanf("%s", tempID);
 			if (!strcmp(GetCity(tempID), "None"))
 				printf("The ID is not exist in database...\n");
+			while (getchar() != '\n');
 			printf("Press any key to continue...\n");
 			getchar();
 			break;
@@ -237,16 +238,19 @@ void WorkerMenu(Employee Employer)
 				printf("%s exist in Ministry of Defence database\n",tempcity);
 			else 
 				printf("%s not exist in Ministry of Defence database\n", tempcity);
-			printf("Press any key to continue...\n");
+			while (getchar() != '\n');
+			printf("Press enter to continue...\n");
 			getchar();
 			break;
 		case '6':
 			CheckOpenedRequest();
+			while (getchar() != '\n');
 			printf("Press any key to continue...\n");
 			getchar();
 			break;
 		case '7':
 			GetCitizensDebt();
+			while (getchar() != '\n');
 			printf("Press any key to continue...\n");
 			getchar();
 			break;
@@ -261,7 +265,8 @@ void WorkerMenu(Employee Employer)
 			getchar();
 			break;
 		case '9':
-			GetHoursRep("326952298");
+			while (getchar() != '\n');
+			GetHoursRep(Employer.ID);
 			printf("Press any key to continue...\n");
 			getchar();
 			break;

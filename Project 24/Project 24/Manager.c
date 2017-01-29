@@ -30,9 +30,11 @@ void ManagerMenu(Employee Employer)
 		{
 		case '1':
 			CreateRecallMessage();
+			while (getchar() != '\n');
 			break;
 		case '2':
 			GetOpReq();
+			while (getchar() != '\n');
 			break;
 		case '3':
 			PrintEmplAndReq();
@@ -42,12 +44,15 @@ void ManagerMenu(Employee Employer)
 			break;
 		case '5':
 			Employee_efficiency();
+			while (getchar() != '\n');
 			break;
 		case '6':
 			AddEmployee();
+			while (getchar() != '\n');
 			break;
 		case '7':
 			changeStatus(Employer);
+			while (getchar() != '\n');
 			break;
 		case '0':
 			return;
@@ -443,7 +448,7 @@ int Hperemployee(char* emp_id, int month, int year)
 //
 int Employee_efficiency()
 {
-	char name[40];
+	char name[60];
 	FILE *myFile;
 	int month, year;
 	int sizeOfEmployee = 0, sizeOfReq = 0;
