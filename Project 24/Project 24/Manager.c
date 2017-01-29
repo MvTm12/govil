@@ -18,10 +18,10 @@ void ManagerMenu(Employee Employer)
 		printf("[1] - Create 'Recall' message and save in Task Manager.\n");
 		printf("[2] - To list requests that opened more than 5 days and set a task for employee.\n");
 		printf("[3] - To list all employees that updated requests today with counter of updates.\n");
-		printf("[4] - Get city by citizen ID.\n");
+		printf("[4] - Get employee salary report.\n");
 		printf("[5] - Employee efficiency report.\n");
 		printf("[6] - Add New Worker.\n");
-		printf("[7] - Show and save Fee debt report.\n");
+		printf("[7] - Change employee status.\n");
 		printf("[0] - To exit.\n");
 		printf("--------------------------------------------------\n");
 		printf("Your choose: ");
