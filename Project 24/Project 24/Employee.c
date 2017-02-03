@@ -215,6 +215,7 @@ void WorkerMenu(Employee Employer)
 			while (getchar() != '\n');
 			printf("Enter id you want to check in SocialSecurity database\n");
 			scanf("%s", tempID);
+			while (getchar() != '\n');
 			if (CheckIdInDB(tempID)) printf("\nA ID found in 'SocialSecurity' database!!\n\n");
 			else             printf("\nA ID is not found in 'SocialSecurity' database!!\n\n");
 			printf("Press any key to continue...\n");
@@ -261,6 +262,7 @@ void WorkerMenu(Employee Employer)
 			printf("Enter a year:");
 			scanf("%d", &tempYear);
 			GetRecallList(tempModel, tempYear);
+			while (getchar() != '\n');
 			printf("Press any key to continue...\n");
 			getchar();
 			break;
@@ -405,6 +407,7 @@ void ListRequests(Employee Employer)
 	char number[4], Comment[61],str3[4],c;
 	ReqList = CreateRequestList(&sizeOfList);
 	system("cls");
+	while (getchar() != '\n');
 	printf("  N    citizen_ID N_Car      Request         Sub_date\n");
 	for (i = 0; i < sizeOfList; i++)
 		if (!strcmp(ReqList[i].Status, "open    "))
